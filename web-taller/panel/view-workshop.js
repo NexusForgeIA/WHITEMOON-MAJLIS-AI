@@ -46,31 +46,21 @@
       const dia = MP.store.workshopDay || MP.hoyDoha();
       const lista = await MP.store.bookings({ from: MP.sumaDias(dia, -3), to: dia });
       const vivas = lista.filter((b) => b.status !== "cancelled");
-      const sinEntrar = vivas.filter((b) => !b.work_status && MP.diaDe(b.start_at) === dia);
-      const enTablero = vivas.filter((b) => b.work_status);
+      /* Una cita de hoy sin estado (work_status null) cuenta como «Received»:
+         sale en esa columna con «Check in vehicle», que guarda la entrada en
+         el historial. Las de otros días sin estado no entran en el tablero. */
+      const estadoDe = (b) => b.work_status || (MP.diaDe(b.start_at) === dia ? "received" : null);
+      const enTablero = vivas.filter((b) => estadoDe(b));
 
       pane.textContent = "";
       pane.append(el("p", "p-muted p-calhint", T().wHint));
-
-      if (sinEntrar.length) {
-        const fila = el("div", "p-expected");
-        fila.append(el("h2", "p-h2", T().cardNoStatus));
-        sinEntrar.forEach((b) => {
-          const c = el("div", "p-card p-exp");
-          const n = el("b", "", b.customer_name); n.setAttribute("dir", "auto");
-          c.append(el("span", "p-exp__t", fmtHora(b.start_at)), n, el("span", "p-muted", svcName(b.service_id)),
-            boton(T().cardCheckIn, "", () => MP.cambiaEstado(b, "received")));
-          fila.append(c);
-        });
-        pane.append(fila, el("hr", "p-sep"));
-      }
 
       const board = el("div", "p-board");
       board.setAttribute("role", "list");
       MP.WORK.forEach((estado, i) => {
         const col = el("div", "p-col p-col--" + estado);
         col.setAttribute("role", "listitem");
-        const cards = enTablero.filter((b) => b.work_status === estado);
+        const cards = enTablero.filter((b) => estadoDe(b) === estado);
         const h = el("h2", "p-col__h", T()["w_" + estado]);
         h.append(el("span", "p-count", String(cards.length)));
         col.append(h);
@@ -80,15 +70,19 @@
           c.append(el("span", "p-hud"));
           const v = el("h3", "p-veh__v", b.vehicle_label || svcName(b.service_id));
           v.setAttribute("dir", "auto");
-          const ult = (b.log || [])[b.log.length - 1];
+          const log = b.log || [];
+          const ult = log[log.length - 1];
           const meta = el("p", "p-meta");
           const n = el("span", "", b.customer_name); n.setAttribute("dir", "auto");
           meta.append(n, el("span", "", svcName(b.service_id)));
           c.append(v, meta);
           if (ult) c.append(el("p", "p-muted p-veh__since", T().wSince(MP.ui.fmtFecha(MP.diaDe(ult.at)) + " " + fmtHora(ult.at))));
+          else if (!b.work_status) c.append(el("p", "p-muted p-veh__since", fmtHora(b.start_at) + " · " + T().cardNoStatus));
           const acts = el("div", "p-actions");
           acts.append(boton(T().cardTitle, "p-btn--ghost", () => MP.openCard(b.id)));
-          if (i < MP.WORK.length - 1) {
+          if (!b.work_status) {
+            acts.append(boton(T().cardCheckIn, "", () => MP.cambiaEstado(b, "received")));
+          } else if (i < MP.WORK.length - 1) {
             const sig = MP.WORK[i + 1];
             const flecha = I.lang === "ar" ? "← " : "→ ";
             const nb = boton(flecha + T()["w_" + sig], "", () => MP.cambiaEstado(b, sig));

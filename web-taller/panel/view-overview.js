@@ -33,7 +33,8 @@
       const vivas = (b) => b.status !== "cancelled";
       const deHoy = todas.filter((b) => MP.diaDe(b.start_at) === hoy && vivas(b));
       const semana = todas.filter((b) => { const d = MP.diaDe(b.start_at); return d >= sem0 && d <= MP.sumaDias(sem0, 6); });
-      const enTaller = todas.filter((b) => b.work_status && b.work_status !== "delivered" && vivas(b));
+      /* En taller: con estado distinto de «Delivered», o de hoy sin estado (cuenta como «Received»). */
+      const enTaller = todas.filter((b) => vivas(b) && (b.work_status ? b.work_status !== "delivered" : MP.diaDe(b.start_at) === (MP.store.workshopDay || hoy)));
       const ult30 = todas.filter((b) => { const d = MP.diaDe(b.start_at); return d >= desde30 && d <= hoy; });
       const canc = ult30.length ? ult30.filter((b) => b.status === "cancelled").length / ult30.length : 0;
 
