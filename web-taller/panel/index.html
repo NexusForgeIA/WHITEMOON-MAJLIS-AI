@@ -8,16 +8,18 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b3d91'/%3E%3Cpath d='M9 11h14M9 16h14M9 21h9' stroke='%23e2c15a' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
 <script>
-(function(){try{var l=localStorage.getItem("lang");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";}}catch(e){}})();
+(function(){try{var p=new URLSearchParams(location.search);if(p.get("demo")==="1")document.documentElement.classList.add("demo");var q=p.get("lang");if(q==="ar"||q==="en")localStorage.setItem("lang",q);var l=localStorage.getItem("lang");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";}}catch(e){}})();
 </script>
 <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/sora-var-latin.woff2" crossorigin>
+<!-- El botón «العربية» y los nombres árabes usan esta fuente también en inglés: precargarla evita el salto al llegar. -->
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/plex-arabic-600.woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css?v=21">
-<link rel="stylesheet" href="panel.css?v=5">
+<link rel="stylesheet" href="panel.css?v=18">
 </head>
 <body class="panel">
 
 <!-- Modo demo (?demo=1): datos ficticios en memoria, sin Supabase. -->
-<p class="p-demo-banner" id="demoBanner" role="status" hidden><span data-t="demoBanner">DEMO · sample data, nothing is saved or sent</span></p>
+<p class="p-demo-banner" id="demoBanner" role="status"><span data-t="demoBanner">DEMO · sample data, nothing is saved or sent</span></p>
 
 <header class="p-top">
   <div class="p-wrap p-top__in">
@@ -57,9 +59,13 @@
 
   <section id="appView" hidden>
     <div class="p-head">
-      <div role="tablist" class="p-tabs" data-t-attr="aria-label:tabsAria" aria-label="Panel sections">
-        <button role="tab" type="button" id="tabBookings" aria-selected="true" aria-controls="bookingsPane"><span data-t="tabBookings">Bookings</span> <span class="p-count" id="countBookings"></span></button>
-        <button role="tab" type="button" id="tabLeads" aria-selected="false" aria-controls="leadsPane"><span data-t="tabLeads">Leads without booking</span> <span class="p-count" id="countLeads"></span></button>
+      <div role="tablist" class="p-tabs" id="tabs" data-t-attr="aria-label:tabsAria" aria-label="Panel sections">
+        <button role="tab" type="button" id="tab-overview" aria-controls="pane-overview" hidden><span data-t="tabOverview">Overview</span></button>
+        <button role="tab" type="button" id="tab-calendar" aria-controls="pane-calendar" hidden><span data-t="tabCalendar">Calendar</span></button>
+        <button role="tab" type="button" id="tab-workshop" aria-controls="pane-workshop" hidden><span data-t="tabWorkshop">Workshop</span></button>
+        <button role="tab" type="button" id="tab-bookings" aria-controls="pane-bookings"><span data-t="tabBookings">Bookings</span> <span class="p-count" id="countBookings"></span></button>
+        <button role="tab" type="button" id="tab-customers" aria-controls="pane-customers" hidden><span data-t="tabCustomers">Customers</span></button>
+        <button role="tab" type="button" id="tab-leads" aria-controls="pane-leads"><span data-t="tabLeads">Leads without booking</span> <span class="p-count" id="countLeads"></span></button>
       </div>
       <div class="p-sync">
         <span class="p-muted" id="updatedAt" aria-live="polite"></span>
@@ -67,7 +73,12 @@
       </div>
     </div>
 
-    <div role="tabpanel" id="bookingsPane" aria-labelledby="tabBookings">
+    <div role="tabpanel" id="pane-overview" aria-labelledby="tab-overview" hidden></div>
+    <div role="tabpanel" id="pane-calendar" aria-labelledby="tab-calendar" hidden></div>
+    <div role="tabpanel" id="pane-workshop" aria-labelledby="tab-workshop" hidden></div>
+    <div role="tabpanel" id="pane-customers" aria-labelledby="tab-customers" hidden></div>
+
+    <div role="tabpanel" id="pane-bookings" aria-labelledby="tab-bookings">
       <div class="p-filters">
         <label><span data-t="fDay">Day</span>
           <select id="fRange">
@@ -92,7 +103,7 @@
       <p class="p-empty p-muted" id="bookingsEmpty" hidden data-t="emptyBookings">No bookings for these filters.</p>
     </div>
 
-    <div role="tabpanel" id="leadsPane" aria-labelledby="tabLeads" hidden>
+    <div role="tabpanel" id="pane-leads" aria-labelledby="tab-leads" hidden>
       <div class="p-filters">
         <label><span data-t="fStatus">Status</span>
           <select id="fLeadStatus">
@@ -112,7 +123,30 @@
   <p class="p-muted p-foot" data-t="foot">Demo · fictitious business · times in Doha (UTC+3)</p>
 </main>
 
-<!-- supabase-js lo carga panel.js solo en modo real: en demo no se descarga. -->
-<script defer src="panel.js?v=3"></script>
+<!-- Ficha / orden de trabajo -->
+<dialog class="p-dlg" id="card" aria-labelledby="cardTitle">
+  <div class="p-dlg__in">
+    <div class="p-dlg__head"><h2 id="cardTitle"></h2><button class="p-dlg__x" type="button" data-t-attr="aria-label:cardClose" aria-label="Close">×</button></div>
+    <div class="p-card__body"></div>
+  </div>
+</dialog>
+<!-- Vista previa del mensaje al cliente (no se envía nada) -->
+<dialog class="p-dlg p-dlg--sm" id="notify" aria-labelledby="notifyTitle">
+  <div class="p-dlg__in">
+    <div class="p-dlg__head"><h2 id="notifyTitle"></h2><button class="p-dlg__x" type="button" data-t-attr="aria-label:cardClose" aria-label="Close">×</button></div>
+    <div class="p-notify__body"></div>
+  </div>
+</dialog>
+<p class="p-toast" id="toast" role="status" aria-live="polite" hidden></p>
+
+<!-- supabase-js lo carga data.js solo en modo real: en demo no se descarga. -->
+<script defer src="i18n.js?v=2"></script>
+<script defer src="data.js?v=1"></script>
+<script defer src="panel.js?v=6"></script>
+<script defer src="view-overview.js?v=1"></script>
+<script defer src="view-calendar.js?v=3"></script>
+<script defer src="view-workshop.js?v=4"></script>
+<script defer src="view-card.js?v=2"></script>
+<script defer src="view-customers.js?v=3"></script>
 </body>
 </html>

@@ -15,6 +15,7 @@ Objetivo inmediato: tener un MVP funcional para enseñar. Lo burocrático (QDB /
    - RLS en todas las tablas nuevas: INSERT anónimo solo donde haga falta; SELECT/UPDATE/DELETE solo `authenticated`. Toda VIEW con `security_invoker = on`. Ningún panel protegido con un gate en JS: login real con Supabase Auth.
    - Diseño y SEO/GEO según las skills (en `web-taller/` rige la paleta blanco, azul y dorado de este repo).
 2. **Sin datos inventados:** nada de testimonios, cifras de rendimiento, "30 años", precios reales ni logos ajenos. Los negocios de las demos son ficticios y se etiquetan así.
+   - **Excepción:** las cifras de ingresos, precios de servicios y planes que aparecen en el panel en modo demo son ficticias, viven solo en los datos de demo y se muestran siempre con la etiqueta 'Sample figures'. No se usan en la web pública ni en el modo real.
 3. **Sin marcas de coches** en imágenes, textos o logos; sin matrículas visibles.
 4. **Clean-room:** si se analiza una web de terceros, se replica comportamiento/idea con código propio; nunca copiar su código, diseño ni textos.
 5. El chat se identifica siempre como **asistente de IA** (cabecera y primer mensaje).
