@@ -29,11 +29,12 @@
 <!-- Idioma antes de pintar: si el visitante eligió árabe, el documento nace
      en RTL y no da un salto de izquierda a derecha al cargar. -->
 <script>
-(function(){try{var q=new URLSearchParams(location.search).get("lang");var l=q==="ar"||q==="en"?q:localStorage.getItem("lang");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";}}catch(e){}})();
+(function(){try{var q=new URLSearchParams(location.search).get("lang");var l=q==="ar"||q==="en"?q:localStorage.getItem("lang");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";["400","700"].forEach(function(w){var k=document.createElement("link");k.rel="preload";k.as="font";k.type="font/woff2";k.crossOrigin="anonymous";k.href="assets/fonts/plex-arabic-"+w+".woff2";document.head.appendChild(k);});}}catch(e){}})();
 </script>
 
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/sora-var-latin.woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=23">
+<link rel="preload" as="image" href="assets/img/hero-1200.webp" imagesrcset="assets/img/hero-600.webp 600w, assets/img/hero-900.webp 900w, assets/img/hero-1200.webp 1200w" imagesizes="(max-width:900px) calc(100vw - 44px), 560px" fetchpriority="high">
+<link rel="stylesheet" href="assets/css/style.css?v=24">
 
 <script type="application/ld+json">
 {
@@ -128,20 +129,10 @@
   <div class="hero-bg" aria-hidden="true">
     <div class="grad"></div>
     <div class="grid"></div>
-    <div class="art">
-      <svg viewBox="0 0 640 260" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M40 190h560"/>
-        <path d="M92 190a34 34 0 1 0 68 0 34 34 0 1 0-68 0"/>
-        <path d="M470 190a34 34 0 1 0 68 0 34 34 0 1 0-68 0"/>
-        <path d="M126 190h318"/>
-        <path d="M92 190c-18 0-34-4-34-30v-26c0-14 10-24 26-26l70-42c10-6 22-10 34-10h96c14 0 27 6 36 16l40 44 88 14c22 4 36 18 36 40v20c0 24-14 30-32 30"/>
-        <path d="M160 66l16 60h122"/>
-        <path d="M300 60v66"/>
-        <path d="M360 78l40 44"/>
-      </svg>
-    </div>
   </div>
   <div class="wrap hero-content">
+    <div class="hero-main">
+    <div class="hero-text">
     <span class="eyebrow" data-i18n="hero.eyebrow">Demo · fictitious workshop in Doha</span>
     <h1><span data-i18n="hero.h1a">Expert care for your car,</span><span class="accent" data-i18n="hero.h1b">booked in a minute.</span></h1>
     <p class="hero-rot">
@@ -152,6 +143,20 @@
     <div class="hero-actions">
       <button class="btn" type="button" data-leo><svg aria-hidden="true"><use href="#ic-calendar"/></svg><span data-i18n="cta.bookMine">Book my visit</span></button>
       <a class="btn ghost" href="#services" data-i18n="cta.seeServices">See services</a>
+    </div>
+    </div>
+    <!-- Foto del taller con capa holográfica: rejilla, escáner y esquinas HUD.
+         Sin lazy: es la imagen principal (LCP). -->
+    <figure class="hero-photo">
+      <img src="assets/img/hero-1200.webp" srcset="assets/img/hero-600.webp 600w, assets/img/hero-900.webp 900w, assets/img/hero-1200.webp 1200w"
+           sizes="(max-width:900px) calc(100vw - 44px), 560px" width="1200" height="675"
+           alt="Mechanic working on a car raised on a lift in a bright workshop" data-i18n-attr="alt:hero.photoAlt"
+           fetchpriority="high" decoding="async">
+      <span class="hp-grid" aria-hidden="true"></span>
+      <span class="hp-scan" aria-hidden="true"></span>
+      <span class="hp-hud" aria-hidden="true"></span>
+      <p class="tag-badge hp-badge"><span data-i18n="ws.badgeS">Workshop</span><b data-i18n="ws.badge">Doha · Demo</b></p>
+    </figure>
     </div>
     <div class="hero-stats">
       <div class="stat"><div class="v">7</div><div class="l" data-i18n="stat.1">Services you can book online</div></div>
@@ -190,24 +195,24 @@
       </div>
       <div class="about-media reveal">
         <div class="framed">
-          <div class="taller-panel">
-            <div class="pgrid"></div>
-            <svg class="car" viewBox="0 0 640 240" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M60 168h520"/>
-              <circle cx="164" cy="168" r="30"/>
-              <circle cx="476" cy="168" r="30"/>
-              <path d="M194 168h252"/>
-              <path d="M134 168c-16 0-30-4-30-28v-22c0-12 9-21 23-23l64-38c9-5 20-9 31-9h88c13 0 25 5 33 14l36 40 80 13c20 3 33 16 33 37v16c0 22-13 28-29 28"/>
-              <path d="M196 48l14 54h112"/>
-              <path d="M322 44v58"/>
-            </svg>
+          <div class="taller-panel taller-photo">
+            <img src="assets/img/about-800.webp" srcset="assets/img/about-400.webp 400w, assets/img/about-800.webp 800w"
+                 sizes="(max-width:900px) calc(100vw - 72px), 520px" width="800" height="600"
+                 alt="Mechanic moving an engine on a stand in a bright workshop" data-i18n-attr="alt:ws.photoAlt" loading="lazy" decoding="async">
           </div>
         </div>
-        <p class="tag-badge"><span data-i18n="ws.badgeS">Workshop</span><b data-i18n="ws.badge">Doha · Demo</b></p>
       </div>
     </div>
   </div>
 </section>
+
+
+<!-- Banda de imagen con overlay azul translúcido (legibilidad del texto) -->
+<div class="band" role="img" aria-label="Bright workshop with cars under fluorescent lights" data-i18n-attr="aria-label:band.1.alt">
+  <img src="assets/img/band-1-1200.webp" srcset="assets/img/band-1-600.webp 600w, assets/img/band-1-1200.webp 1200w"
+       sizes="100vw" width="1200" height="500" alt="" loading="lazy" decoding="async">
+  <p class="band__t" data-i18n="band.1">A written quote in QAR before we touch your car.</p>
+</div>
 
 <!-- ===================== SERVICIOS =====================
      data-svc es el id estable del servicio: leo.js lo usa para saltarse la
@@ -241,7 +246,7 @@
 
       <article class="svc-card reveal">
         <div class="svc-media">
-          <img class="svc-img" src="assets/img/car-2.webp" srcset="assets/img/car-2-600.webp 600w, assets/img/car-2.webp 1200w" sizes="(max-width:600px) 100vw, (max-width:900px) 50vw, 400px" alt="Dark SUV with a roof rack, silhouetted on a beach at sunset" data-i18n-attr="alt:svc.service.alt" width="1200" height="800" loading="lazy" decoding="async">
+          <img class="svc-img" src="assets/img/car-2.webp?v=2" srcset="assets/img/car-2-600.webp?v=2 600w, assets/img/car-2.webp?v=2 1200w" sizes="(max-width:600px) 100vw, (max-width:900px) 50vw, 400px" alt="Luxury car in a workshop, side view" data-i18n-attr="alt:svc.service.alt" width="1200" height="800" loading="lazy" decoding="async">
           <div class="svc-shade"></div>
           <span class="svc-badge" aria-hidden="true"><svg><use href="#ic-shield"/></svg></span>
         </div>
@@ -345,6 +350,49 @@
   </div>
 </section>
 
+<!-- ===================== GALERÍA ===================== -->
+<section class="sec sec--alt" id="inside">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-i18n="gal.eyebrow">Inside the workshop</span>
+      <h2 data-i18n="gal.h2">Where your car is looked after</h2>
+      <p data-i18n="gal.lead">Diagnostics, tyres, brakes and air conditioning in one bright, organised space.</p>
+    </div>
+    <div class="gal-grid">
+      <figure class="gal-item reveal">
+        <img src="assets/img/gal-diag-800.webp" srcset="assets/img/gal-diag-400.webp 400w, assets/img/gal-diag-800.webp 800w"
+             sizes="(max-width:900px) 50vw, 380px" width="800" height="600" alt="Technician checking a car with a diagnostic tablet" data-i18n-attr="alt:gal.diag.alt" loading="lazy" decoding="async">
+        <figcaption data-i18n="gal.diag">Computer diagnostics</figcaption>
+      </figure>
+      <figure class="gal-item reveal">
+        <img src="assets/img/gal-tyres-800.webp" srcset="assets/img/gal-tyres-400.webp 400w, assets/img/gal-tyres-800.webp 800w"
+             sizes="(max-width:900px) 50vw, 380px" width="800" height="600" alt="Mechanic inspecting a tyre" data-i18n-attr="alt:gal.tyres.alt" loading="lazy" decoding="async">
+        <figcaption data-i18n="gal.tyres">Tyres</figcaption>
+      </figure>
+      <figure class="gal-item reveal">
+        <img src="assets/img/gal-brakes-800.webp" srcset="assets/img/gal-brakes-400.webp 400w, assets/img/gal-brakes-800.webp 800w"
+             sizes="(max-width:900px) 50vw, 380px" width="800" height="600" alt="Mechanic working on a brake disc and caliper" data-i18n-attr="alt:gal.brakes.alt" loading="lazy" decoding="async">
+        <figcaption data-i18n="gal.brakes">Brakes</figcaption>
+      </figure>
+      <figure class="gal-item reveal">
+        <img src="assets/img/gal-ac-800.webp" srcset="assets/img/gal-ac-400.webp 400w, assets/img/gal-ac-800.webp 800w"
+             sizes="(max-width:900px) 50vw, 380px" width="800" height="600" alt="Mechanic working in an engine bay" data-i18n-attr="alt:gal.ac.alt" loading="lazy" decoding="async">
+        <figcaption data-i18n="gal.ac">Engine and A/C</figcaption>
+      </figure>
+      <figure class="gal-item reveal">
+        <img src="assets/img/gal-overview-800.webp" srcset="assets/img/gal-overview-400.webp 400w, assets/img/gal-overview-800.webp 800w"
+             sizes="(max-width:900px) 50vw, 380px" width="800" height="600" alt="Clean, bright workshop floor with a lift and tool benches" data-i18n-attr="alt:gal.overview.alt" loading="lazy" decoding="async">
+        <figcaption data-i18n="gal.overview">The workshop floor</figcaption>
+      </figure>
+      <figure class="gal-item reveal">
+        <img src="assets/img/gal-reception-800.webp" srcset="assets/img/gal-reception-400.webp 400w, assets/img/gal-reception-800.webp 800w"
+             sizes="(max-width:900px) 50vw, 380px" width="800" height="600" alt="Mechanic going over a job sheet with a customer" data-i18n-attr="alt:gal.reception.alt" loading="lazy" decoding="async">
+        <figcaption data-i18n="gal.reception">Reception</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== PROCESO ===================== -->
 <section class="sec" id="process">
   <span class="bignum s" aria-hidden="true">03</span>
@@ -362,6 +410,14 @@
     </div>
   </div>
 </section>
+
+
+<!-- Banda de imagen con overlay azul translúcido (legibilidad del texto) -->
+<div class="band" role="img" aria-label="Workshop floor with a lift and tool cabinets" data-i18n-attr="aria-label:band.2.alt">
+  <img src="assets/img/band-2-1200.webp" srcset="assets/img/band-2-600.webp 600w, assets/img/band-2-1200.webp 1200w"
+       sizes="100vw" width="1200" height="500" alt="" loading="lazy" decoding="async">
+  <p class="band__t" data-i18n="band.2">Book in English or Arabic, any time of day.</p>
+</div>
 
 <!-- ===================== ASISTENTE ===================== -->
 <section class="sec sec--alt" id="assistant">
@@ -545,7 +601,7 @@
 
 <!-- Sin defer a propósito: corre al terminar de parsear el body y antes del
      primer pintado, así el árabe no parpadea en inglés. -->
-<script src="assets/js/i18n.js?v=2"></script>
+<script src="assets/js/i18n.js?v=3"></script>
 <script defer src="assets/js/main.js?v=10"></script>
 <script defer src="assets/js/leo.js?v=14"></script>
 <script defer src="assets/js/holo.js?v=3"></script>
