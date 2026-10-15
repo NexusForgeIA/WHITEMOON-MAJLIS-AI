@@ -11,8 +11,13 @@
 
    Los huecos NO se inventan en cliente: se piden a la Edge Function
    `majlis-cita` (action 'slots') y al elegir hora se reserva de verdad
-   (action 'book'). Sin backend configurado (FN_BASE vacío) el chat lo dice
-   y ofrece que llame una persona; el flujo no se rompe.
+   (action 'book'). Si el backend no responde, el chat lo dice y ofrece que
+   llame una persona; el flujo no se rompe.
+
+   Texto libre (en el menú inicial y al final): se manda a `majlis-cita`
+   (action 'understand'), que usa Claude para extraer intención, servicio,
+   nombre, teléfono, día y hora. Lo que devuelve se vuelve a validar aquí y
+   la hora solo se acepta si está entre los huecos reales.
 
    Ninguna clave en este fichero: las funciones son públicas (--no-verify-jwt)
    y escriben en la base de datos con sus propios secretos.
@@ -23,8 +28,8 @@
 (() => {
   "use strict";
 
-  /* Pendiente de conectar (bloque del backend). */
-  const FN_BASE = "";
+  /* Supabase de WhiteMoon; funciones públicas majlis-* (--no-verify-jwt). */
+  const FN_BASE = "https://mlaqtniujnvfxcvcourm.supabase.co";
   const CITA_FN = FN_BASE + "/functions/v1/majlis-cita";
   const NOTIFY_FN = FN_BASE + "/functions/v1/majlis-notify";
   const BUSINESS = "Example Garage";
@@ -92,6 +97,14 @@
       anythingElse: "Can I help with anything else?",
       newBooking: "Make another booking",
       inputLabel: "Type your reply…",
+      freePh: "Or type what you need…",
+      notUnderstood: "Sorry, I couldn't read that right now. Please choose one of the options.",
+      whichService: "Sure. Which service do you need?",
+      closedDay: "We're closed on Fridays and Saturdays, so let's pick another day.",
+      timeFree: (h, d) => h + " on " + d + " is free. Shall I book it?",
+      timeNotFree: (h) => h + " isn't free that day. These are the times still available.",
+      yesBook: "Yes, book it",
+      otherTimes: "See other times",
     },
     ar: {
       hello: "مرحباً، أنا ليو، المساعد الذكي لـ " + BUSINESS + "، ورشة تجريبية في الدوحة. يمكنني حجز موعدك بالعربية أو الإنجليزية.",
@@ -140,6 +153,14 @@
       anythingElse: "هل يمكنني مساعدتك في شيء آخر؟",
       newBooking: "حجز موعد آخر",
       inputLabel: "اكتب ردّك…",
+      freePh: "أو اكتب ما تحتاجه…",
+      notUnderstood: "عذراً، لم أتمكن من قراءة ذلك الآن. اختر أحد الخيارات من فضلك.",
+      whichService: "بالتأكيد. ما الخدمة التي تحتاجها؟",
+      closedDay: "نحن مغلقون يومي الجمعة والسبت، فلنختر يوماً آخر.",
+      timeFree: (h, d) => "الساعة " + h + " يوم " + d + " متاحة. هل أحجزها لك؟",
+      timeNotFree: (h) => "الساعة " + h + " غير متاحة في ذلك اليوم. هذه الأوقات التي ما زالت متاحة.",
+      yesBook: "نعم، احجزها",
+      otherTimes: "أوقات أخرى",
     },
   };
   const lang = () => (window.I18N && window.I18N.lang === "ar" ? "ar" : "en");
@@ -176,7 +197,7 @@
   const sendBtn = $(".leo-foot button", panel);
   const btn = $("#leo-open");
 
-  const lead = { service: "", name: "", phone: "", day: null, start: "", handoff: false };
+  const lead = { service: "", name: "", phone: "", day: null, start: "", handoff: false, wantTime: "" };
   let step = "svc";
   let started = false;
   let vista = null;
@@ -280,7 +301,7 @@
 
   const menuInicial = () => {
     step = "svc";
-    setInput(false);
+    setInput(true, "freePh");
     setQuick(svcItems().concat([personItem]), (it) => {
       if (it.key === "person") handoff(); else pickService(it.key);
     });
@@ -292,7 +313,47 @@
     lead.handoff = false;
     clearQuick();
     await botSay(T().info[s.id]);
-    askName();
+    siguiente();
+  };
+
+  /* Siguiente dato que falta. Lo que ya llegó por texto libre no se vuelve
+     a preguntar. */
+  const siguiente = () => {
+    if (!lead.name) askName();
+    else if (!lead.phone) askPhone();
+    else if (lead.handoff) cierreSinCita(false);
+    else if (lead.day) askTime();
+    else askDay();
+  };
+
+  /* ---------- texto libre: Claude vía majlis-cita ---------- */
+  const entender = async (text) => {
+    /* Después de una cita o un aviso, un mensaje nuevo es una petición nueva. */
+    if (step === "done") { enviado = false; lead.day = null; lead.start = ""; lead.handoff = false; }
+    step = "ai";
+    setInput(false); clearQuick();
+    const t = typing();
+    const res = await llama({ action: "understand", text, lang: lang() });
+    t.remove();
+    if (!res || !res.ok) { await botSay(T().notUnderstood, menuInicial); return; }
+    if (res.name && !lead.name) lead.name = String(res.name).slice(0, 80);
+    if (res.phone && !lead.phone) lead.phone = res.phone;
+
+    if (res.intent === "handoff") { lead.handoff = true; lead.service = ""; siguiente(); return; }
+    if (res.intent === "book") {
+      if (res.date) {
+        const [y, m, d] = res.date.split("-").map(Number);
+        const f = new Date(y, m - 1, d);
+        const hoy = hoyDoha();
+        const lim = new Date(hoy); lim.setDate(lim.getDate() + DIAS_VISTA);
+        if (candidato(f, hoy, lim)) { lead.day = f; lead.wantTime = res.time || ""; }
+        else if (!abre(f)) await botSay(T().closedDay);
+      }
+      if (res.service && SERVICES.some((x) => x.id === res.service)) { pickService(res.service); return; }
+      await botSay(T().whichService, menuInicial);
+      return;
+    }
+    await botSay(res.reply || T().whatNeed, menuInicial);
   };
 
   const askName = async () => {
@@ -304,8 +365,9 @@
   const handoff = async () => {
     lead.handoff = true;
     lead.service = "";
-    step = "name";
     clearQuick();
+    if (lead.name && lead.phone) { cierreSinCita(false); return; }
+    step = "name";
     await botSay(T().handName, () => setInput(true, "namePh"));
   };
 
@@ -418,6 +480,22 @@
     if (!slots.length) {
       const motivo = res && res._neterr ? T().noNet : T().noSlots;
       await botSay(motivo + " " + T().tryOther, pintaSinHuecos);
+      return;
+    }
+    const quiere = lead.wantTime;
+    lead.wantTime = "";
+    if (quiere) {
+      const iso = slots.find((h) => horaDe(h) === quiere);
+      if (iso) {
+        await botSay(T().timeFree(quiere, fmtCorto(lead.day)), () =>
+          setQuick([{ key: "yes", label: () => T().yesBook }, { key: "no", label: () => T().otherTimes }], (it) => {
+            clearQuick();
+            if (it.key === "yes") { lead.start = iso; reservar(); }
+            else { setInput(false, "timePh"); pintaHoras(slots); }
+          }));
+        return;
+      }
+      await botSay(T().timeNotFree(quiere), () => { setInput(false, "timePh"); pintaHoras(slots); });
       return;
     }
     await botSay(T().askTime, () => {
@@ -574,12 +652,14 @@
 
   const ofreceMas = () => {
     setTimeout(() => {
-      botSay(T().anythingElse, () =>
+      botSay(T().anythingElse, () => {
+        setInput(true, "freePh");
         setQuick([{ key: "new", label: () => T().newBooking }, personItem], (it) => {
           enviado = false;
-          lead.day = null; lead.start = "";
+          lead.day = null; lead.start = ""; lead.wantTime = ""; lead.handoff = false;
           if (it.key === "person") handoff(); else menuInicial();
-        }));
+        });
+      });
     }, 900);
   };
 
@@ -600,14 +680,16 @@
     if (!v) return;
     addMsg(v, "user");
     input.value = "";
-    if (step === "name") {
+    if (step === "svc" || step === "done") {
+      entender(v);
+    } else if (step === "name") {
       if (v.length < 2) { botSay(T().nameAgain); return; }
-      lead.name = v.slice(0, 80); setInput(false); askPhone();
+      lead.name = v.slice(0, 80); setInput(false); siguiente();
     } else if (step === "phone") {
       const p = normPhone(v);
       if (!p) { botSay(T().phoneBad); return; }
       lead.phone = p; setInput(false);
-      if (lead.handoff) cierreSinCita(false); else askDay();
+      siguiente();
     }
   };
 
