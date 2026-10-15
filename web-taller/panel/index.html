@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Owner panel · Example Garage (demo)</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b3d91'/%3E%3Cpath d='M9 11h14M9 16h14M9 21h9' stroke='%23e2c15a' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<script>
+(function(){try{var l=localStorage.getItem("lang");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";}}catch(e){}})();
+</script>
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/sora-var-latin.woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/style.css?v=21">
+<link rel="stylesheet" href="panel.css?v=5">
+</head>
+<body class="panel">
+
+<!-- Modo demo (?demo=1): datos ficticios en memoria, sin Supabase. -->
+<p class="p-demo-banner" id="demoBanner" role="status" hidden><span data-t="demoBanner">DEMO · sample data, nothing is saved or sent</span></p>
+
+<header class="p-top">
+  <div class="p-wrap p-top__in">
+    <div class="p-brand">
+      <span class="p-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h9"/></svg>
+      </span>
+      <span><b>Example Garage</b><small data-t="brandSub">Owner panel · Demo</small></span>
+    </div>
+    <div class="p-top__act">
+      <button class="lang-btn" type="button" id="langBtn" lang="ar"><span>العربية</span></button>
+      <button class="p-btn p-btn--ghost" type="button" id="logoutBtn" hidden data-t="logout">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<main class="p-wrap" id="main">
+
+  <!-- Login: Supabase Auth. Sin sesión válida la base de datos no devuelve
+       ni una fila (RLS), da igual lo que se toque en este HTML. -->
+  <section class="p-login" id="loginView" hidden>
+    <form class="p-card p-login__card" id="loginForm" novalidate>
+      <h1 data-t="loginTitle">Sign in</h1>
+      <p class="p-muted" data-t="loginLead">Bookings and call-back requests from Leo, the AI assistant.</p>
+      <label for="email" data-t="email">Email</label>
+      <input id="email" type="email" autocomplete="username" required>
+      <label for="password" data-t="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <p class="p-err" id="loginErr" role="alert" hidden></p>
+      <button class="p-btn" type="submit" id="loginBtn" data-t="signIn">Sign in</button>
+      <div class="p-login__demo">
+        <a class="p-btn p-btn--ghost" href="?demo=1" data-t="tryDemo">Try the demo</a>
+        <p class="p-muted" data-t="demoHint">Sample data only. Nothing is saved or sent.</p>
+      </div>
+    </form>
+  </section>
+
+  <section id="appView" hidden>
+    <div class="p-head">
+      <div role="tablist" class="p-tabs" data-t-attr="aria-label:tabsAria" aria-label="Panel sections">
+        <button role="tab" type="button" id="tabBookings" aria-selected="true" aria-controls="bookingsPane"><span data-t="tabBookings">Bookings</span> <span class="p-count" id="countBookings"></span></button>
+        <button role="tab" type="button" id="tabLeads" aria-selected="false" aria-controls="leadsPane"><span data-t="tabLeads">Leads without booking</span> <span class="p-count" id="countLeads"></span></button>
+      </div>
+      <div class="p-sync">
+        <span class="p-muted" id="updatedAt" aria-live="polite"></span>
+        <button class="p-btn p-btn--ghost p-btn--sm" type="button" id="refreshBtn" data-t="refresh">Refresh</button>
+      </div>
+    </div>
+
+    <div role="tabpanel" id="bookingsPane" aria-labelledby="tabBookings">
+      <div class="p-filters">
+        <label><span data-t="fDay">Day</span>
+          <select id="fRange">
+            <option value="upcoming" data-t="fUpcoming">Upcoming</option>
+            <option value="day" data-t="fOneDay">One day</option>
+            <option value="all" data-t="fAll">All</option>
+          </select>
+        </label>
+        <label id="fDayWrap" hidden><span class="sr-only" data-t="fDate">Date</span><input type="date" id="fDate"></label>
+        <label><span data-t="fStatus">Status</span>
+          <select id="fStatus">
+            <option value="" data-t="sAll">All</option>
+            <option value="confirmed" data-t="s_confirmed">Confirmed</option>
+            <option value="done" data-t="s_done">Attended</option>
+            <option value="cancelled" data-t="s_cancelled">Cancelled</option>
+          </select>
+        </label>
+        <button class="p-btn p-btn--ghost p-btn--sm" type="button" id="exportBtn" data-t="export">Export CSV</button>
+      </div>
+      <p class="p-err" id="bookingsErr" role="alert" hidden></p>
+      <ul class="p-list" id="bookingsList"></ul>
+      <p class="p-empty p-muted" id="bookingsEmpty" hidden data-t="emptyBookings">No bookings for these filters.</p>
+    </div>
+
+    <div role="tabpanel" id="leadsPane" aria-labelledby="tabLeads" hidden>
+      <div class="p-filters">
+        <label><span data-t="fStatus">Status</span>
+          <select id="fLeadStatus">
+            <option value="" data-t="sAll">All</option>
+            <option value="new" data-t="l_new">New</option>
+            <option value="contacted" data-t="l_contacted">Contacted</option>
+            <option value="closed" data-t="l_closed">Closed</option>
+          </select>
+        </label>
+      </div>
+      <p class="p-err" id="leadsErr" role="alert" hidden></p>
+      <ul class="p-list" id="leadsList"></ul>
+      <p class="p-empty p-muted" id="leadsEmpty" hidden data-t="emptyLeads">No leads for this filter.</p>
+    </div>
+  </section>
+
+  <p class="p-muted p-foot" data-t="foot">Demo · fictitious business · times in Doha (UTC+3)</p>
+</main>
+
+<!-- supabase-js lo carga panel.js solo en modo real: en demo no se descarga. -->
+<script defer src="panel.js?v=3"></script>
+</body>
+</html>

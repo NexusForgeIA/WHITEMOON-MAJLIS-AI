@@ -1,0 +1,93 @@
+/* Panel del dueño. Tokens, fuentes, .lang-btn y reglas RTL vienen de
+   ../assets/css/style.css; aquí solo lo propio del panel. */
+body.panel{background:var(--bg2);min-height:100vh}
+/* el contenido llega por JS: se reserva la pantalla para que el pie no salte (CLS) */
+#main{min-height:100vh}
+/* hidden manda siempre, aunque la clase ponga display */
+.panel [hidden]{display:none!important}
+.p-wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.p-top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.p-top__in{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:68px}
+.p-brand{display:flex;align-items:center;gap:12px}
+.p-brand b{display:block;font-family:var(--display);color:var(--text);font-size:1rem;line-height:1.2}
+.p-brand small{display:block;color:var(--muted);font-size:.75rem}
+.p-mark{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold2),var(--gold));color:var(--text)}
+.p-mark svg{width:22px;height:22px}
+.p-top__act{display:flex;gap:10px;align-items:center}
+
+.p-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;border:1.5px solid var(--p);background:var(--p);color:#fff;font-family:var(--display);font-weight:700;font-size:.9rem;cursor:pointer;transition:background-color .2s,border-color .2s,opacity .2s}
+.p-btn:hover{background:var(--p2);border-color:var(--p2)}
+.p-btn:disabled{opacity:.5;cursor:default}
+.p-btn--ghost{background:#fff;color:var(--p);border-color:var(--line2)}
+.p-btn--ghost:hover{background:var(--p-chip);border-color:var(--p)}
+.p-btn--sm{min-height:38px;padding:0 12px;font-size:.82rem}
+.p-btn--danger{background:#fff;color:#a1261b;border-color:rgba(161,38,27,.35)}
+.p-btn--danger:hover{background:#fdf0ee;border-color:#a1261b}
+.p-btn--danger.is-armed{background:#a1261b;color:#fff;border-color:#a1261b}
+.p-muted{color:var(--muted);font-size:.86rem}
+.p-err{color:#a1261b;font-size:.88rem;margin:10px 0}
+
+.p-card{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 30px -22px rgba(10,31,68,.3)}
+/* Holografía ligera: filo cónico azul/cian/dorado que aparece y gira solo
+   en hover o con foco dentro. Solo opacity y @property. */
+.p-card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;
+  background:conic-gradient(from var(--hl-a),#1d5bd1,#2bd4ff,#c9a227,#e2c15a,#2bd4ff,#1d5bd1);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);opacity:0;transition:opacity .3s}
+.p-card:hover::after,.p-card:focus-within::after{opacity:.85;animation:hl-spin 6s linear infinite}
+@media (hover:none){.p-card:hover::after{opacity:0;animation:none}}
+@media (prefers-reduced-motion:reduce){.p-card::after{animation:none!important}}
+
+.p-login{display:grid;place-items:center;min-height:calc(100vh - 160px);padding:30px 0}
+.p-login__card{width:min(420px,100%);padding:30px 26px;display:grid;gap:10px}
+.p-login__card h1{font-size:1.6rem}
+.p-login__card label{font-weight:600;color:var(--text);font-size:.88rem;margin-top:6px}
+.p-login__card input,.p-filters select,.p-filters input,.p-move input{min-height:44px;border:1px solid var(--line2);border-radius:10px;padding:0 12px;background:#fff;color:var(--text);font:inherit;font-size:.92rem;min-width:0}
+.p-login__card input:focus,.p-filters select:focus,.p-filters input:focus,.p-move input:focus{outline:2px solid var(--p2);outline-offset:1px}
+.p-login__card .p-btn{margin-top:10px}
+
+.p-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:24px 0 14px}
+.p-tabs{display:flex;gap:6px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:4px;flex-wrap:wrap}
+.p-tabs button{min-height:40px;padding:0 14px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-family:var(--display);font-weight:700;font-size:.88rem;cursor:pointer}
+.p-tabs button[aria-selected="true"]{background:var(--p);color:#fff}
+.p-count{display:inline-block;min-width:1.6em;padding:0 6px;border-radius:99px;background:rgba(201,162,39,.22);color:inherit;font-size:.75rem}
+.p-sync{display:flex;align-items:center;gap:10px}
+
+.p-filters{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;margin-bottom:14px}
+.p-filters label{display:grid;gap:4px;font-size:.78rem;font-weight:600;color:var(--soft)}
+
+.p-list{list-style:none;display:grid;gap:12px;padding:0}
+.p-item{padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:6px 18px;align-items:start}
+.p-when{font-family:var(--display);text-align:center;min-width:74px;padding:8px 6px;border-radius:10px;background:var(--p-chip);color:var(--p)}
+.p-when b{display:block;font-size:1.15rem;line-height:1.1}
+.p-when small{display:block;font-size:.72rem;color:var(--soft)}
+.p-main h3{font-size:1.02rem;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.p-meta{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:4px;font-size:.88rem;color:var(--soft)}
+.p-meta a{color:var(--p);text-decoration:underline;text-underline-offset:3px}
+.p-badge{font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:99px;font-family:var(--body)}
+.p-badge--confirmed,.p-badge--new{background:#e7efff;color:var(--p)}
+.p-badge--done,.p-badge--contacted{background:var(--g-bg);color:var(--g)}
+.p-badge--cancelled,.p-badge--closed{background:#f1f2f5;color:#4a5468}
+.p-badge--handoff{background:rgba(201,162,39,.18);color:var(--gold-deep)}
+.p-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.p-move{grid-column:1/-1;display:grid;gap:10px;margin-top:6px;padding:12px;border:1px dashed var(--line2);border-radius:10px;background:var(--bg2)}
+.p-move__slots{display:flex;flex-wrap:wrap;gap:6px}
+.p-move__slots button{min-height:38px;padding:0 12px;border:1px solid var(--line2);border-radius:9px;background:#fff;color:var(--text);cursor:pointer;font:inherit;font-size:.85rem}
+.p-move__slots button:hover{border-color:var(--p);background:var(--p-chip)}
+.p-empty{padding:30px 0;text-align:center}
+.p-foot{text-align:center;padding:30px 0}
+:lang(ar) .p-when b{font-family:var(--display)}
+@media (max-width:520px){
+  .p-item{grid-template-columns:1fr}
+  .p-when{display:flex;gap:10px;align-items:baseline;justify-content:flex-start;text-align:start;min-width:0}
+  .p-brand small{display:none}
+}
+
+/* ---------- modo demo ---------- */
+.p-demo-banner{position:sticky;top:0;z-index:20;margin:0;padding:8px 16px;text-align:center;font-family:var(--display);font-weight:700;font-size:.82rem;letter-spacing:.04em;color:var(--text);background:linear-gradient(90deg,var(--gold2),var(--gold))}
+/* en demo el banner es lo que queda fijo; la cabecera hace scroll */
+.is-demo .p-top{position:static}
+.p-login__demo{margin-top:14px;padding-top:16px;border-top:1px solid var(--line);display:grid;gap:6px;text-align:center}
+.p-move__slots button.is-busy{color:var(--muted);background:var(--bg2);text-decoration:line-through;border-style:dashed}
+.p-top__act .p-btn{white-space:nowrap}
+@media (max-width:520px){.p-top__act .p-btn,.p-top__act .lang-btn{padding:0 10px;font-size:.8rem}}
