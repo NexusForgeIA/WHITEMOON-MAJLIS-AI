@@ -568,3 +568,56 @@ header.nav.scrolled{box-shadow:0 8px 30px -20px rgba(10,31,68,.25)}
 .as-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
 .as-ctas .as-btn{margin-top:0}
 .foot-wm a{text-decoration:underline;text-underline-offset:3px}
+
+/* ======================= FOTOS: HERO, GALERÍA Y BANDAS ======================= */
+/* hero a dos columnas: texto + foto enmarcada con capa holográfica */
+.hero-main{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px;align-items:center}
+.hero-photo{position:relative;margin:0;border-radius:16px;overflow:hidden;aspect-ratio:16/9;background:#dfe7f6;
+  box-shadow:0 30px 60px -30px rgba(10,31,68,.45);border:1px solid var(--line2)}
+.hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.hp-grid{position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(255,255,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.35) 1px,transparent 1px);background-size:40px 40px;
+  -webkit-mask-image:linear-gradient(to top,#000,transparent 70%);mask-image:linear-gradient(to top,#000,transparent 70%)}
+.hp-scan{position:absolute;left:0;right:0;top:0;height:60px;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(43,212,255,.28),transparent);border-bottom:1px solid rgba(43,212,255,.55);
+  transform:translateY(-70px);animation:hp-scan 5s ease-in-out infinite}
+@keyframes hp-scan{0%{transform:translateY(-70px)}100%{transform:translateY(420px)}}
+.hp-hud{position:absolute;inset:12px;pointer-events:none;
+  background:
+   linear-gradient(var(--gold),var(--gold)) top left/20px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top left/2px 20px no-repeat,
+   linear-gradient(var(--gold),var(--gold)) top right/20px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top right/2px 20px no-repeat,
+   linear-gradient(var(--gold),var(--gold)) bottom left/20px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/2px 20px no-repeat,
+   linear-gradient(var(--gold),var(--gold)) bottom right/20px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom right/2px 20px no-repeat}
+.hero-photo .hp-badge{inset-inline-start:18px;bottom:18px;transform:none;left:auto;font-size:1rem;padding:10px 16px}
+
+/* el taller: foto en lugar del dibujo */
+.taller-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* galería «Inside the workshop» */
+.gal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.gal-item{position:relative;margin:0;border-radius:14px;overflow:hidden;background:#dfe7f6;aspect-ratio:4/3;border:1px solid var(--line)}
+.gal-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.gal-item:hover img{transform:scale(1.04)}
+.gal-item figcaption{position:absolute;inset-inline:0;bottom:0;padding:28px 14px 12px;color:#fff;font-weight:600;font-size:.9rem;
+  background:linear-gradient(to top,rgba(10,31,68,.82),transparent)}
+
+/* bandas de imagen con overlay azul translúcido */
+.band{position:relative;height:clamp(220px,32vw,380px);overflow:hidden;display:grid;place-items:center;background:#0b3d91}
+.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,61,145,.72),rgba(10,31,68,.78))}
+.band__t{position:relative;z-index:1;max-width:820px;padding:0 22px;text-align:center;color:#fff;
+  font-family:var(--display);font-weight:700;font-size:clamp(1.3rem,3.4vw,2.3rem);line-height:1.25}
+
+@media (max-width:900px){
+  .hero-main{grid-template-columns:1fr;gap:32px}
+  .gal-grid{grid-template-columns:1fr 1fr;gap:12px}
+}
+@media (max-width:600px){
+  .hero-photo .hp-badge{inset-inline-start:12px;bottom:12px;left:auto;transform:none}
+  .gal-item figcaption{font-size:.8rem;padding:22px 10px 8px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hp-scan{display:none;animation:none}
+  .gal-item img{transition:none}
+  .gal-item:hover img{transform:none}
+}
