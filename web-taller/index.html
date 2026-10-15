@@ -29,11 +29,11 @@
 <!-- Idioma antes de pintar: si el visitante eligió árabe, el documento nace
      en RTL y no da un salto de izquierda a derecha al cargar. -->
 <script>
-(function(){try{var q=new URLSearchParams(location.search).get("lang");var l=q==="ar"||q==="en"?q:localStorage.getItem("lang");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";}}catch(e){}})();
+(function(){try{var q=new URLSearchParams(location.search).get("lang");var l=q==="ar"||q==="en"?q:localStorage.getItem("lang");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";["400","700"].forEach(function(w){var k=document.createElement("link");k.rel="preload";k.as="font";k.type="font/woff2";k.crossOrigin="anonymous";k.href="assets/fonts/plex-arabic-"+w+".woff2";document.head.appendChild(k);});}}catch(e){}})();
 </script>
 
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/sora-var-latin.woff2" crossorigin>
-<link rel="preload" as="image" href="assets/img/hero-1200.webp" imagesrcset="assets/img/hero-600.webp 600w, assets/img/hero-1200.webp 1200w" imagesizes="(max-width:900px) calc(100vw - 44px), 560px" fetchpriority="high">
+<link rel="preload" as="image" href="assets/img/hero-1200.webp" imagesrcset="assets/img/hero-600.webp 600w, assets/img/hero-900.webp 900w, assets/img/hero-1200.webp 1200w" imagesizes="(max-width:900px) calc(100vw - 44px), 560px" fetchpriority="high">
 <link rel="stylesheet" href="assets/css/style.css?v=24">
 
 <script type="application/ld+json">
@@ -148,7 +148,7 @@
     <!-- Foto del taller con capa holográfica: rejilla, escáner y esquinas HUD.
          Sin lazy: es la imagen principal (LCP). -->
     <figure class="hero-photo">
-      <img src="assets/img/hero-1200.webp" srcset="assets/img/hero-600.webp 600w, assets/img/hero-1200.webp 1200w"
+      <img src="assets/img/hero-1200.webp" srcset="assets/img/hero-600.webp 600w, assets/img/hero-900.webp 900w, assets/img/hero-1200.webp 1200w"
            sizes="(max-width:900px) calc(100vw - 44px), 560px" width="1200" height="675"
            alt="Mechanic working on a car raised on a lift in a bright workshop" data-i18n-attr="alt:hero.photoAlt"
            fetchpriority="high" decoding="async">
