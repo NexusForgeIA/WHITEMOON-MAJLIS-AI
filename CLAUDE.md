@@ -8,7 +8,12 @@ Objetivo inmediato: tener un MVP funcional para enseñar. Lo burocrático (QDB /
 - `web-taller/` — web de taller de coches recoloreada (blanco, azul `#0b3d91`, dorado `#c9a227`), con tarjetas de coches y capa holográfica (`holo.js`, CSS `.hl`). **Aún en español y con datos de Madrid.** El asistente `assets/js/leo.js` está **sin backend** (`SUPABASE_URL` vacío).
 
 ## Reglas (no negociables)
-1. **Nunca conectar nada a los sistemas de WhiteMoon** (Supabase `mlaqtniujnvfxcvcourm`, Telegram, CDN, claves). Este proyecto tiene sus propios backend y secretos. Ninguna clave en el cliente.
+1. **Mismo stack y reglas que WhiteMoon** (decidido por Cris, 2026-10-15). Este proyecto cuelga de WhiteMoon: HTML/CSS/JS vanilla, GitHub Pages, Supabase `mlaqtniujnvfxcvcourm`, Edge Functions, Claude `claude-haiku-4-5-20251001`, aviso por Telegram y skills de `WHITEMOON-SKILLS-CLAUDE`. Aplican las reglas de WhiteMoon:
+   - Todo lo de Majlis va **aislado con prefijo**: tablas `majlis_*`, funciones `majlis-*`. No tocar tablas, funciones ni datos de otros productos ni de clientes.
+   - Leads a `leads_web` con `origen='majlis-ai'` y `sector`; aviso a Telegram vía Edge Function `majlis-notify` (secretos en Supabase Secrets, **nunca** claves en el cliente).
+   - Edge Functions públicas: `supabase functions deploy <nombre> --no-verify-jwt --project-ref mlaqtniujnvfxcvcourm`.
+   - RLS en todas las tablas nuevas: INSERT anónimo solo donde haga falta; SELECT/UPDATE/DELETE solo `authenticated`. Toda VIEW con `security_invoker = on`. Ningún panel protegido con un gate en JS: login real con Supabase Auth.
+   - Diseño y SEO/GEO según las skills (en `web-taller/` rige la paleta blanco, azul y dorado de este repo).
 2. **Sin datos inventados:** nada de testimonios, cifras de rendimiento, "30 años", precios reales ni logos ajenos. Los negocios de las demos son ficticios y se etiquetan así.
 3. **Sin marcas de coches** en imágenes, textos o logos; sin matrículas visibles.
 4. **Clean-room:** si se analiza una web de terceros, se replica comportamiento/idea con código propio; nunca copiar su código, diseño ni textos.
@@ -20,7 +25,7 @@ Objetivo inmediato: tener un MVP funcional para enseñar. Lo burocrático (QDB /
 ## Tareas para Code (por orden)
 1. **`web-taller/` a inglés + árabe:** i18n con selector EN/AR, RTL completo, datos de ejemplo de Doha (negocio ficticio, dirección genérica, horario dom–jue), QAR sin precios cerrados. Actualizar `leo.js` (textos, validación de teléfono +974, fechas por locale). Quitar restos de España/Madrid/ITV.
 2. **Fotos de coches (Unsplash):** sustituir `assets/img/car-*.svg` por 7 fotos de coches de lujo, modelo reconocible y **sin marcas ni matrículas visibles**. Embeberlas en el repo (jpg/webp optimizadas, `width`/`height`), con créditos en `CREDITS.md`. Mantener la capa holográfica encima.
-3. **Backend propio (Supabase nuevo):** tablas `services`, `bookings`, `leads` con RLS (INSERT anónimo, lectura solo `authenticated`); Edge Functions para huecos y reservas (`verify_jwt:false` solo en las públicas, CORS, secretos en Supabase Secrets); conectar `leo.js` y la landing.
+3. **Backend en el Supabase de WhiteMoon, con prefijo:** tablas `majlis_services`, `majlis_bookings` (y `leads_web` con `origen='majlis-ai'`) con RLS; Edge Functions `majlis-cita` y `majlis-notify` (`--no-verify-jwt`, CORS, secretos en Supabase Secrets); conectar `leo.js` y la landing. Antes de crear nada, consultar el esquema real con Supabase y no tocar lo existente.
 4. **IA real:** Edge Function con Claude (`claude-haiku-4-5-20251001`) para entender texto libre en árabe e inglés; respuestas de máximo 3 frases, una pregunta cada vez; el LLM **no** inventa horarios ni precios (los huecos salen de la base de datos); derivación a persona.
 5. **Panel del dueño** con login (Supabase Auth, nunca un gate en JS): agenda, cancelar/mover, exportar.
 6. **Aviso al dueño** por el canal que se decida (Telegram/email) vía Edge Function, sin claves en cliente.
