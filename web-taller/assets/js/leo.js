@@ -614,6 +614,15 @@
       askTime();
       return;
     }
+    /* Tope de citas activas (por móvil o en total): no se reserva y el
+       servidor ya ha guardado el lead, así que aquí no se envía otro. */
+    if (res && res.ok === false && res.reason === "limit") {
+      step = "done";
+      enviado = true;
+      tarjetaExito(T().leadOk(lead.phone));
+      ofreceMas();
+      return;
+    }
     if (!res || !res.ok) {
       /* La agenda no responde: el lead se guarda con la franja pedida y la
          persona del taller llama para confirmarla. */

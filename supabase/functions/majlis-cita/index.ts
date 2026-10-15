@@ -4,8 +4,16 @@
 //
 // POST JSON { action, ... }
 //   slots       { service, date: "YYYY-MM-DD" }            -> { ok, slots: [iso+03:00] }
-//   book        { service, name, phone, start, lang }      -> { ok, booking_id } | { ok:false, reason:"taken" }
-//   understand  { text, lang, step }                       -> { ok, intent, service, name, phone, date, time, reply }
+//   book        { service, name, phone, start, lang }      -> { ok, booking_id } | { ok:false, reason:"taken"|"limit" }
+//   understand  { text, lang, step }                       -> { ok, intent, service, name, phone, date, time, reply, limited? }
+//
+// Límites (contadores en majlis_rate, solo service role):
+//   · understand: 20 mensajes por IP y hora, y un tope global diario de
+//     llamadas a Claude. Pasado el límite se responde con un texto amable
+//     y NO se llama al modelo.
+//   · book: máximo 3 citas confirmadas futuras por móvil y 30 en total.
+//     Pasado eso no se reserva: se guarda un lead y el cliente dice
+//     "te llamamos".
 //
 // Los huecos salen SIEMPRE de la base de datos: horario fijo de la demo
 // (domingo–jueves, 08:00–18:00 hora de Doha, cada 30 min) menos las citas
@@ -20,6 +28,10 @@ const STEP_MIN = 30;
 const LEAD_MIN = 60;     // no se reserva con menos de 1 h de margen
 const MAX_DAYS = 60;
 const MODEL = "claude-haiku-4-5-20251001";
+const IP_PER_HOUR = 20;
+const CLAUDE_PER_DAY = 500;
+const MAX_PER_PHONE = 3;
+const MAX_FUTURE = 30;
 
 type Service = { id: string; name_en: string; name_ar: string; duration_min: number };
 
@@ -66,17 +78,31 @@ async function huecos(svc: Service, date: string): Promise<string[]> {
   return out;
 }
 
-/* ---------- comprensión de texto libre (Claude) ---------- */
-// Límite por instancia: frena abusos básicos de una función pública que
-// cuesta dinero. No es un rate limit global.
-const visto = new Map<string, number[]>();
-function demasiadas(ip: string): boolean {
-  const ahora = Date.now();
-  const lista = (visto.get(ip) ?? []).filter((t) => ahora - t < 60000);
-  lista.push(ahora);
-  visto.set(ip, lista);
-  return lista.length > 20;
+/* ---------- límites de uso (majlis_rate) ---------- */
+// La IP no se guarda en claro: hash SHA-256 truncado.
+async function hashIp(ip: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("majlis:" + ip));
+  return Array.from(new Uint8Array(buf)).slice(0, 8).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
+async function dentroDe(bucket: string, ventana: string, limite: number): Promise<boolean> {
+  const { data, error } = await db().rpc("majlis_rate_hit", { p_bucket: bucket, p_window: ventana, p_limit: limite });
+  // Si el contador falla, se corta: mejor un "inténtalo luego" que llamadas sin control.
+  if (error) { console.warn("[majlis-cita] rate", error.message); return false; }
+  return data === true;
+}
+/* Primero la IP; el contador global solo sube si la IP pasa. */
+async function puedeLlamarClaude(ip: string): Promise<boolean> {
+  const hora = new Date(Math.floor(Date.now() / 3600000) * 3600000).toISOString();
+  if (!(await dentroDe("ip:" + (await hashIp(ip)), hora, IP_PER_HOUR))) return false;
+  return dentroDe("claude:global", `${hoyDoha()}T00:00:00${TZ_OFFSET}`, CLAUDE_PER_DAY);
+}
+const LIMITE_MSG = {
+  en: "I'm receiving a lot of messages right now. Please use the buttons below to book, or try writing again a little later.",
+  // AR-REVIEW
+  ar: "أتلقى الكثير من الرسائل في الوقت الحالي. يُرجى استخدام الأزرار أدناه للحجز، أو المحاولة مرة أخرى بعد قليل.",
+};
+
+/* ---------- comprensión de texto libre (Claude) ---------- */
 
 const PRECIO = /(\d[\d.,]*\s*(qar|qr|riyals?|ريال|ر\.?\s?ق))|((qar|qr|ريال|ر\.?\s?ق)\s*\d)/i;
 const tresFrases = (s: string) => {
@@ -180,6 +206,24 @@ Deno.serve(async (req) => {
         return json({ ok: false, error: "invalid" }, 400);
       }
       const date = start.slice(0, 10);
+
+      // Topes de reservas activas: por móvil y en total.
+      const ahora = new Date().toISOString();
+      const [porMovil, total] = await Promise.all([
+        db().from("majlis_bookings").select("id", { count: "exact", head: true })
+          .eq("status", "confirmed").eq("customer_phone", phone).gte("start_at", ahora),
+        db().from("majlis_bookings").select("id", { count: "exact", head: true })
+          .eq("status", "confirmed").gte("start_at", ahora),
+      ]);
+      if (porMovil.error || total.error) throw new Error((porMovil.error || total.error)!.message);
+      if ((porMovil.count ?? 0) >= MAX_PER_PHONE || (total.count ?? 0) >= MAX_FUTURE) {
+        const { error: le } = await db().from("majlis_leads").insert({
+          name, phone, service_id: svc.id, pref_date: date, pref_time: start.slice(11, 16), lang,
+        });
+        if (le) console.warn("[majlis-cita] lead por tope", le.message);
+        return json({ ok: false, reason: "limit", lead: !le });
+      }
+
       // El inicio tiene que ser uno de los huecos que daría `slots` ahora mismo:
       // así se validan horario, día laborable, margen y solapes de una vez.
       if (!(await huecos(svc, date)).includes(start)) return json({ ok: false, reason: "taken" });
@@ -202,7 +246,9 @@ Deno.serve(async (req) => {
       const text = String(p.text ?? "").trim().slice(0, 400);
       if (!text) return json({ ok: false, error: "empty" }, 400);
       const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "?";
-      if (demasiadas(ip)) return json({ ok: false, error: "rate" }, 429);
+      if (!(await puedeLlamarClaude(ip))) {
+        return json({ ok: true, intent: "other", service: null, name: null, phone: null, date: null, time: null, reply: LIMITE_MSG[lang], limited: true });
+      }
       const { data, error } = await db().from("majlis_services")
         .select("id,name_en,name_ar,duration_min").eq("active", true).order("sort");
       if (error) throw new Error(error.message);
