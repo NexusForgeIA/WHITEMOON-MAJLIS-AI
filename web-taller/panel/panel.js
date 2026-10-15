@@ -163,7 +163,7 @@
     });
     $("#loginBtn").disabled = false;
     $("#password").value = "";
-    if (error) { err.textContent = T().loginBad; err.hidden = false; return; }
+    if (error) { err.textContent = T().loginBad; err.hidden = false; $("#ownerLogin").open = true; return; }
     if (!esOwner(data.user)) {
       await MP.store.sb.auth.signOut();
       err.textContent = T().noAccess; err.hidden = false; return;

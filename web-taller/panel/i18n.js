@@ -4,7 +4,7 @@
   const L = {
     en: {
       brandSub: "Owner panel · Demo", logout: "Sign out", exitDemo: "Exit demo",
-      loginTitle: "Sign in", loginLead: "Bookings and call-back requests from Leo, the AI assistant.",
+      loginTitle: "Sign in", loginHead: "Owner panel", ownerSignIn: "Owner sign-in", loginLead: "Bookings and call-back requests from Leo, the AI assistant.",
       email: "Email", password: "Password", signIn: "Sign in",
       tryDemo: "Try the demo", demoHint: "Sample data only. Nothing is saved or sent.",
       demoBanner: "DEMO · sample data, nothing is saved or sent",
@@ -87,7 +87,7 @@
     },
     ar: {
       brandSub: "لوحة صاحب الورشة · تجريبي", logout: "تسجيل الخروج", exitDemo: "الخروج من العرض التجريبي",
-      loginTitle: "تسجيل الدخول", loginLead: "الحجوزات وطلبات الاتصال من ليو، المساعد الذكي.",
+      loginTitle: "تسجيل الدخول", loginHead: "لوحة صاحب الورشة", ownerSignIn: "دخول صاحب الورشة", loginLead: "الحجوزات وطلبات الاتصال من ليو، المساعد الذكي.",
       email: "البريد الإلكتروني", password: "كلمة المرور", signIn: "دخول",
       tryDemo: "جرّب العرض التجريبي", demoHint: "بيانات نموذجية فقط. لا يُحفظ أو يُرسل أي شيء.", // AR-REVIEW
       demoBanner: "عرض تجريبي · بيانات نموذجية، لا يُحفظ أو يُرسل أي شيء", // AR-REVIEW

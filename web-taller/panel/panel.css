@@ -296,3 +296,19 @@ html.demo #logoutBtn[hidden]{display:inline-flex!important}
 .p-price input{min-height:44px;border:1px solid var(--line2);border-radius:10px;padding:0 12px;font:inherit;color:var(--text);background:#fff;max-width:100%}
 .p-price input:focus{outline:2px solid var(--p2);outline-offset:1px}
 .p-kpi .p-btn{justify-self:start;margin-top:6px}
+
+/* login: la demo es la acción principal; el acceso real va plegado debajo */
+.p-login__card{gap:12px;text-align:center;justify-items:center}
+.p-login__card > :not(.p-hud){width:100%}
+.p-btn--lg{min-height:56px;font-size:1.05rem;border-radius:12px}
+.p-login__hint{margin:-4px 0 0}
+.p-login__owner{margin-top:10px;padding-top:14px;border-top:1px solid var(--line);text-align:start}
+.p-login__owner summary{cursor:pointer;font-size:.86rem;font-weight:600;color:var(--soft);text-align:center;min-height:44px;display:flex;align-items:center;justify-content:center;list-style:none}
+.p-login__owner summary::-webkit-details-marker{display:none}
+.p-login__owner summary::after{content:" ▾";margin-inline-start:6px}
+.p-login__owner[open] summary::after{content:" ▴"}
+.p-login__owner form{display:grid;gap:8px;margin-top:6px}
+.p-login__owner label{font-weight:600;color:var(--text);font-size:.86rem}
+.p-login__owner input{min-height:44px;border:1px solid var(--line2);border-radius:10px;padding:0 12px;background:#fff;color:var(--text);font:inherit;font-size:.92rem}
+.p-login__owner input:focus{outline:2px solid var(--p2);outline-offset:1px}
+.p-login__owner .p-btn{margin-top:6px}

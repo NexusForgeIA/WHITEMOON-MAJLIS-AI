@@ -45,3 +45,8 @@ Requiere la migración `supabase/migrations/20261015190000_majlis_panel_pro.sql`
 - MRR: `majlis_plans`, vacía hasta que el dueño da de alta un plan desde Clientes.
 - Clientes: vista `majlis_customers_v` (`security_invoker = on`). Sin kilometraje en real: la regla de próximo servicio es solo por fecha (6 meses tras la última visita).
 - Recordatorios y avisos al cliente: solo vista previa. No hay canal de envío conectado.
+
+## Estado de verificación
+Modo real verificado por simulación de roles en SQL (27 casos) y en demo; pendiente una prueba end-to-end con un usuario dueño real antes de dárselo a un cliente.
+
+Para enseñar el panel se usa solo el modo demo (`panel/?demo=1`): es la acción principal de la pantalla de entrada y la web enlaza ahí. El acceso real del dueño queda plegado debajo («Owner sign-in»).
