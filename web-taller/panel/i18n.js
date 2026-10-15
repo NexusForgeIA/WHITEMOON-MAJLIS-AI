@@ -35,6 +35,12 @@
       kRevenue: "Revenue this month", kMrr: "Recurring revenue (MRR)", kPlans: (n) => n + " active maintenance plans",
       sample: "Sample figures", closedDay: "Closed",
       kRevHint: "Attended bookings × service price",
+      kRevNoPrices: "Add your service prices to see revenue. Nothing is estimated without them.",
+      kRevMissing: (n) => n === 1 ? "1 attended booking has a service without price" : n + " attended bookings have a service without price",
+      kNoPlans: "No maintenance plans yet",
+      kSetPrices: "Service prices",
+      prTitle: "Service prices (QAR)", prHint: "Your own prices. Leave empty if you prefer not to set one; revenue only counts services with a price.",
+      prSave: "Save", prSaved: "Price saved", prBad: "Enter a number of 0 or more.",
 
       /* calendario */
       calWeek: "Week", calDay: "Day", calPrev: "Previous", calNext: "Next", calToday: "Today",
@@ -73,6 +79,11 @@
       cuRemind: "Send reminder", cuReminded: (t) => "Reminder simulated at " + t,
       cuRemindMsg: (n, d) => `Hello ${n}, your next service at Example Garage is recommended by ${d}. Reply to book a time that suits you.`,
       cuEmpty: "No customers yet.", cuKm: (k) => k + " km",
+      cuRuleDate: (d) => "By " + d + " (6 months after the last visit)", cuRule: "Rule",
+      cuNoVisit: "No attended visit yet",
+      cuAddPlan: "Add maintenance plan", cuPlanFee: "Monthly fee (QAR)", cuPlanSave: "Save plan", cuEndPlan: "End plan",
+      cuPlanSaved: "Plan saved", cuPlanEnded: "Plan ended",
+      cuRealRemind: "Preview only: no message channel is connected yet.",
     },
     ar: {
       brandSub: "لوحة صاحب الورشة · تجريبي", logout: "تسجيل الخروج", exitDemo: "الخروج من العرض التجريبي",
@@ -106,6 +117,12 @@
       kRevenue: "إيرادات هذا الشهر", kMrr: "الإيرادات المتكررة (MRR)", kPlans: (n) => n + " خطط صيانة نشطة", // AR-REVIEW
       sample: "أرقام نموذجية", closedDay: "مغلق",
       kRevHint: "الحجوزات المنجزة × سعر الخدمة",
+      kRevNoPrices: "أضف أسعار خدماتك لعرض الإيرادات. لا نقدّر أي رقم من دونها.", // AR-REVIEW
+      kRevMissing: (n) => n + " حجوزات منجزة لخدمات بلا سعر", // AR-REVIEW
+      kNoPlans: "لا توجد خطط صيانة بعد",
+      kSetPrices: "أسعار الخدمات",
+      prTitle: "أسعار الخدمات (ر.ق)", prHint: "أسعارك أنت. اتركها فارغة إن لم ترد تحديدها؛ الإيرادات تحسب فقط الخدمات التي لها سعر.", // AR-REVIEW
+      prSave: "حفظ", prSaved: "تم حفظ السعر", prBad: "أدخل رقماً يساوي 0 أو أكثر.",
 
       calWeek: "أسبوع", calDay: "يوم", calPrev: "السابق", calNext: "التالي", calToday: "اليوم",
       calDragHint: "اسحب الحجز لنقله. على الشاشات اللمسية، افتحه واستخدم «نقل».",
@@ -140,6 +157,11 @@
       cuRemind: "إرسال تذكير", cuReminded: (t) => "تمت محاكاة التذكير الساعة " + t,
       cuRemindMsg: (n, d) => `مرحباً ${n}، نوصي بموعد صيانتك القادم في Example Garage قبل ${d}. رُدّ لحجز الوقت المناسب لك.`,
       cuEmpty: "لا يوجد عملاء بعد.", cuKm: (k) => k + " كم",
+      cuRuleDate: (d) => "قبل " + d + " (6 أشهر بعد آخر زيارة)", cuRule: "قاعدة", // AR-REVIEW
+      cuNoVisit: "لا توجد زيارة منجزة بعد",
+      cuAddPlan: "إضافة خطة صيانة", cuPlanFee: "الرسوم الشهرية (ر.ق)", cuPlanSave: "حفظ الخطة", cuEndPlan: "إنهاء الخطة",
+      cuPlanSaved: "تم حفظ الخطة", cuPlanEnded: "تم إنهاء الخطة",
+      cuRealRemind: "معاينة فقط: لا توجد قناة رسائل متصلة بعد.", // AR-REVIEW
     },
   };
   let lang = document.documentElement.lang === "ar" ? "ar" : "en";

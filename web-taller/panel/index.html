@@ -14,7 +14,7 @@
 <!-- El botón «العربية» y los nombres árabes usan esta fuente también en inglés: precargarla evita el salto al llegar. -->
 <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/plex-arabic-600.woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css?v=21">
-<link rel="stylesheet" href="panel.css?v=18">
+<link rel="stylesheet" href="panel.css?v=19">
 </head>
 <body class="panel">
 
@@ -137,16 +137,24 @@
     <div class="p-notify__body"></div>
   </div>
 </dialog>
+<!-- Precios de servicio (los pone el dueño) -->
+<dialog class="p-dlg p-dlg--sm" id="prices" aria-labelledby="pricesTitle">
+  <div class="p-dlg__in">
+    <div class="p-dlg__head"><h2 id="pricesTitle"></h2><button class="p-dlg__x" type="button" data-t-attr="aria-label:cardClose" aria-label="Close">×</button></div>
+    <div class="p-prices__body"></div>
+  </div>
+</dialog>
 <p class="p-toast" id="toast" role="status" aria-live="polite" hidden></p>
 
 <!-- supabase-js lo carga data.js solo en modo real: en demo no se descarga. -->
-<script defer src="i18n.js?v=2"></script>
-<script defer src="data.js?v=1"></script>
-<script defer src="panel.js?v=6"></script>
-<script defer src="view-overview.js?v=1"></script>
+<script defer src="i18n.js?v=3"></script>
+<script defer src="data.js?v=2"></script>
+<script defer src="panel.js?v=7"></script>
+<script defer src="view-overview.js?v=2"></script>
 <script defer src="view-calendar.js?v=3"></script>
 <script defer src="view-workshop.js?v=4"></script>
 <script defer src="view-card.js?v=2"></script>
-<script defer src="view-customers.js?v=3"></script>
+<script defer src="view-customers.js?v=4"></script>
+<script defer src="view-prices.js?v=1"></script>
 </body>
 </html>

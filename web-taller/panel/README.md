@@ -35,3 +35,13 @@ Pestañas: **Overview** (KPI y ocupación), **Calendar** (semana/día), **Worksh
 - **Enlaces directos:** `?demo=1&lang=ar#tab=calendar`.
 
 Ficheros: `i18n.js` (textos), `data.js` (capas real/demo), `panel.js` (esqueleto, citas, leads), `view-*.js` (una vista por fichero). Sin librerías: gráficas, arrastre e impresión son código propio.
+
+## Panel pro (fase 2, modo real)
+Requiere la migración `supabase/migrations/20261015190000_majlis_panel_pro.sql`. Al entrar, `detectCaps()` comprueba si existe: si no, el panel real sigue como en la fase 1 (solo Bookings y Leads).
+
+- Estado del vehículo: `majlis_bookings.work_status` + historial en `majlis_status_log` mediante `majlis_set_work_status()` (una sola transacción; RLS del dueño).
+- Vehículo y notas: `vehicle_label`, `notes`.
+- Precios: `majlis_services.price_qar`, vacío por defecto; los pone el dueño desde «Service prices». Sin precios, el resumen dice «—» y lo explica; con precios parciales, indica cuántas citas no cuentan.
+- MRR: `majlis_plans`, vacía hasta que el dueño da de alta un plan desde Clientes.
+- Clientes: vista `majlis_customers_v` (`security_invoker = on`). Sin kilometraje en real: la regla de próximo servicio es solo por fecha (6 meses tras la última visita).
+- Recordatorios y avisos al cliente: solo vista previa. No hay canal de envío conectado.

@@ -288,3 +288,11 @@ html.demo #logoutBtn[hidden]{display:inline-flex!important}
 .p-top__act{flex-shrink:0}
 .lang-btn{height:44px}
 @media (max-width:520px){.p-brand b{font-size:.88rem}.p-mark{width:34px;height:34px}.p-brand{gap:8px}}
+
+/* precios y planes */
+.p-prices__body{display:grid;gap:10px}
+.p-price{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 10px}
+.p-price label{display:grid;gap:4px;font-size:.84rem;font-weight:600;color:var(--soft);flex:1 1 180px}
+.p-price input{min-height:44px;border:1px solid var(--line2);border-radius:10px;padding:0 12px;font:inherit;color:var(--text);background:#fff;max-width:100%}
+.p-price input:focus{outline:2px solid var(--p2);outline-offset:1px}
+.p-kpi .p-btn{justify-self:start;margin-top:6px}
