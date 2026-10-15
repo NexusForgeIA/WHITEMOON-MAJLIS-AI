@@ -437,7 +437,7 @@ footer.foot{border-top:1px solid var(--line);padding:32px 0;background:#e6eefb}
 .framed{background:linear-gradient(180deg,rgba(201,162,39,.08),transparent)}
 .framed::before,.framed::after{border-color:var(--gold)}
 .svc-media{background:linear-gradient(160deg,#e8eefb,#f4f7fc)}
-.svc-media .svc-shade{background:linear-gradient(180deg,rgba(255,255,255,0) 40%,rgba(255,255,255,.55) 78%,#ffffff 100%),radial-gradient(360px 180px at 80% 8%,rgba(201,162,39,.20),transparent 60%)}
+.svc-media .svc-shade{background:linear-gradient(180deg,rgba(255,255,255,0) 55%,rgba(255,255,255,.35) 85%,rgba(255,255,255,.9) 100%),radial-gradient(360px 180px at 80% 8%,rgba(201,162,39,.16),transparent 60%)}
 .svc-badge{background:#fff;color:var(--p);border-color:var(--gold);box-shadow:0 16px 34px -14px rgba(10,31,68,.28)}
 .svc-card,.area-c,.proc-c,.stat{box-shadow:0 10px 30px -20px rgba(10,31,68,.22)}
 .svc-card:hover,.area-c:hover{border-color:var(--gold);box-shadow:0 24px 50px -26px rgba(201,162,39,.55)}
@@ -465,7 +465,8 @@ header.nav.scrolled{box-shadow:0 8px 30px -20px rgba(10,31,68,.25)}
    táctil. En móvil se quitan suelo y escáner; con reduced-motion no se mueve
    nada. */
 .svc-media{height:200px}
-.svc-media .svc-img{object-fit:contain;padding:18px 22px 30px;filter:drop-shadow(0 14px 18px rgba(10,31,68,.25))}
+/* fotos 3:2 a sangre; el degradado de .svc-shade funde el pie con la tarjeta */
+.svc-media .svc-img{object-fit:cover;object-position:center 60%;background:#0b1220}
 .svc-card:hover .svc-media .svc-img{transform:scale(1.05)}
 
 @property --hl-a{syntax:"<angle>";inherits:false;initial-value:0deg}
