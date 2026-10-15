@@ -33,7 +33,7 @@
 </script>
 
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/sora-var-latin.woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=22">
+<link rel="stylesheet" href="assets/css/style.css?v=23">
 
 <script type="application/ld+json">
 {
@@ -373,7 +373,10 @@
         <h2 class="as-h2" data-i18n="as.h2">Leo books your visit without a phone call</h2>
         <p data-i18n-html="as.p1">Leo is the workshop's <strong>AI assistant</strong>. Tell it what your car needs, in English or Arabic, and it asks only for your name and a Qatar mobile number. <strong>Then</strong> it shows you the slots that are actually free.</p>
         <p data-i18n-html="as.p2">When you pick a time, the booking is <strong>written into the workshop calendar</strong> and you get a summary with the date, time and service. If you would rather speak to a person, Leo passes your details to the team.</p>
-        <button class="btn as-btn" type="button" data-leo><svg aria-hidden="true"><use href="#ic-chat"/></svg><span data-i18n="cta.try">Try the assistant</span></button>
+        <div class="as-ctas">
+          <button class="btn as-btn" type="button" data-leo><svg aria-hidden="true"><use href="#ic-chat"/></svg><span data-i18n="cta.try">Try the assistant</span></button>
+          <a class="btn ghost as-btn" href="panel/?demo=1" data-i18n="cta.panel">See the owner panel (demo)</a>
+        </div>
       </div>
       <div class="check-list reveal">
         <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-calendar"/></svg></span><div><b data-i18n="as.c1t">Real slots, not guesses</b><span data-i18n="as.c1">They come from the calendar: if a time is taken, it is not offered.</span></div></div>
@@ -512,7 +515,7 @@
 <footer class="foot">
   <div class="wrap foot-inner">
     <span>© <span id="year">2026</span> Example Garage · <span data-i18n="foot.l">Fictitious workshop for demonstration · Doha</span></span>
-    <span class="foot-wm" data-i18n="foot.r">Prototype in development</span>
+    <span class="foot-wm"><a href="panel/?demo=1" data-i18n="foot.panel">Owner panel (demo)</a> · <span data-i18n="foot.r">Prototype in development</span></span>
   </div>
 </footer>
 
@@ -542,7 +545,7 @@
 
 <!-- Sin defer a propósito: corre al terminar de parsear el body y antes del
      primer pintado, así el árabe no parpadea en inglés. -->
-<script src="assets/js/i18n.js?v=1"></script>
+<script src="assets/js/i18n.js?v=2"></script>
 <script defer src="assets/js/main.js?v=10"></script>
 <script defer src="assets/js/leo.js?v=14"></script>
 <script defer src="assets/js/holo.js?v=3"></script>

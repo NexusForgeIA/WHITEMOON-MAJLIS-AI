@@ -139,6 +139,8 @@
     $("#logoutBtn").hidden = !ok;
     clearInterval(timer);
     if (!ok) return;
+    /* En real, las vistas nuevas solo si la migración panel_pro está aplicada. */
+    if (MP.store.detectCaps) await MP.store.detectCaps();
     TABS.forEach((t) => { $("#tab-" + t.id).hidden = !disponibles().includes(t); });
     await cargaServicios();
     /* Enlace directo a una pestaña: #tab=calendar (si está disponible). */
@@ -161,7 +163,7 @@
     });
     $("#loginBtn").disabled = false;
     $("#password").value = "";
-    if (error) { err.textContent = T().loginBad; err.hidden = false; return; }
+    if (error) { err.textContent = T().loginBad; err.hidden = false; $("#ownerLogin").open = true; return; }
     if (!esOwner(data.user)) {
       await MP.store.sb.auth.signOut();
       err.textContent = T().noAccess; err.hidden = false; return;
@@ -180,6 +182,7 @@
     try { services = new Map((await MP.store.services()).map((s) => [s.id, s])); }
     catch (e) { console.warn("[panel] services", e.message || e); }
   };
+  MP.recargaServicios = cargaServicios;
 
   const carga = async (fn, errBox) => {
     try { $(errBox).hidden = true; return await fn(); }

@@ -14,7 +14,7 @@
 <!-- El botón «العربية» y los nombres árabes usan esta fuente también en inglés: precargarla evita el salto al llegar. -->
 <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/plex-arabic-600.woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css?v=21">
-<link rel="stylesheet" href="panel.css?v=18">
+<link rel="stylesheet" href="panel.css?v=21">
 </head>
 <body class="panel">
 
@@ -41,20 +41,26 @@
   <!-- Login: Supabase Auth. Sin sesión válida la base de datos no devuelve
        ni una fila (RLS), da igual lo que se toque en este HTML. -->
   <section class="p-login" id="loginView" hidden>
-    <form class="p-card p-login__card" id="loginForm" novalidate>
-      <h1 data-t="loginTitle">Sign in</h1>
+    <div class="p-card p-holo p-login__card">
+      <span class="p-hud"></span>
+      <h1 data-t="loginHead">Owner panel</h1>
       <p class="p-muted" data-t="loginLead">Bookings and call-back requests from Leo, the AI assistant.</p>
-      <label for="email" data-t="email">Email</label>
-      <input id="email" type="email" autocomplete="username" required>
-      <label for="password" data-t="password">Password</label>
-      <input id="password" type="password" autocomplete="current-password" required>
-      <p class="p-err" id="loginErr" role="alert" hidden></p>
-      <button class="p-btn" type="submit" id="loginBtn" data-t="signIn">Sign in</button>
-      <div class="p-login__demo">
-        <a class="p-btn p-btn--ghost" href="?demo=1" data-t="tryDemo">Try the demo</a>
-        <p class="p-muted" data-t="demoHint">Sample data only. Nothing is saved or sent.</p>
-      </div>
-    </form>
+      <!-- Acción principal: la demo (datos de ejemplo, sin Supabase). -->
+      <a class="p-btn p-btn--lg" href="?demo=1" data-t="tryDemo">Try the demo</a>
+      <p class="p-muted p-login__hint" data-t="demoHint">Sample data only. Nothing is saved or sent.</p>
+      <!-- Secundario: acceso real del dueño (Supabase Auth + RLS). -->
+      <details class="p-login__owner" id="ownerLogin">
+        <summary data-t="ownerSignIn">Owner sign-in</summary>
+        <form id="loginForm" novalidate>
+          <label for="email" data-t="email">Email</label>
+          <input id="email" type="email" autocomplete="username" required>
+          <label for="password" data-t="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" required>
+          <p class="p-err" id="loginErr" role="alert" hidden></p>
+          <button class="p-btn p-btn--ghost" type="submit" id="loginBtn" data-t="signIn">Sign in</button>
+        </form>
+      </details>
+    </div>
   </section>
 
   <section id="appView" hidden>
@@ -137,16 +143,24 @@
     <div class="p-notify__body"></div>
   </div>
 </dialog>
+<!-- Precios de servicio (los pone el dueño) -->
+<dialog class="p-dlg p-dlg--sm" id="prices" aria-labelledby="pricesTitle">
+  <div class="p-dlg__in">
+    <div class="p-dlg__head"><h2 id="pricesTitle"></h2><button class="p-dlg__x" type="button" data-t-attr="aria-label:cardClose" aria-label="Close">×</button></div>
+    <div class="p-prices__body"></div>
+  </div>
+</dialog>
 <p class="p-toast" id="toast" role="status" aria-live="polite" hidden></p>
 
 <!-- supabase-js lo carga data.js solo en modo real: en demo no se descarga. -->
-<script defer src="i18n.js?v=2"></script>
-<script defer src="data.js?v=1"></script>
-<script defer src="panel.js?v=6"></script>
-<script defer src="view-overview.js?v=1"></script>
+<script defer src="i18n.js?v=4"></script>
+<script defer src="data.js?v=2"></script>
+<script defer src="panel.js?v=8"></script>
+<script defer src="view-overview.js?v=3"></script>
 <script defer src="view-calendar.js?v=3"></script>
-<script defer src="view-workshop.js?v=4"></script>
-<script defer src="view-card.js?v=2"></script>
-<script defer src="view-customers.js?v=3"></script>
+<script defer src="view-workshop.js?v=5"></script>
+<script defer src="view-card.js?v=3"></script>
+<script defer src="view-customers.js?v=4"></script>
+<script defer src="view-prices.js?v=1"></script>
 </body>
 </html>

@@ -564,3 +564,7 @@ header.nav.scrolled{box-shadow:0 8px 30px -20px rgba(10,31,68,.25)}
 :lang(ar) .eyebrow,:lang(ar) .cinfo .k,:lang(ar) .leo-cita__row dt{text-transform:none}
 /* Flechas y avión de papel apuntan hacia donde se lee */
 [dir="rtl"] .svc-cta svg,[dir="rtl"] .leo-foot button svg,[dir="rtl"] .hero-bg .art svg,[dir="rtl"] .taller-panel .car{transform:scaleX(-1)}
+
+.as-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.as-ctas .as-btn{margin-top:0}
+.foot-wm a{text-decoration:underline;text-underline-offset:3px}

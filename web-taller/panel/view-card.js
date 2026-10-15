@@ -69,6 +69,8 @@
     if (b.status !== "cancelled") {
       const sel = el("select");
       sel.setAttribute("aria-label", T().cardStatus);
+      /* Sin estado: el selector arranca en «Not checked in yet»; elegir
+         «Received» lo registra en el historial. */
       if (!b.work_status) { const o = el("option", "", T().cardNoStatus); o.value = ""; sel.append(o); }
       MP.WORK.forEach((w) => { const o = el("option", "", T()["w_" + w]); o.value = w; o.selected = w === b.work_status; sel.append(o); });
       sel.addEventListener("change", async () => { if (sel.value && await MP.cambiaEstado(b, sel.value)) pinta(); });

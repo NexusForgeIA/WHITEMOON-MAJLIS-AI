@@ -3,9 +3,10 @@
 
    Dos fuentes con la MISMA interfaz (`MP.store`):
    · Real: Supabase Auth + tablas majlis_* (RLS: solo app_metadata.majlis_role
-     = 'owner'). Fase 1: solo citas, leads y huecos. Las vistas nuevas
-     (resumen, calendario, taller, clientes) dependen de `store.caps` y en
-     real están apagadas hasta la migración de la fase 2: nada de inventar.
+     = 'owner'). Las vistas nuevas (resumen, calendario, taller, clientes)
+     dependen de `store.caps`, que se activan solo si la migración
+     panel_pro está aplicada (detectCaps). Todo sale de datos reales: sin
+     precios cargados no hay cifra de ingresos, y no hay kilometraje.
    · Demo (?demo=1): datos ficticios en memoria. No se crea el cliente de
      Supabase ni se descarga supabase-js; no hay ninguna llamada externa.
      Al recargar, todo vuelve al estado inicial.
@@ -67,19 +68,37 @@
     const sb = window.supabase.createClient(SUPABASE_URL, PUBLISHABLE_KEY, {
       auth: { persistSession: true, autoRefreshToken: true },
     });
-    return {
+    const COLS = "id,service_id,customer_name,customer_phone,start_at,end_at,status,lang,created_at";
+    const COLS_PRO = COLS + ",work_status,vehicle_label,notes";
+    let pro = false;
+    /* Últimas citas cargadas: sirven para el indicador libre/ocupado al
+       arrastrar en el calendario. La restricción de la tabla es la que manda. */
+    let cache = [];
+    const store = {
       sb,
-      /* Fase 1: en real solo hay citas, leads y huecos. */
-      caps: { overview: false, calendar: false, workshop: false, customers: false, revenue: false },
+      /* Hasta comprobar la migración de la fase 2, solo citas y leads. */
+      caps: { overview: false, calendar: false, workshop: false, customers: false, revenue: false, prices: false },
+      workshopDay: null,
+      /* ¿Está aplicada la migración panel_pro? Si las columnas nuevas no
+         existen (o no hay permiso), el panel sigue como en la fase 1. */
+      async detectCaps() {
+        const [a, b] = await Promise.all([
+          sb.from("majlis_bookings").select("work_status").limit(1),
+          sb.from("majlis_services").select("price_qar").limit(1),
+        ]);
+        pro = !a.error && !b.error;
+        if (!pro) { console.warn("[panel] panel_pro no disponible:", (a.error || b.error).message); return; }
+        store.caps = { overview: true, calendar: true, workshop: true, customers: true, revenue: true, prices: true };
+      },
       async services() {
-        const { data, error } = await sb.from("majlis_services").select("id,name_en,name_ar,duration_min");
+        const { data, error } = await sb.from("majlis_services")
+          .select(pro ? "id,name_en,name_ar,duration_min,price_qar" : "id,name_en,name_ar,duration_min").order("sort");
         if (error) throw error;
         return data;
       },
       async bookings(f) {
-        let q = sb.from("majlis_bookings")
-          .select("id,service_id,customer_name,customer_phone,start_at,end_at,status,lang,created_at")
-          .order("start_at", { ascending: true }).limit(500);
+        let q = sb.from("majlis_bookings").select(pro ? COLS_PRO : COLS)
+          .order("start_at", { ascending: true }).limit(1000);
         if (f.range === "upcoming") q = q.gte("start_at", inicioDia(hoyDoha()));
         if (f.range === "day") q = q.gte("start_at", inicioDia(f.date)).lt("start_at", inicioDia(sumaDias(f.date, 1)));
         if (f.from) q = q.gte("start_at", inicioDia(f.from));
@@ -87,7 +106,19 @@
         if (f.status) q = q.eq("status", f.status);
         const { data, error } = await q;
         if (error) throw error;
+        const ids = new Set(data.map((b) => b.id));
+        cache = cache.filter((b) => !ids.has(b.id)).concat(data);
         return data;
+      },
+      /* Ficha: la cita y su historial (majlis_status_log). */
+      async booking(id) {
+        const [b, l] = await Promise.all([
+          sb.from("majlis_bookings").select(COLS_PRO).eq("id", id).maybeSingle(),
+          sb.from("majlis_status_log").select("at,from_status,to_status").eq("booking_id", id).order("at"),
+        ]);
+        if (b.error) throw b.error;
+        if (!b.data) return null;
+        return { ...b.data, log: (l.data || []).map((x) => ({ at: x.at, from: x.from_status, to: x.to_status })) };
       },
       async leads(f) {
         let q = sb.from("majlis_leads")
@@ -98,10 +129,50 @@
         if (error) throw error;
         return data;
       },
+      /* Clientes: vista majlis_customers_v (security_invoker) + planes activos.
+         En real no hay kilometraje: no se inventa. */
+      async customers() {
+        const hoy = hoyDoha();
+        const [v, p] = await Promise.all([
+          sb.from("majlis_customers_v").select("phone,name,vehicle_label,visits,last_visit,next_booking"),
+          sb.from("majlis_plans").select("id,customer_phone,fee_qar,started_on,ended_on").or("ended_on.is.null,ended_on.gte." + hoy),
+        ]);
+        if (v.error) throw v.error;
+        if (p.error) throw p.error;
+        return v.data.map((c) => {
+          const plan = p.data.find((x) => x.customer_phone === c.phone);
+          return {
+            phone: c.phone, name: c.name, vehicle_label: c.vehicle_label, mileage_km: null,
+            visits: c.visits, last_visit: c.last_visit ? diaDe(c.last_visit) : null,
+            plan: plan ? { id: plan.id, fee_qar: Number(plan.fee_qar), since: plan.started_on } : null,
+            reminder_at: null,
+          };
+        });
+      },
       async update(tabla, id, cambios) {
         const { error } = await sb.from(tabla).update(cambios).eq("id", id);
         return { error };
       },
+      /* Cambio de estado + historial en una sola transacción (rpc). */
+      async setWorkStatus(id, to) {
+        const { error } = await sb.rpc("majlis_set_work_status", { p_booking: id, p_to: to });
+        return { error };
+      },
+      async setPrice(serviceId, price) {
+        const { error } = await sb.from("majlis_services").update({ price_qar: price }).eq("id", serviceId);
+        return { error };
+      },
+      async addPlan(phone, name, fee) {
+        const { error } = await sb.from("majlis_plans").insert({ customer_phone: phone, customer_name: name, fee_qar: fee });
+        return { error };
+      },
+      async endPlan(id) {
+        const { error } = await sb.from("majlis_plans").update({ ended_on: hoyDoha() }).eq("id", id);
+        return { error };
+      },
+      /* En real el recordatorio es solo la vista previa del mensaje: no hay
+         canal de envío conectado y no se guarda nada. */
+      async remind() { return { error: null }; },
       /* Los huecos libres los da majlis-cita, los mismos que ve el cliente. */
       async slots(serviceId, date) {
         const r = await fetch(CITA_FN, {
@@ -111,7 +182,15 @@
         const res = await r.json();
         return (res && res.ok ? res.slots : []).map((iso) => ({ iso, free: true }));
       },
+      isFree(id, iso) {
+        const b = cache.find((x) => x.id === id);
+        if (!b) return false;
+        const ini = Date.parse(iso), fin = ini + durMin(b) * 60000, m = minDe(iso);
+        if (!abre(diaDe(iso)) || m < OPEN_MIN || m + durMin(b) > CLOSE_MIN || ini < Date.now() + 3600000) return false;
+        return !cache.some((x) => x.id !== id && solapa(x, ini, fin));
+      },
     };
+    return store;
   }
 
   /* =======================================================================
@@ -228,7 +307,7 @@
     /* Ficha de cliente: kilometraje y plan de mantenimiento (cifras de ejemplo). */
     const customers = CLIENTES.map((c) => ({
       phone: tel(c.n), name: c.name, vehicle_label: c.vehicle, mileage_km: c.km,
-      plan: c.plan ? { fee_qar: c.plan, since: sumaDias(hoy, -40 * (c.n % 5 + 1)) } : null,
+      plan: c.plan ? { id: "demo-p" + c.n, fee_qar: c.plan, since: sumaDias(hoy, -40 * (c.n % 5 + 1)) } : null,
       reminder_at: null,
     }));
 
@@ -236,7 +315,7 @@
     const copia = (x) => JSON.parse(JSON.stringify(x));
 
     return {
-      caps: { overview: true, calendar: true, workshop: true, customers: true, revenue: true },
+      caps: { overview: true, calendar: true, workshop: true, customers: true, revenue: true, prices: true },
       workshopDay: ultimo,
       async services() { return copia(SERVICES); },
       async bookings(f) { return copia(filtraBookings(bookings, f)); },
@@ -266,6 +345,21 @@
         b.work_status = to;
         b.log.push({ at: new Date().toISOString(), from, to });
         if (to === "delivered" && b.status === "confirmed") b.status = "done";
+        return { error: null };
+      },
+      async setPrice(serviceId, price) {
+        const s = svc(serviceId);
+        if (s) s.price_qar = price;
+        return { error: null };
+      },
+      async addPlan(phone, name, fee) {
+        const c = customers.find((x) => x.phone === phone);
+        if (c) c.plan = { id: "demo-p" + phone.slice(-2), fee_qar: fee, since: hoyDoha() };
+        return { error: null };
+      },
+      async endPlan(id) {
+        const c = customers.find((x) => x.plan && x.plan.id === id);
+        if (c) c.plan = null;
         return { error: null };
       },
       async remind(phone) {

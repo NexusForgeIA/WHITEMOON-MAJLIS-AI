@@ -1,7 +1,7 @@
 /* Panel · Resumen (KPI). Todo se calcula a partir de la capa de datos: en
-   demo, de los datos de ejemplo; en real (fase 2), solo de datos reales.
-   Ingresos y MRR solo si la capa de datos los soporta (caps.revenue), con la
-   etiqueta fija «Sample figures» en demo. */
+   demo, de los datos de ejemplo; en real, solo de datos reales.
+   Ingresos y MRR solo si la capa los soporta (caps.revenue). En demo llevan
+   la etiqueta fija «Sample figures»; en real, sin precios no hay cifra. */
 (() => {
   "use strict";
   const MP = window.MP, I = window.MPI, T = I.T;
@@ -33,7 +33,8 @@
       const vivas = (b) => b.status !== "cancelled";
       const deHoy = todas.filter((b) => MP.diaDe(b.start_at) === hoy && vivas(b));
       const semana = todas.filter((b) => { const d = MP.diaDe(b.start_at); return d >= sem0 && d <= MP.sumaDias(sem0, 6); });
-      const enTaller = todas.filter((b) => b.work_status && b.work_status !== "delivered" && vivas(b));
+      /* En taller: con estado distinto de «Delivered», o de hoy sin estado (cuenta como «Received»). */
+      const enTaller = todas.filter((b) => vivas(b) && (b.work_status ? b.work_status !== "delivered" : MP.diaDe(b.start_at) === (MP.store.workshopDay || hoy)));
       const ult30 = todas.filter((b) => { const d = MP.diaDe(b.start_at); return d >= desde30 && d <= hoy; });
       const canc = ult30.length ? ult30.filter((b) => b.status === "cancelled").length / ult30.length : 0;
 
@@ -79,19 +80,26 @@
       chart.append(bars);
       pane.append(el("hr", "p-sep"), chart);
 
-      /* Ingresos (solo si la capa los soporta: demo, o real con precios). */
+      /* Ingresos: precio actual de cada servicio × citas atendidas del mes.
+         Demo: cifras de ejemplo con «Sample figures». Real: solo si el dueño
+         ha puesto precios; si falta alguno se dice cuántas citas no cuentan. */
       if (s.caps.revenue) {
         const svcs = MP.ui.services();
         const mes = hoy.slice(0, 7);
-        const ingresos = todas.filter((b) => b.status === "done" && MP.diaDe(b.start_at).slice(0, 7) === mes)
-          .reduce((a, b) => a + ((svcs.get(b.service_id) || {}).price_qar || 0), 0);
+        const hechas = todas.filter((b) => b.status === "done" && MP.diaDe(b.start_at).slice(0, 7) === mes);
+        const precio = (b) => { const p = (svcs.get(b.service_id) || {}).price_qar; return p === null || p === undefined ? null : Number(p); };
+        const conPrecio = hechas.filter((b) => precio(b) !== null);
+        const hayPrecios = Array.from(svcs.values()).some((x) => x.price_qar !== null && x.price_qar !== undefined);
+        const ingresos = conPrecio.reduce((a, b) => a + precio(b), 0);
         const planes = clientes.filter((c) => c.plan);
         const mrr = planes.reduce((a, c) => a + c.plan.fee_qar, 0);
         const rev = el("div", "p-kpis p-kpis--2");
-        const etiqueta = MP.DEMO ? T().sample : null;
-        const k1 = kpi(T().kRevenue, qar(ingresos), T().kRevHint);
-        const k2 = kpi(T().kMrr, qar(mrr), T().kPlans(planes.length));
-        if (etiqueta) [k1, k2].forEach((k) => k.prepend(el("span", "p-sample", etiqueta)));
+        const k1 = hayPrecios
+          ? kpi(T().kRevenue, qar(ingresos), hechas.length > conPrecio.length ? T().kRevMissing(hechas.length - conPrecio.length) : T().kRevHint)
+          : kpi(T().kRevenue, "—", T().kRevNoPrices);
+        const k2 = planes.length ? kpi(T().kMrr, qar(mrr), T().kPlans(planes.length)) : kpi(T().kMrr, "—", T().kNoPlans);
+        if (MP.DEMO) [k1, k2].forEach((k) => k.prepend(el("span", "p-sample", T().sample)));
+        if (s.caps.prices && MP.openPrices) k1.append(MP.ui.boton(T().kSetPrices, "p-btn--ghost", () => MP.openPrices()));
         rev.append(k1, k2);
         pane.append(el("hr", "p-sep"), rev);
       }
