@@ -448,53 +448,100 @@ footer.foot{border-top:1px solid var(--line);padding:32px 0;background:#e6eefb}
 .leo-quick button:hover{background:var(--p-chip)}
 header.nav.scrolled{box-shadow:0 8px 30px -20px rgba(10,31,68,.25)}
 
-/* ======================= COCHES + CAPA HOLOGRÁFICA ======================= */
+/* ======================= COCHES + CAPA HOLOGRÁFICA =======================
+   Regla de rendimiento: lo que se anima es SOLO transform, opacity o una
+   custom property registrada con @property. Nada de background-position,
+   blend modes ni filtros animados: todo va en el compositor.
+
+   Capas sobre la foto (de abajo arriba), creadas por holo.js:
+     .svc-floor  rejilla de suelo en perspectiva que avanza (translateY)
+     ::before    brillo iridiscente que sigue al puntero (translate)
+     .svc-scan   haz de escáner que barre la foto (translateY)
+     .svc-hud    esquinas HUD doradas (opacity)
+   y sobre la tarjeta:
+     ::after     borde cónico irisado azul/cian/dorado que gira (@property)
+
+   Se encienden con :hover en ratón y con .hl-on (la tarjeta visible) en
+   táctil. En móvil se quitan suelo y escáner; con reduced-motion no se mueve
+   nada. */
 .svc-media{height:200px}
 .svc-media .svc-img{object-fit:contain;padding:18px 22px 30px;filter:drop-shadow(0 14px 18px rgba(10,31,68,.25))}
 .svc-card:hover .svc-media .svc-img{transform:scale(1.05)}
 
 @property --hl-a{syntax:"<angle>";inherits:false;initial-value:0deg}
-.hl .svc-card{--mx:50%;--my:50%}
-/* borde holográfico: anillo cónico que gira */
+.hl .svc-card{--mx:-400px;--my:-400px}
+
+/* borde: anillo cónico que gira; la máscara deja solo 1.5 px de filo */
 .hl .svc-card::after{content:"";position:absolute;inset:0;border-radius:16px;padding:1.5px;pointer-events:none;z-index:5;
-  background:conic-gradient(from var(--hl-a),#1d5bd1,#2bd4ff,#c9a227,#e2c15a,#7a5cff,#1d5bd1);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
-  opacity:.0;transition:opacity .35s}
-.hl .svc-card:hover::after,.hl .svc-card.hl-on::after{opacity:.9;animation:hl-spin 5s linear infinite}
+  background:conic-gradient(from var(--hl-a),#1d5bd1,#2bd4ff,#c9a227,#e2c15a,#2bd4ff,#1d5bd1);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  opacity:0;transition:opacity .35s}
+.hl .svc-card:hover::after,.hl .svc-card.hl-on::after{opacity:.95;animation:hl-spin 4.5s linear infinite}
 @keyframes hl-spin{to{--hl-a:360deg}}
-/* brillo iridiscente que sigue al puntero */
-.hl .svc-media::before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .3s;
-  background:radial-gradient(240px 160px at var(--mx) var(--my),rgba(43,212,255,.28),rgba(122,92,255,.16) 45%,transparent 70%),
-  linear-gradient(115deg,transparent 30%,rgba(201,162,39,.18) 48%,rgba(43,212,255,.16) 56%,transparent 72%);mix-blend-mode:multiply}
+
+/* brillo que sigue al puntero: un disco fijo que se TRASLADA, en vez de
+   repintar un radial-gradient en cada pointermove */
+.hl .svc-media::before{content:"";position:absolute;left:0;top:0;width:300px;height:300px;margin:-150px 0 0 -150px;z-index:3;pointer-events:none;
+  border-radius:50%;opacity:0;transition:opacity .3s;
+  background:radial-gradient(closest-side,rgba(43,212,255,.32),rgba(29,91,209,.14) 55%,rgba(201,162,39,0) 100%);
+  transform:translate(var(--mx),var(--my))}
 .hl .svc-card:hover .svc-media::before{opacity:1}
+/* reflejo iridiscente diagonal que cruza la foto al entrar */
+.hl .svc-media::after{content:"";position:absolute;inset:-20% -60%;z-index:3;pointer-events:none;opacity:0;
+  background:linear-gradient(115deg,transparent 38%,rgba(226,193,90,.28) 47%,rgba(43,212,255,.24) 53%,transparent 62%);
+  transform:translateX(-45%)}
+.hl .svc-card:hover .svc-media::after,.hl .svc-card.hl-on .svc-media::after{animation:hl-sheen 1.4s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes hl-sheen{0%{opacity:0;transform:translateX(-45%)}20%{opacity:1}100%{opacity:0;transform:translateX(45%)}}
+
 /* haz de escáner */
 .hl .svc-scan{position:absolute;left:0;right:0;top:0;height:46px;z-index:4;pointer-events:none;opacity:0;
-  background:linear-gradient(180deg,transparent,rgba(43,212,255,.30),rgba(43,212,255,.0));border-bottom:1px solid rgba(29,91,209,.55);transform:translateY(-60px)}
+  background:linear-gradient(180deg,transparent,rgba(43,212,255,.30),rgba(43,212,255,0));border-bottom:1px solid rgba(29,91,209,.6);
+  transform:translateY(-60px);transition:opacity .3s}
 .hl .svc-card:hover .svc-scan,.hl .svc-card.hl-on .svc-scan{opacity:1;animation:hl-scan 2.6s ease-in-out infinite}
 @keyframes hl-scan{0%{transform:translateY(-50px)}100%{transform:translateY(210px)}}
-/* esquinas HUD doradas */
-.hl .svc-hud{position:absolute;inset:10px;z-index:4;pointer-events:none;
+
+/* esquinas HUD doradas: visibles siempre, más intensas encendidas */
+.hl .svc-hud{position:absolute;inset:10px;z-index:4;pointer-events:none;opacity:.55;transition:opacity .3s,transform .35s;
   background:
    linear-gradient(var(--gold),var(--gold)) top left/16px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top left/2px 16px no-repeat,
    linear-gradient(var(--gold),var(--gold)) top right/16px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top right/2px 16px no-repeat,
    linear-gradient(var(--gold),var(--gold)) bottom left/16px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/2px 16px no-repeat,
-   linear-gradient(var(--gold),var(--gold)) bottom right/16px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom right/2px 16px no-repeat;opacity:.7}
-/* suelo en perspectiva bajo el coche */
-.hl .svc-floor{position:absolute;left:-10%;right:-10%;bottom:0;height:62px;z-index:1;pointer-events:none;opacity:.55;
-  background:linear-gradient(rgba(11,61,145,.28) 1px,transparent 1px),linear-gradient(90deg,rgba(11,61,145,.28) 1px,transparent 1px);background-size:34px 18px;
+   linear-gradient(var(--gold),var(--gold)) bottom right/16px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom right/2px 16px no-repeat}
+.hl .svc-card:hover .svc-hud,.hl .svc-card.hl-on .svc-hud{opacity:1;transform:scale(.97)}
+
+/* suelo en perspectiva: la rejilla es el doble de alta y se traslada una
+   celda en bucle, así parece que avanza sin animar background-position */
+.hl .svc-floor{position:absolute;left:-10%;right:-10%;bottom:0;height:70px;z-index:2;pointer-events:none;overflow:hidden;opacity:.5;
   transform:perspective(220px) rotateX(58deg);transform-origin:bottom;
-  -webkit-mask-image:linear-gradient(to top,#000,transparent);mask-image:linear-gradient(to top,#000,transparent)}
+  -webkit-mask-image:linear-gradient(to top,#000,transparent);mask-image:linear-gradient(to top,#000,transparent);transition:opacity .3s}
+.hl .svc-floor::before{content:"";position:absolute;left:0;right:0;top:-18px;height:calc(100% + 18px);
+  background:linear-gradient(rgba(43,212,255,.55) 1px,transparent 1px),linear-gradient(90deg,rgba(43,212,255,.45) 1px,transparent 1px);background-size:34px 18px}
+.hl .svc-card:hover .svc-floor,.hl .svc-card.hl-on .svc-floor{opacity:.9}
+.hl .svc-card:hover .svc-floor::before,.hl .svc-card.hl-on .svc-floor::before{animation:hl-floor .9s linear infinite}
+@keyframes hl-floor{to{transform:translateY(18px)}}
+
 /* panel principal del taller */
 .hl .taller-panel::after{content:"";position:absolute;left:0;right:0;top:0;height:70px;pointer-events:none;
   background:linear-gradient(180deg,transparent,rgba(43,212,255,.22),transparent);border-bottom:1px solid rgba(29,91,209,.4);animation:hl-scan2 5s ease-in-out infinite;opacity:.8}
 @keyframes hl-scan2{0%{transform:translateY(-90px)}100%{transform:translateY(430px)}}
+
+/* destello de las cifras del hero: una franja que se traslada */
 .hl .stat{position:relative;overflow:hidden}
-.hl .stat::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(201,162,39,.14) 50%,transparent 60%);background-size:260% 100%;background-position:120% 0;animation:hl-shine 6s ease-in-out infinite;pointer-events:none}
-@keyframes hl-shine{50%{background-position:-20% 0}100%{background-position:-20% 0}}
+.hl .stat::before{content:"";position:absolute;top:0;bottom:0;left:0;width:60%;pointer-events:none;
+  background:linear-gradient(110deg,transparent,rgba(201,162,39,.16),transparent);
+  transform:translateX(-120%);animation:hl-shine 6s ease-in-out infinite}
+@keyframes hl-shine{0%,40%{transform:translateX(-120%)}70%,100%{transform:translateX(260%)}}
+
+/* móvil: fuera las capas que más cuestan (suelo animado y escáner) */
 @media (max-width:700px){.hl .svc-scan,.hl .svc-floor{display:none}}
+/* sin puntero fino no hay a quién seguir */
+@media (hover:none){.hl .svc-media::before{display:none}}
 @media (prefers-reduced-motion:reduce){
-  .hl .svc-card::after,.hl .svc-scan,.hl .taller-panel::after,.hl .stat::before{animation:none!important}
-  .hl .svc-scan{opacity:0!important}
+  .hl .svc-card::after,.hl .svc-card:hover::after,.hl .svc-card.hl-on::after,
+  .hl .svc-scan,.hl .svc-floor::before,.hl .svc-media::after,.hl .taller-panel::after,.hl .stat::before{animation:none!important}
+  .hl .svc-scan,.hl .svc-media::after,.hl .svc-media::before,.hl .taller-panel::after,.hl .stat::before{display:none}
+  .hl .svc-card:hover .svc-hud,.hl .svc-card.hl-on .svc-hud{transform:none}
 }
 
 /* ======================= IDIOMA Y RTL =======================
