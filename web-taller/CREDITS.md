@@ -1,21 +1,20 @@
 # Créditos de imágenes
 
-Fotos de las tarjetas de servicio (`assets/img/car-*.webp`, 1200×800 y 600×400). Incrustadas en el repo, sin hotlink.
+Fotos de las tarjetas de servicio (`assets/img/car-*.webp`, 1200×800 y 600×400): mecánicos haciendo cada trabajo. Incrustadas en el repo, sin hotlink.
 
-- **Unsplash License** — https://unsplash.com/license (ninguna es Unsplash+ / Premium).
 - **Pexels License** — https://www.pexels.com/license/
 
-Cada foto se revisó a mano, con recortes ampliados y aclarados, buscando emblemas, logos, letras, tapacubos con marca, matrículas, caras y rótulos. Las descripciones y los textos alternativos no nombran marcas.
+Revisadas en hoja de contactos y con recortes ampliados, buscando marcas de coche, logos en ropa o herramientas y matrículas. Descartadas: un neumático con marca en el flanco, un coche con el nombre del modelo en la puerta, un cinturón con marca, una tableta de diagnóstico y una bombona con etiqueta de marca, y un coche con matrícula visible.
 
-| Fichero | Tarjeta | Descripción | Fuente | Autor | Página de la foto | Recorte / notas |
-|---|---|---|---|---|---|---|
-| car-1 | Oil change | Cupé deportivo plateado, de perfil | Unsplash | [Chris Barbalis](https://unsplash.com/@cbarbalis) | https://unsplash.com/photos/9qlSGW_LgKs | Recorte (330,13)-(1600,860): fuera un peatón desenfocado. **Excepción aceptada por Cris:** los tapacubos llevan un emblema diminuto y oscuro, ilegible al tamaño de la tarjeta. Sin matrícula. |
-| car-2 | General service | Coche de lujo eléctrico gris claro, de perfil, dentro de un taller | Pexels | [Renee Razumov](https://www.pexels.com/photo/car-repair-and-maintenance-workshop-interior-33814734/) | https://www.pexels.com/photo/car-repair-and-maintenance-workshop-interior-33814734/ | Recorte (1100,250)-(2000,850): solo el coche de la derecha, de lado. Sin emblema ni matrícula visibles. Sustituye al SUV a contraluz. |
-| car-3 | Pre-purchase inspection | Berlina clara, tres cuartos trasero, estudio oscuro | Pexels | Cuenta de prensa de un fabricante (nombre en la página de la foto) | https://www.pexels.com/photo/outline-of-a-white-car-in-a-dark-parking-garage-20790476/ | Recorte (250,420)-(1350,1153), solo espacio vacío. |
-| car-4 | Tyres | Cupé gran turismo negro, tres cuartos delantero, ruedas visibles | Pexels | [Pixabay](https://www.pexels.com/@pixabay/) | https://www.pexels.com/photo/black-coupe-on-black-surface-261985/ | Recorte (150,0)-(1500,900), solo espacio vacío. Parrilla sin emblema, soporte de matrícula en blanco, tapacubos lisos. |
-| car-5 | Brakes | Superdeportivo blanco (render 3D), tres cuartos delantero bajo | Unsplash | [majed swan](https://unsplash.com/@majedswan) | https://unsplash.com/photos/WAZfwMmO7CI | Recorte (220,0)-(1429,806) para 3:2. Render sin logos. |
-| car-6 | Computer diagnostics | Cupé azul de estilo clásico (render 3D), de perfil | Unsplash | [Allison Saeng](https://unsplash.com/@allisonsaeng) | https://unsplash.com/photos/o8N6OiZIyk8 | Sin recorte. Render sin logos ni matrícula. |
-| car-7 | Air conditioning | SUV blanco en la arena del desierto al atardecer | Pexels | [Pareekshith Indeever](https://www.pexels.com/@pareekshith-indeever-155333695/) | https://www.pexels.com/photo/a-white-suv-on-the-sand-during-sunset-10697668/ | Origen vertical recortado a (0,600)-(1600,1667). Sin matrícula ni emblema; la franja lateral es un gráfico sin texto. |
+| Fichero | Tarjeta | Descripción | Autor | Página de la foto | Recorte / notas |
+|---|---|---|---|---|---|
+| car-1 | Oil change | Mano con guante abriendo el tapón del aceite | Fatih Erden | https://www.pexels.com/photo/a-mechanic-opening-the-oil-filler-cap-of-a-car-engine-10490621/ | Sin recorte. |
+| car-2 | General service | Mecánico bajo un coche en el elevador | Artem Podrez | https://www.pexels.com/photo/mechanic-standing-under-a-car-on-a-car-lift-8986119/ | Recorte (0,700)-(2000,2033) del original vertical. Sin emblema; el portamatrículas está en blanco. |
+| car-3 | Pre-purchase inspection | Mecánico revisando un coche con una tableta | Gustavo Fring | https://www.pexels.com/photo/man-in-blue-long-sleeve-shirt-holding-black-digital-tablet-6870317/ | Recorte (450,0)-(2000,1033): fuera las letras de la columna del elevador. |
+| car-4 | Tyres | Mecánico rodando una rueda | Gustavo Fring | https://www.pexels.com/photo/a-man-wearing-blue-uniform-holding-a-car-tire-6870316/ | Recorte (350,1150)-(2000,2250) del original vertical: fuera el logo del coche naranja. |
+| car-5 | Brakes | Mecánico revisando el freno de disco con una linterna | Gustavo Fring | https://www.pexels.com/photo/man-checking-on-the-brakes-of-a-vehicle-6870319/ | Sin recorte. |
+| car-6 | Computer diagnostics | Mecánico con tableta de diagnóstico sobre el motor | Gustavo Fring | https://www.pexels.com/photo/man-in-blue-coveralls-checking-on-a-vehicle-6870295/ | Sin recorte. La tableta no lleva marca visible. |
+| car-7 | Air conditioning | Técnico leyendo presiones con un juego de manómetros | José Andrés Pacheco Cortes | https://www.pexels.com/photo/man-repairing-cables-in-a-car-6471913/ | Recorte (0,900)-(2000,2233) del original vertical. Según la descripción de Pexels, es una unidad exterior de aire acondicionado, no de coche; el texto alternativo no dice que sea un coche. |
 
 Conversión: WebP calidad 72, método 6, reescalado LANCZOS.
 
