@@ -1,248 +1,72 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- ===================== SEO / GEO / AEO ===================== -->
-<title>Taller Azul</title>
-<meta name="description" content="Taller mecánico en Madrid desde 1995: cambio de aceite, revisión general, pre-ITV, neumáticos, frenos, diagnosis electrónica y aire acondicionado. Presupuesto cerrado antes de tocar y cita reservada en el chat con Leo.">
+<!-- ===================== SEO / GEO / AEO =====================
+     Demo con negocio ficticio: noindex hasta que haya un cliente real. -->
+<title>Example Garage · Car workshop in Doha (demo)</title>
+<meta name="description" content="Demo of a fictitious car workshop in Doha: oil change, general service, pre-purchase inspection, tyres, brakes, diagnostics and air conditioning. Book a visit in English or Arabic with Leo, the AI assistant.">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#0a0a0c">
+<meta name="theme-color" content="#ffffff">
 
-<!-- Geo -->
-<meta name="geo.region" content="ES-MD">
-<meta name="geo.placename" content="Madrid">
-<meta name="geo.position" content="40.4168;-3.7038">
-<meta name="ICBM" content="40.4168, -3.7038">
+<meta name="geo.region" content="QA-DA">
+<meta name="geo.placename" content="Doha">
+<meta name="geo.position" content="25.2854;51.5310">
+<meta name="ICBM" content="25.2854, 51.5310">
 
-<!-- Open Graph / Twitter — imagen JPG, nunca SVG -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Taller Ejemplo">
-<meta property="og:locale" content="es_ES">
-<meta property="og:title" content="Taller mecánico en Madrid · Taller Ejemplo">
-<meta property="og:description" content="Cambio de aceite, revisión general, pre-ITV, neumáticos, frenos, diagnosis y aire acondicionado. Presupuesto cerrado antes de tocar y cita online con Leo.">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:alt" content="Taller Ejemplo — taller mecánico en Madrid desde 1995">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Taller mecánico en Madrid · Taller Ejemplo">
-<meta name="twitter:description" content="Cambio de aceite, revisión general, pre-ITV, neumáticos, frenos, diagnosis y aire acondicionado. Cita online con Leo.">
+<meta property="og:site_name" content="Example Garage (demo)">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ar_QA">
+<meta property="og:title" content="Example Garage · Car workshop in Doha (demo)">
+<meta property="og:description" content="Fictitious workshop used to demo an AI booking assistant in English and Arabic.">
+<meta name="twitter:card" content="summary">
 
-<!-- Favicon: llave inglesa dorada sobre negro -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0a0c'/%3E%3Cpath d='M19.6 8.4a1.3 1.3 0 0 0 0 1.9l2.1 2.1a1.3 1.3 0 0 0 1.9 0l5-5a8 8 0 0 1-10.6 10.6l-9.2 9.2a2.8 2.8 0 0 1-4-4l9.2-9.2A8 8 0 0 1 24.6 3.4l-5 5z' fill='none' stroke='%23d4af37' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' transform='scale(.78) translate(4 4)'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b3d91'/%3E%3Cpath d='M19.6 8.4a1.3 1.3 0 0 0 0 1.9l2.1 2.1a1.3 1.3 0 0 0 1.9 0l5-5a8 8 0 0 1-10.6 10.6l-9.2 9.2a2.8 2.8 0 0 1-4-4l9.2-9.2A8 8 0 0 1 24.6 3.4l-5 5z' fill='none' stroke='%23e2c15a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' transform='scale(.78) translate(4 4)'/%3E%3C/svg%3E">
 
-<!-- Fuente auto-hospedada (subset latin). Cero peticiones a Google Fonts. -->
+<!-- Idioma antes de pintar: si el visitante eligió árabe, el documento nace
+     en RTL y no da un salto de izquierda a derecha al cargar. -->
+<script>
+(function(){try{var q=new URLSearchParams(location.search).get("lang");var l=q==="ar"||q==="en"?q:localStorage.getItem("lang");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";}}catch(e){}})();
+</script>
+
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/sora-var-latin.woff2" crossorigin>
-<!-- CSS critico en linea: la hoja completa deja de bloquear el render.
-     Aqui vive todo lo que se ve sin hacer scroll (tokens, base, nav,
-     hero y marquesina) mas .reveal, que arranca oculto: si esa regla
-     llegase tarde, las secciones se verian y luego desaparecerian. -->
-<style>
-@font-face{font-family:'Sora';font-style:normal;font-weight:400 800;font-display:swap;src:url(assets/fonts/sora-var-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:'Sora';font-style:normal;font-weight:400 800;font-display:swap;src:url(assets/fonts/sora-var-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
-:root{
-  --bg:#0a0a0c;              
-  --bg2:#101014;             
-  --card:#161619;            
-  --card2:#1c1c21;           
-  --text:#eceef3;            
-  --soft:#c3c8d4;            
-  --muted:#9aa0ad;           
-  --p:#d4af37;               
-  --p2:#e8c766;              
-  --p-deep:#8a6f1f;          
-  --p-chip:rgba(212,175,55,.09);
-  --ink:#0a0a0c;             
-  --g:#00d4aa;               
-  --g-bg:#0c1c19;
-  --g-soft:#86d9c6;
-  --line:rgba(255,255,255,.07);
-  --line2:rgba(255,255,255,.13);
-  --border:rgba(212,175,55,.28);
-  --display:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --body:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --maxw:1240px;
-  --nav-h:84px;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 14px);-webkit-text-size-adjust:100%}
-body{background:var(--bg);color:var(--soft);font-family:var(--body);font-size:16px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-::selection{background:var(--p);color:var(--ink)}
-a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
-button,input{font:inherit;color:inherit}
-h1,h2,h3,h4{font-family:var(--display);color:var(--text)}
-h1,h2{font-weight:800;line-height:1.03;letter-spacing:-.022em}
-h3,h4{font-weight:700;line-height:1.2;letter-spacing:-.014em}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--p2);outline-offset:3px;border-radius:4px}
-.skip{position:absolute;left:14px;top:-60px;z-index:1000;background:var(--p);color:var(--ink);font-weight:700;padding:11px 18px;border-radius:8px;transition:top .2s}
-.skip:focus{top:14px}
-.eyebrow{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.22em;font-size:.74rem;color:var(--p2);display:inline-flex;align-items:center;gap:.8em}
-.eyebrow::before{content:"";width:32px;height:1px;background:var(--p);display:inline-block}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--display);font-weight:700;letter-spacing:.01em;font-size:.95rem;padding:14px 26px;border-radius:9px;border:1.5px solid var(--p);background:var(--p);color:var(--ink);cursor:pointer;transition:transform .2s,box-shadow .3s,background-color .3s}
-.btn:hover{transform:translateY(-2px);background:var(--p2);border-color:var(--p2);box-shadow:0 12px 30px -12px rgba(212,175,55,.55)}
-.btn svg{width:18px;height:18px}
-.btn.ghost{background:transparent;color:var(--p2);border-color:var(--border)}
-.btn.ghost:hover{background:var(--p-chip);color:var(--p2);border-color:var(--p);box-shadow:none}
-.btn.block{width:100%}
-header.nav{position:fixed;top:0;left:0;right:0;z-index:900;transition:background-color .35s,backdrop-filter .35s}
-header.nav::after{content:"";position:absolute;inset:0;border-bottom:1px solid transparent;transition:border-color .35s;pointer-events:none}
-header.nav.scrolled{background:rgba(10,10,12,.86);backdrop-filter:blur(14px)}
-header.nav.scrolled::after{border-bottom-color:var(--line)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);gap:20px}
-.nav-logo{display:flex;align-items:center;gap:13px}
-.nav-logo .mark{width:46px;height:46px;border-radius:11px;background:linear-gradient(135deg,var(--p),#a8842a);display:grid;place-items:center;flex-shrink:0;box-shadow:0 8px 22px -9px rgba(212,175,55,.65)}
-.nav-logo .mark svg{width:25px;height:25px;color:var(--ink)}
-.nav-logo .txt b{font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-.01em;line-height:1;display:block;color:var(--text)}
-.nav-logo .txt small{font-family:var(--display);font-weight:600;letter-spacing:.16em;font-size:.6rem;color:var(--muted);text-transform:uppercase;line-height:1.3;display:block;margin-top:4px}
-.nav-links{display:flex;align-items:center;gap:26px}
-.nav-links a{font-size:.85rem;font-weight:500;color:var(--muted);position:relative;transition:color .25s}
-.nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1.5px;background:var(--p);transition:width .3s}
-.nav-links a:hover,.nav-links a.active{color:var(--text)}
-.nav-links a:hover::after,.nav-links a.active::after{width:100%}
-.nav-cta{display:flex;align-items:center;gap:14px}
-.burger{display:none;width:44px;height:44px;place-items:center;border:1px solid var(--line2);border-radius:10px;background:transparent;color:var(--text);cursor:pointer}
-.burger svg{width:22px;height:22px}
-.mobile-menu{position:fixed;inset:0;background:rgba(8,8,10,.98);backdrop-filter:blur(10px);z-index:899;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:22px;opacity:0;pointer-events:none;transition:opacity .3s}
-.mobile-menu.open{opacity:1;pointer-events:auto}
-.mobile-menu a{font-family:var(--display);font-weight:700;font-size:1.6rem;color:var(--text);letter-spacing:-.01em}
-.mobile-menu a:hover{color:var(--p2)}
-.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding-bottom:54px;overflow:hidden}
-.hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg .grad{position:absolute;inset:0;background:
-  radial-gradient(1100px 600px at 78% 18%,rgba(212,175,55,.20),transparent 60%),
-  radial-gradient(900px 700px at 12% 88%,rgba(212,175,55,.07),transparent 62%),
-  linear-gradient(180deg,rgba(12,12,15,.25) 0%,rgba(10,10,12,.14) 48%,rgba(6,6,8,.86) 100%)}
-.hero-bg .grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,#000 30%,transparent 78%);mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,#000 30%,transparent 78%);opacity:.55}
-.hero-bg .art{position:absolute;right:-4%;top:16%;width:min(60vw,760px);color:var(--p);opacity:.13;pointer-events:none}
-.hero-bg .art svg{width:100%;height:auto;display:block}
-.hero-bg .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;background:transparent}
-.hero-bg .hero-tint{position:absolute;inset:0;z-index:2;pointer-events:none;background:
-  linear-gradient(180deg,rgba(8,8,10,.76) 0%,rgba(8,8,10,.6) 42%,rgba(6,6,8,.93) 100%),
-  radial-gradient(1100px 600px at 78% 18%,rgba(212,175,55,.26),transparent 60%)}
-.hero-bg .vignette{position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,rgba(8,8,10,.5) 0%,transparent 32%,transparent 52%,rgba(8,8,10,.96) 100%),linear-gradient(90deg,rgba(8,8,10,.72) 0%,rgba(8,8,10,.22) 42%,transparent 68%)}
-.hero-content{position:relative;z-index:4;width:100%;padding-top:150px}
-.hero h1{font-size:clamp(2.3rem,5.6vw,4.5rem)}
-.hero h1 .accent{display:block;color:var(--p2)}
-.hero-rot{font-family:var(--display);font-weight:600;font-size:clamp(1rem,2.6vw,1.6rem);color:var(--muted);margin-top:22px;display:flex;align-items:baseline;gap:.5em;flex-wrap:wrap}
-.hero-rot .rot{color:var(--text);min-width:11ch;display:inline-block}
-.hero-rot .rot b{font-weight:800;color:var(--p2);display:inline-block;transition:opacity .4s,transform .4s}
-.hero-rot .rot b.out{opacity:0;transform:translateY(10px)}
-.hero-desc{max-width:580px;color:var(--soft);font-size:1.02rem;margin-top:24px}
-.hero-desc strong{color:var(--text);font-weight:700}
-.hero-actions{display:flex;align-items:center;gap:14px;margin-top:32px;flex-wrap:wrap}
-.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:58px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--line)}
-.stat{background:rgba(18,18,22,.72);padding:24px 22px}
-.stat .v{font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1;color:var(--text);letter-spacing:-.02em}
-.stat .v .u{color:var(--p2)}
-.stat .l{font-size:.78rem;color:var(--muted);margin-top:9px}
-.scroll-cue{position:absolute;left:32px;bottom:30px;z-index:4;display:flex;align-items:center;gap:12px;color:var(--muted);font-family:var(--display);font-weight:600;letter-spacing:.2em;font-size:.66rem;text-transform:uppercase}
-.scroll-cue .bar{width:1px;height:40px;background:var(--line2);position:relative;overflow:hidden}
-.scroll-cue .bar::after{content:"";position:absolute;top:0;left:0;width:100%;height:40%;background:var(--p);animation:cue 2s ease-in-out infinite}
-@keyframes cue{0%{transform:translateY(-100%)}100%{transform:translateY(250%)}}
-.marquee-wrap{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;overflow:hidden;position:relative;z-index:2}
-.marquee-track{display:flex;width:max-content;animation:marquee 34s linear infinite}
-.marquee-item{display:inline-flex;align-items:center;gap:9px;padding:0 30px;font-family:var(--display);font-weight:600;letter-spacing:.02em;font-size:.86rem;color:var(--muted);white-space:nowrap}
-.marquee-item b{color:var(--p2);font-weight:800}
-.marquee-item .dot{width:5px;height:5px;border-radius:50%;background:var(--border)}
-@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.reveal{opacity:0;transform:translateY(30px)}
-.reveal.is-in{opacity:1;transform:none;transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
-@media (max-width:1080px){
-  .nav-links{display:none}
-  .nav-cta .btn{display:none}
-  .burger{display:grid}
-  .why-grid{grid-template-columns:1fr 1fr}
-  .proc-grid{grid-template-columns:1fr 1fr}
-}
-@media (max-width:900px){
-  .wrap{padding:0 22px}
-  .sec{padding:84px 0}
-  .sec-head{margin-bottom:40px}
-  .about-grid,.nos-grid,.contact-grid{grid-template-columns:1fr;gap:46px}
-  .about-media{order:-1}
-  .taller-panel{height:320px}
-  .svc-grid{grid-template-columns:1fr 1fr}
-  .areas-grid{grid-template-columns:1fr}
-  .precios-grid{grid-template-columns:1fr}
-  .hero-stats{grid-template-columns:1fr 1fr}
-  .contact-info{grid-template-columns:1fr 1fr}
-  .hero-content{padding-top:118px}
-  .scroll-cue{display:none}
-  .hero-bg .art{opacity:.08}
-  footer.foot{margin-top:70px}
-}
-@media (max-width:600px){
-  .wrap{padding:0 18px}
-  .svc-grid,.proc-grid,.why-grid,.contact-info{grid-template-columns:1fr}
-  .hero-content{padding-top:96px}
-  .tag-badge{left:50%;transform:translateX(-50%);bottom:-18px}
-  .leo-panel{right:0;bottom:0;width:100vw;height:100dvh;max-height:100dvh;border-radius:0;border:0}
-  .leo-btn{right:16px;bottom:16px}
-  .foot-inner{flex-direction:column;text-align:center;gap:20px}
-}
-@media (max-width:768px){
-  .hero-bg .hero-video,.hero-bg .hero-tint{display:none!important}
-}
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-  .reveal{opacity:1!important;transform:none!important}
-  .leo-btn .pulse{display:none!important}
-  .hero-bg .hero-video,.hero-bg .hero-tint{display:none!important}
-}
-</style>
-<link rel="preload" as="style" href="assets/css/style.css" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="assets/css/style.css"></noscript>
+<link rel="stylesheet" href="assets/css/style.css?v=20">
 
 <script type="application/ld+json">
 {
   "@context":"https://schema.org","@type":"AutoRepair",
-  "name":"Taller Ejemplo","priceRange":"€€",
-  
-  
-  "foundingDate":"1995",
-  "address":{"@type":"PostalAddress","streetAddress":"Calle Mecánicos 45, Polígono Industrial","postalCode":"28010","addressLocality":"Madrid","addressCountry":"ES"},
-  "areaServed":"Madrid",
+  "name":"Example Garage (demo)",
+  "description":"Fictitious car workshop used to demonstrate an AI booking assistant.",
+  "address":{"@type":"PostalAddress","addressLocality":"Doha","addressCountry":"QA"},
+  "areaServed":"Doha",
+  "currenciesAccepted":"QAR",
   "openingHoursSpecification":[
-    {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"19:00"},
-    {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"14:00"}
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Sunday","Monday","Tuesday","Wednesday","Thursday"],"opens":"08:00","closes":"18:00"}
   ],
-  "makesOffer":[
-    {"@type":"Offer","name":"Cambio de aceite","price":"49.00","priceCurrency":"EUR"},
-    {"@type":"Offer","name":"Revisión general","price":"89.00","priceCurrency":"EUR"},
-    {"@type":"Offer","name":"Pre-ITV","price":"39.00","priceCurrency":"EUR"},
-    {"@type":"Offer","name":"Neumáticos","price":"59.00","priceCurrency":"EUR"},
-    {"@type":"Offer","name":"Frenos","price":"99.00","priceCurrency":"EUR"},
-    {"@type":"Offer","name":"Diagnosis electrónica","price":"45.00","priceCurrency":"EUR"},
-    {"@type":"Offer","name":"Aire acondicionado","price":"55.00","priceCurrency":"EUR"}
-  ]
+  "availableLanguage":["en","ar"]
 }
 </script>
 <script type="application/ld+json">
 {
   "@context":"https://schema.org","@type":"FAQPage",
   "mainEntity":[
-    {"@type":"Question","name":"¿Cómo reservo una cita en Taller Ejemplo?","acceptedAnswer":{"@type":"Answer","text":"Habla con Leo, el asistente de la web. Eliges el servicio, dejas tu nombre y tu teléfono y después escoges día y hora entre los huecos que están libres de verdad. La cita queda escrita en la agenda del taller al instante."}},
-    {"@type":"Question","name":"¿Puedo cambiar o cancelar mi cita desde la web?","acceptedAnswer":{"@type":"Answer","text":"Sí. Abre el chat, elige «Cambiar o cancelar mi cita» y dile a Leo el teléfono con el que reservaste. Te enseña la cita y, confirmando el nombre, la mueve a otro hueco libre o la cancela en el momento."}},
-    {"@type":"Question","name":"¿Dais presupuesto antes de reparar?","acceptedAnswer":{"@type":"Answer","text":"Sí. Presupuesto cerrado antes de tocar el coche. No hacemos nada sin tu visto bueno y no hay sorpresas al recoger."}},
-    {"@type":"Question","name":"¿Qué horario tiene el taller?","acceptedAnswer":{"@type":"Answer","text":"De lunes a viernes de 8:00 a 14:00 y de 16:00 a 19:00, y los sábados de 9:00 a 14:00. Los domingos está cerrado."}},
-    {"@type":"Question","name":"¿Tenéis servicio de grúa?","acceptedAnswer":{"@type":"Answer","text":"Sí, disponemos de grúa concertada 24 horas para coches parados o averías en carretera."}},
-    {"@type":"Question","name":"¿Ofrecéis garantía en las reparaciones?","acceptedAnswer":{"@type":"Answer","text":"Sí, garantía por escrito en cada reparación y piezas de primera marca."}}
+    {"@type":"Question","name":"How do I book a visit?","acceptedAnswer":{"@type":"Answer","text":"Chat with Leo, the AI assistant on this site. Choose the service, leave your name and a Qatar mobile number, then pick a day and time from the slots that are really free."}},
+    {"@type":"Question","name":"Can I write to the assistant in Arabic?","acceptedAnswer":{"@type":"Answer","text":"Yes. Switch the site to Arabic or simply write in Arabic, and Leo answers in the same language."}},
+    {"@type":"Question","name":"Do you give a quote before repairs?","acceptedAnswer":{"@type":"Answer","text":"Yes. You get a written quote in QAR after inspection and before any work starts. Nothing is done without your approval."}},
+    {"@type":"Question","name":"What are the opening hours?","acceptedAnswer":{"@type":"Answer","text":"Sunday to Thursday, 08:00 to 18:00. Friday and Saturday closed. These are sample hours for this demo."}},
+    {"@type":"Question","name":"Do you show prices online?","acceptedAnswer":{"@type":"Answer","text":"No. Every car is different, so the price is given in a written quote in QAR after inspection."}},
+    {"@type":"Question","name":"Am I talking to a person?","acceptedAnswer":{"@type":"Answer","text":"Leo is an AI assistant. If you prefer a person, ask Leo and it passes your details to the team."}}
   ]
 }
 </script>
 </head>
 <body class="hl">
-<a class="skip" href="#top">Saltar al contenido</a>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
 
-<!-- ===================== SPRITE DE ICONOS =====================
-     Los iconos que se repiten viven una sola vez aquí y se referencian con
-     <use>. Es HTML que no se descarga otra vez ni cuesta una petición. -->
+<!-- ===================== SPRITE DE ICONOS ===================== -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <symbol id="ic-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
   <symbol id="ic-oil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h4l3 3v10a2 2 0 0 1-2 2h-1"/><path d="M3 8h8l3 3v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M7 8V6a2 2 0 0 1 2-2h2"/></symbol>
@@ -260,7 +84,7 @@ header.nav.scrolled::after{border-bottom-color:var(--line)}
   <symbol id="ic-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
   <symbol id="ic-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
   <symbol id="ic-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></symbol>
-  <symbol id="ic-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h9M3 12h11l4 4h2v1"/><circle cx="20" cy="17" r="2"/><circle cx="7" cy="17" r="2"/><path d="M14 12V7h3l3 4"/></symbol>
+  <symbol id="ic-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
   <symbol id="ic-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></symbol>
   <symbol id="ic-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
   <symbol id="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
@@ -271,35 +95,34 @@ header.nav.scrolled::after{border-bottom-color:var(--line)}
   <div class="wrap nav-inner">
     <a href="#top" class="nav-logo">
       <span class="mark" aria-hidden="true"><svg><use href="#ic-wrench"/></svg></span>
-      <span class="txt"><b>Taller Ejemplo</b><small>Mecánica · Madrid</small></span>
+      <span class="txt"><b>Example Garage</b><small data-i18n="nav.tagline">Car workshop · Doha · Demo</small></span>
     </a>
-    <nav class="nav-links" id="navLinks" aria-label="Navegación principal">
-      <a href="#top">Inicio</a>
-      <a href="#taller">El taller</a>
-      <a href="#servicios">Servicios</a>
-      <a href="#asistente">Asistente</a>
-      <a href="#areas">Áreas</a>
-      <a href="#precios">Precios</a>
-      <a href="#faq">Preguntas</a>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation" data-i18n-attr="aria-label:nav.aria">
+      <a href="#top" data-i18n="nav.home">Home</a>
+      <a href="#workshop" data-i18n="nav.workshop">Workshop</a>
+      <a href="#services" data-i18n="nav.services">Services</a>
+      <a href="#assistant" data-i18n="nav.assistant">AI assistant</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
     </nav>
     <div class="nav-cta">
-      <button class="btn" type="button" data-leo><svg aria-hidden="true"><use href="#ic-calendar"/></svg>Pedir cita</button>
-      <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu"><svg aria-hidden="true"><use href="#ic-menu"/></svg></button>
+      <button class="lang-btn" type="button" data-lang-toggle lang="ar" aria-label="التبديل إلى العربية" data-i18n-attr="aria-label:lang.aria;lang:lang.code"><svg aria-hidden="true"><use href="#ic-globe"/></svg><span data-i18n="lang.label">العربية</span></button>
+      <button class="btn" type="button" data-leo><svg aria-hidden="true"><use href="#ic-calendar"/></svg><span data-i18n="cta.book">Book a visit</span></button>
+      <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu" data-i18n-attr="aria-label:nav.menu"><svg aria-hidden="true"><use href="#ic-menu"/></svg></button>
     </div>
   </div>
 </header>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#top">Inicio</a>
-  <a href="#taller">El taller</a>
-  <a href="#servicios">Servicios</a>
-  <a href="#proceso">Cómo trabajamos</a>
-  <a href="#asistente">Asistente</a>
-  <a href="#areas">Áreas</a>
-  <a href="#precios">Precios</a>
-  <a href="#faq">Preguntas</a>
-  <a href="#contacto">Contacto</a>
+  <a href="#top" data-i18n="nav.home">Home</a>
+  <a href="#workshop" data-i18n="nav.workshop">Workshop</a>
+  <a href="#services" data-i18n="nav.services">Services</a>
+  <a href="#process" data-i18n="nav.process">How we work</a>
+  <a href="#assistant" data-i18n="nav.assistant">AI assistant</a>
+  <a href="#faq" data-i18n="nav.faq">FAQ</a>
+  <a href="#contact" data-i18n="nav.contact">Contact</a>
 </div>
 
+<main id="main">
 <!-- ===================== HERO ===================== -->
 <section class="hero" id="top">
   <div class="hero-bg" aria-hidden="true">
@@ -317,57 +140,53 @@ header.nav.scrolled::after{border-bottom-color:var(--line)}
         <path d="M360 78l40 44"/>
       </svg>
     </div>
-    
-    <div class="hero-tint"></div>
-    <div class="vignette"></div>
   </div>
   <div class="wrap hero-content">
-    <h1>Tu coche en manos<br><span class="accent">de confianza.</span></h1>
+    <span class="eyebrow" data-i18n="hero.eyebrow">Demo · fictitious workshop in Doha</span>
+    <h1><span data-i18n="hero.h1a">Expert care for your car,</span><span class="accent" data-i18n="hero.h1b">booked in a minute.</span></h1>
     <p class="hero-rot">
-      <span>Especialistas en</span>
-      <span class="rot"><b id="rotWord">mantenimiento</b></span>
+      <span data-i18n="hero.rotlead">Specialists in</span>
+      <span class="rot"><b id="rotWord" data-i18n="hero.rot0" data-i18n-attr="data-words:hero.rotwords" data-words="maintenance|diagnostics|brakes|tyres|air conditioning">maintenance</b></span>
     </p>
-    <p class="hero-desc">Más de <strong>30 años</strong> reparando coches en Madrid. Mecánica, electrónica y neumáticos en un solo taller, con <strong>presupuesto cerrado antes de tocar</strong> y garantía por escrito. Eliges día y hora en el chat y la cita queda hecha.</p>
+    <p class="hero-desc" data-i18n-html="hero.desc">Mechanics, electronics, tyres and air conditioning under one roof. You get a <strong>written quote in QAR before any work starts</strong>, and you pick your day and time in the chat with Leo, our <strong>AI assistant</strong>.</p>
     <div class="hero-actions">
-      <button class="btn" type="button" data-leo><svg aria-hidden="true"><use href="#ic-calendar"/></svg>Reservar mi cita</button>
-      <a class="btn ghost" href="#servicios">Ver servicios</a>
+      <button class="btn" type="button" data-leo><svg aria-hidden="true"><use href="#ic-calendar"/></svg><span data-i18n="cta.bookMine">Book my visit</span></button>
+      <a class="btn ghost" href="#services" data-i18n="cta.seeServices">See services</a>
     </div>
     <div class="hero-stats">
-      <div class="stat"><div class="v">30<span class="u">+</span></div><div class="l">Años en Madrid, desde 1995</div></div>
-      <div class="stat"><div class="v">7</div><div class="l">Servicios con cita online</div></div>
-      <div class="stat"><div class="v">24<span class="u">h</span></div><div class="l">Grúa concertada</div></div>
-      <div class="stat"><div class="v">100<span class="u">%</span></div><div class="l">Presupuesto cerrado antes</div></div>
+      <div class="stat"><div class="v">7</div><div class="l" data-i18n="stat.1">Services you can book online</div></div>
+      <div class="stat"><div class="v" data-i18n="stat.2v">Sun–Thu</div><div class="l" data-i18n="stat.2">Open days · Fri &amp; Sat closed</div></div>
+      <div class="stat"><div class="v" data-i18n="stat.3v">QAR</div><div class="l" data-i18n="stat.3">Written quote before any work</div></div>
+      <div class="stat"><div class="v">24/7</div><div class="l" data-i18n="stat.4">Online booking with the AI assistant</div></div>
     </div>
   </div>
-  <p class="scroll-cue" aria-hidden="true"><span class="bar"></span>Scroll</p>
 </section>
 
 <!-- ===================== MARQUEE ===================== -->
 <div class="marquee-wrap" aria-hidden="true">
   <div class="marquee-track" id="marquee">
-    <span class="marquee-item"><b>30+</b> años de experiencia<span class="dot"></span></span>
-    <span class="marquee-item"><b>Presupuesto</b> cerrado antes de tocar<span class="dot"></span></span>
-    <span class="marquee-item"><b>Grúa 24h</b> concertada<span class="dot"></span></span>
-    <span class="marquee-item"><b>Garantía</b> por escrito<span class="dot"></span></span>
-    <span class="marquee-item"><b>Cita online</b> en un minuto<span class="dot"></span></span>
-    <span class="marquee-item"><b>Pre-ITV</b> punto por punto<span class="dot"></span></span>
-    <span class="marquee-item"><b>Piezas</b> de primera marca<span class="dot"></span></span>
+    <span class="marquee-item"><b data-i18n="mq.1b">Written quote</b> <span data-i18n="mq.1">before any work</span><span class="dot"></span></span>
+    <span class="marquee-item"><b data-i18n="mq.2b">Real free slots</b> <span data-i18n="mq.2">from the calendar</span><span class="dot"></span></span>
+    <span class="marquee-item"><b data-i18n="mq.3b">English &amp; Arabic</b> <span data-i18n="mq.3">in the same chat</span><span class="dot"></span></span>
+    <span class="marquee-item"><b data-i18n="mq.4b">Open</b> <span data-i18n="mq.4">Sunday to Thursday</span><span class="dot"></span></span>
+    <span class="marquee-item"><b data-i18n="mq.5b">A/C checks</b> <span data-i18n="mq.5">ready for summer</span><span class="dot"></span></span>
+    <span class="marquee-item"><b data-i18n="mq.6b">AI assistant</b> <span data-i18n="mq.6">that hands over to a person</span><span class="dot"></span></span>
   </div>
 </div>
 
 <!-- ===================== EL TALLER ===================== -->
-<section class="sec" id="taller">
-  <span class="bignum" style="left:-2vw;top:30px" aria-hidden="true">01</span>
+<section class="sec" id="workshop">
+  <span class="bignum s" aria-hidden="true">01</span>
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow">El taller</span>
-      <h2>Mecánica bien hecha,<br>explicada de verdad</h2>
+      <span class="eyebrow" data-i18n="ws.eyebrow">The workshop</span>
+      <h2 data-i18n="ws.h2">Careful work, explained clearly</h2>
     </div>
     <div class="about-grid">
       <div class="about-copy reveal">
-        <p>Lo que empezó como un <strong>taller de barrio en 1995</strong> es hoy un equipo especializado con equipo de diagnosis de última generación. Sin perder lo que somos: cercanos, honestos y con conocimiento de causa.</p>
-        <p>Cada reparación parte de un <strong>diagnóstico claro</strong> y un presupuesto cerrado antes de tocar nada. No hacemos nada sin tu visto bueno, así que no hay sorpresas al recoger.</p>
-        <p>Mecánicos con décadas de experiencia real, piezas de primera marca y <strong>garantía por escrito</strong> en cada intervención. Trabajamos con todas las aseguradoras y disponemos de grúa concertada 24 horas.</p>
+        <p data-i18n-html="ws.p1"><strong>Example Garage is a fictitious workshop.</strong> It exists to show how an AI assistant can take bookings for a real business: the name, address and phone number on this page are sample data.</p>
+        <p data-i18n-html="ws.p2">Every job starts with a <strong>clear diagnosis</strong> and a written quote in QAR. Nothing is done without your approval, so there are no surprises when you collect your car.</p>
+        <p data-i18n-html="ws.p3">Mechanics, diagnostics, tyres and air conditioning in one place, with the schedule run by Leo, our <strong>AI assistant</strong>, in English and Arabic.</p>
       </div>
       <div class="about-media reveal">
         <div class="framed">
@@ -384,138 +203,140 @@ header.nav.scrolled::after{border-bottom-color:var(--line)}
             </svg>
           </div>
         </div>
-        <p class="tag-badge"><span>Taller</span>DESDE 1995</p>
+        <p class="tag-badge"><span data-i18n="ws.badgeS">Workshop</span><b data-i18n="ws.badge">Doha · Demo</b></p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===================== SERVICIOS ===================== -->
-<section class="sec sec--alt" id="servicios">
-  <span class="bignum" style="right:-2vw;top:20px" aria-hidden="true">02</span>
+<!-- ===================== SERVICIOS =====================
+     data-svc es el id estable del servicio: leo.js lo usa para saltarse la
+     pregunta inicial cuando se entra desde una tarjeta, en cualquier idioma. -->
+<section class="sec sec--alt" id="services">
+  <span class="bignum e" aria-hidden="true">02</span>
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow">Servicios</span>
-      <h2>Todo lo que tu<br>coche necesita</h2>
-      <p>Siete servicios con cita online. Eliges día y hora entre los huecos libres de verdad y la cita queda escrita en la agenda del taller. Precios orientativos: el definitivo sale del presupuesto cerrado.</p>
+      <span class="eyebrow" data-i18n="svc.eyebrow">Services</span>
+      <h2 data-i18n="svc.h2">Everything your car needs</h2>
+      <p data-i18n="svc.lead">Seven services you can book online. You choose a day and time from the slots that are really free, and the booking goes straight into the workshop calendar. Prices are given in a written quote in QAR after inspection, never as a fixed price online.</p>
     </div>
     <div class="svc-grid">
 
       <article class="svc-card reveal">
         <div class="svc-media">
-          <img class="svc-img" src="assets/img/car-1.svg" alt="Ilustración: Cupé deportivo azul" width="600" height="260" loading="lazy" decoding="async">
+          <img class="svc-img" src="assets/img/car-1.svg" alt="Illustration of a blue sports coupe" data-i18n-attr="alt:svc.oil.alt" width="600" height="260" loading="lazy" decoding="async">
           <div class="svc-shade"></div>
           <span class="svc-badge" aria-hidden="true"><svg><use href="#ic-oil"/></svg></span>
         </div>
         <div class="svc-body">
-          <h3>Cambio de aceite</h3>
-          <p class="svc-desc">Aceite y filtro de primera marca, con reciclado del usado. De paso repasamos niveles, luces y presión de neumáticos.</p>
-          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg>45 minutos</p>
+          <h3 data-i18n="svc.oil.t">Oil change</h3>
+          <p class="svc-desc" data-i18n="svc.oil.d">Engine oil and filter to the manufacturer's specification, with the old oil recycled. We also check fluid levels, lights and tyre pressure.</p>
+          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg><span data-i18n="dur.45">45 minutes</span></p>
           <div class="svc-foot">
-            <p class="svc-price">49 € <small>desde</small></p>
-            <button class="svc-cta" type="button" data-leo data-servicio="Cambio de aceite">Reservar<svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
+            <p class="svc-price" data-i18n="svc.quote">Quote in QAR</p>
+            <button class="svc-cta" type="button" data-leo data-svc="oil"><span data-i18n="cta.bookShort">Book</span><svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
           </div>
         </div>
       </article>
 
       <article class="svc-card reveal">
         <div class="svc-media">
-          <img class="svc-img" src="assets/img/car-2.svg" alt="Ilustración: SUV de lujo plata" width="600" height="260" loading="lazy" decoding="async">
+          <img class="svc-img" src="assets/img/car-2.svg" alt="Illustration of a silver luxury SUV" data-i18n-attr="alt:svc.service.alt" width="600" height="260" loading="lazy" decoding="async">
           <div class="svc-shade"></div>
           <span class="svc-badge" aria-hidden="true"><svg><use href="#ic-shield"/></svg></span>
         </div>
         <div class="svc-body">
-          <h3>Revisión general</h3>
-          <p class="svc-desc">Frenos, suspensión, niveles, correas, batería, luces y neumáticos. Sale un informe con lo que está bien y lo que hay que tocar.</p>
-          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg>1 hora</p>
+          <h3 data-i18n="svc.service.t">General service</h3>
+          <p class="svc-desc" data-i18n="svc.service.d">Brakes, suspension, fluids, belts, battery, lights and tyres, with a short report of what is fine and what needs attention.</p>
+          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg><span data-i18n="dur.60">1 hour</span></p>
           <div class="svc-foot">
-            <p class="svc-price">89 € <small>desde</small></p>
-            <button class="svc-cta" type="button" data-leo data-servicio="Revisión general">Reservar<svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
+            <p class="svc-price" data-i18n="svc.quote">Quote in QAR</p>
+            <button class="svc-cta" type="button" data-leo data-svc="service"><span data-i18n="cta.bookShort">Book</span><svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
           </div>
         </div>
       </article>
 
       <article class="svc-card reveal">
         <div class="svc-media">
-          <img class="svc-img" src="assets/img/car-3.svg" alt="Ilustración: Berlina de lujo dorada" width="600" height="260" loading="lazy" decoding="async">
+          <img class="svc-img" src="assets/img/car-3.svg" alt="Illustration of a gold luxury saloon" data-i18n-attr="alt:svc.inspect.alt" width="600" height="260" loading="lazy" decoding="async">
           <div class="svc-shade"></div>
           <span class="svc-badge" aria-hidden="true"><svg><use href="#ic-clipboard"/></svg></span>
         </div>
         <div class="svc-body">
-          <h3>Pre-ITV</h3>
-          <p class="svc-desc">Comprobamos los mismos puntos que mira la inspección: luces, frenos, emisiones, holguras y neumáticos.</p>
-          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg>45 minutos</p>
+          <h3 data-i18n="svc.inspect.t">Pre-purchase inspection</h3>
+          <p class="svc-desc" data-i18n="svc.inspect.d">Thinking of buying a used car? We check the bodywork, engine, gearbox and electronics and take it for a road test before you decide.</p>
+          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg><span data-i18n="dur.60">1 hour</span></p>
           <div class="svc-foot">
-            <p class="svc-price">39 € <small>desde</small></p>
-            <button class="svc-cta" type="button" data-leo data-servicio="Pre-ITV">Reservar<svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
+            <p class="svc-price" data-i18n="svc.quote">Quote in QAR</p>
+            <button class="svc-cta" type="button" data-leo data-svc="inspect"><span data-i18n="cta.bookShort">Book</span><svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
           </div>
         </div>
       </article>
 
       <article class="svc-card reveal">
         <div class="svc-media">
-          <img class="svc-img" src="assets/img/car-4.svg" alt="Ilustración: Gran turismo azul noche" width="600" height="260" loading="lazy" decoding="async">
+          <img class="svc-img" src="assets/img/car-4.svg" alt="Illustration of a dark blue grand tourer" data-i18n-attr="alt:svc.tyres.alt" width="600" height="260" loading="lazy" decoding="async">
           <div class="svc-shade"></div>
           <span class="svc-badge" aria-hidden="true"><svg><use href="#ic-tire"/></svg></span>
         </div>
         <div class="svc-body">
-          <h3>Neumáticos</h3>
-          <p class="svc-desc">Montaje, equilibrado y alineación, con primeras marcas y opciones más económicas. Te contamos la diferencia real entre ellas.</p>
-          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg>45 minutos</p>
+          <h3 data-i18n="svc.tyres.t">Tyres</h3>
+          <p class="svc-desc" data-i18n="svc.tyres.d">Fitting, balancing and alignment. We explain the real difference between the options available for your car.</p>
+          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg><span data-i18n="dur.45">45 minutes</span></p>
           <div class="svc-foot">
-            <p class="svc-price">59 € <small>desde</small></p>
-            <button class="svc-cta" type="button" data-leo data-servicio="Neumáticos">Reservar<svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
+            <p class="svc-price" data-i18n="svc.quote">Quote in QAR</p>
+            <button class="svc-cta" type="button" data-leo data-svc="tyres"><span data-i18n="cta.bookShort">Book</span><svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
           </div>
         </div>
       </article>
 
       <article class="svc-card reveal">
         <div class="svc-media">
-          <img class="svc-img" src="assets/img/car-5.svg" alt="Ilustración: Superdeportivo blanco perla" width="600" height="260" loading="lazy" decoding="async">
+          <img class="svc-img" src="assets/img/car-5.svg" alt="Illustration of a pearl white supercar" data-i18n-attr="alt:svc.brakes.alt" width="600" height="260" loading="lazy" decoding="async">
           <div class="svc-shade"></div>
           <span class="svc-badge" aria-hidden="true"><svg><use href="#ic-disc"/></svg></span>
         </div>
         <div class="svc-body">
-          <h3>Frenos</h3>
-          <p class="svc-desc">Pastillas, discos y revisión del circuito completo con piezas de primera marca. Reservamos dos horas para probar el coche después.</p>
-          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg>2 horas</p>
+          <h3 data-i18n="svc.brakes.t">Brakes</h3>
+          <p class="svc-desc" data-i18n="svc.brakes.d">Pads, discs and a full check of the braking system, with time set aside for a road test afterwards.</p>
+          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg><span data-i18n="dur.120">2 hours</span></p>
           <div class="svc-foot">
-            <p class="svc-price">99 € <small>desde</small></p>
-            <button class="svc-cta" type="button" data-leo data-servicio="Frenos">Reservar<svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
+            <p class="svc-price" data-i18n="svc.quote">Quote in QAR</p>
+            <button class="svc-cta" type="button" data-leo data-svc="brakes"><span data-i18n="cta.bookShort">Book</span><svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
           </div>
         </div>
       </article>
 
       <article class="svc-card reveal">
         <div class="svc-media">
-          <img class="svc-img" src="assets/img/car-6.svg" alt="Ilustración: Cupé bronce" width="600" height="260" loading="lazy" decoding="async">
+          <img class="svc-img" src="assets/img/car-6.svg" alt="Illustration of a bronze coupe" data-i18n-attr="alt:svc.diag.alt" width="600" height="260" loading="lazy" decoding="async">
           <div class="svc-shade"></div>
           <span class="svc-badge" aria-hidden="true"><svg><use href="#ic-screen"/></svg></span>
         </div>
         <div class="svc-body">
-          <h3>Diagnosis electrónica</h3>
-          <p class="svc-desc">Lectura de centralitas con equipo OBD: testigos del cuadro, fallos eléctricos y averías intermitentes, explicadas sin tecnicismos.</p>
-          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg>1 hora</p>
+          <h3 data-i18n="svc.diag.t">Computer diagnostics</h3>
+          <p class="svc-desc" data-i18n="svc.diag.d">Warning lights, electrical faults and intermittent problems read from the car's control units and explained in plain words.</p>
+          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg><span data-i18n="dur.60">1 hour</span></p>
           <div class="svc-foot">
-            <p class="svc-price">45 € <small>desde</small></p>
-            <button class="svc-cta" type="button" data-leo data-servicio="Diagnosis electrónica">Reservar<svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
+            <p class="svc-price" data-i18n="svc.quote">Quote in QAR</p>
+            <button class="svc-cta" type="button" data-leo data-svc="diag"><span data-i18n="cta.bookShort">Book</span><svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
           </div>
         </div>
       </article>
 
       <article class="svc-card reveal">
         <div class="svc-media">
-          <img class="svc-img" src="assets/img/car-7.svg" alt="Ilustración: SUV negro" width="600" height="260" loading="lazy" decoding="async">
+          <img class="svc-img" src="assets/img/car-7.svg" alt="Illustration of a black SUV" data-i18n-attr="alt:svc.ac.alt" width="600" height="260" loading="lazy" decoding="async">
           <div class="svc-shade"></div>
           <span class="svc-badge" aria-hidden="true"><svg><use href="#ic-snow"/></svg></span>
         </div>
         <div class="svc-body">
-          <h3>Aire acondicionado</h3>
-          <p class="svc-desc">Revisión del circuito, comprobación de fugas, filtro de habitáculo y recarga de gas. Si sopla pero no enfría, casi siempre es esto.</p>
-          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg>1 hora</p>
+          <h3 data-i18n="svc.ac.t">Air conditioning</h3>
+          <p class="svc-desc" data-i18n="svc.ac.d">Leak check, cabin filter and refrigerant recharge. If it blows but does not cool, this is usually where to start.</p>
+          <p class="svc-meta"><svg aria-hidden="true"><use href="#ic-clock"/></svg><span data-i18n="dur.60">1 hour</span></p>
           <div class="svc-foot">
-            <p class="svc-price">55 € <small>desde</small></p>
-            <button class="svc-cta" type="button" data-leo data-servicio="Aire acondicionado">Reservar<svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
+            <p class="svc-price" data-i18n="svc.quote">Quote in QAR</p>
+            <button class="svc-cta" type="button" data-leo data-svc="ac"><span data-i18n="cta.bookShort">Book</span><svg aria-hidden="true"><use href="#ic-arrow"/></svg></button>
           </div>
         </div>
       </article>
@@ -525,255 +346,205 @@ header.nav.scrolled::after{border-bottom-color:var(--line)}
 </section>
 
 <!-- ===================== PROCESO ===================== -->
-<section class="sec" id="proceso">
-  <span class="bignum" style="left:-2vw;top:30px" aria-hidden="true">03</span>
+<section class="sec" id="process">
+  <span class="bignum s" aria-hidden="true">03</span>
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow">Cómo trabajamos</span>
-      <h2>Sin sorpresas<br>en la factura</h2>
-      <p>Presupuesto cerrado antes de tocar tu coche. Así de claro.</p>
+      <span class="eyebrow" data-i18n="pr.eyebrow">How we work</span>
+      <h2 data-i18n="pr.h2">No surprises on the invoice</h2>
+      <p data-i18n="pr.lead">A written quote before we touch your car. That simple.</p>
     </div>
     <div class="proc-grid">
-      <div class="proc-c reveal"><span class="n" aria-hidden="true">01</span><span class="ic" aria-hidden="true"><svg><use href="#ic-car"/></svg></span><h3>Traes el coche</h3><p>O pedimos la grúa si está parado. Con cita previa tienes hueco garantizado, sin esperas.</p></div>
-      <div class="proc-c reveal"><span class="n" aria-hidden="true">02</span><span class="ic" aria-hidden="true"><svg><use href="#ic-search"/></svg></span><h3>Diagnóstico</h3><p>Revisamos el vehículo y detectamos qué necesita. Te lo explicamos en lenguaje normal, sin tecnicismos.</p></div>
-      <div class="proc-c reveal"><span class="n" aria-hidden="true">03</span><span class="ic" aria-hidden="true"><svg><use href="#ic-clipboard"/></svg></span><h3>Presupuesto cerrado</h3><p>Precio final antes de empezar. Nada de sorpresas al recoger: no tocamos nada sin tu visto bueno.</p></div>
-      <div class="proc-c reveal"><span class="n" aria-hidden="true">04</span><span class="ic" aria-hidden="true"><svg><use href="#ic-shield"/></svg></span><h3>Recogida con garantía</h3><p>Te avisamos cuando esté listo. Garantía por escrito en cada reparación y pago al recoger.</p></div>
+      <div class="proc-c reveal"><span class="n" aria-hidden="true">01</span><span class="ic" aria-hidden="true"><svg><use href="#ic-car"/></svg></span><h3 data-i18n="pr.1t">Bring your car</h3><p data-i18n="pr.1">Book a slot first and your car goes in at the agreed time, without waiting in line.</p></div>
+      <div class="proc-c reveal"><span class="n" aria-hidden="true">02</span><span class="ic" aria-hidden="true"><svg><use href="#ic-search"/></svg></span><h3 data-i18n="pr.2t">Diagnosis</h3><p data-i18n="pr.2">We inspect the car and find what it needs, then explain it in plain language.</p></div>
+      <div class="proc-c reveal"><span class="n" aria-hidden="true">03</span><span class="ic" aria-hidden="true"><svg><use href="#ic-clipboard"/></svg></span><h3 data-i18n="pr.3t">Written quote</h3><p data-i18n="pr.3">The price in QAR before work starts. Nothing is done without your approval.</p></div>
+      <div class="proc-c reveal"><span class="n" aria-hidden="true">04</span><span class="ic" aria-hidden="true"><svg><use href="#ic-check"/></svg></span><h3 data-i18n="pr.4t">Collection</h3><p data-i18n="pr.4">We let you know when it is ready, and you pay when you collect it.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ===================== ASISTENTE ===================== -->
-<section class="sec sec--alt" id="asistente">
-  <span class="bignum" style="right:-2vw;top:20px" aria-hidden="true">04</span>
+<section class="sec sec--alt" id="assistant">
+  <span class="bignum e" aria-hidden="true">04</span>
   <div class="wrap">
     <div class="nos-grid">
       <div class="nos-copy reveal">
-        <span class="eyebrow">Agente IA</span>
-        <h2 style="margin-top:18px;font-size:clamp(2rem,4.6vw,3.2rem)">Leo te da la cita<br>sin llamar a nadie</h2>
-        <p>Leo es el asistente del taller. Le dices qué necesita el coche, te cuenta en qué consiste y te pide solo el nombre y el teléfono. <strong>Después</strong> te enseña los huecos que están libres de verdad.</p>
-        <p>Cuando eliges hora, la cita <strong>se escribe en la agenda del taller al momento</strong> y te queda un resguardo con la fecha, la hora y el servicio. Si luego te cambia el plan, el propio chat la mueve o la cancela.</p>
-        <button class="btn" type="button" data-leo style="margin-top:22px"><svg aria-hidden="true"><use href="#ic-chat"/></svg>Probar el asistente</button>
+        <span class="eyebrow" data-i18n="as.eyebrow">AI assistant</span>
+        <h2 class="as-h2" data-i18n="as.h2">Leo books your visit without a phone call</h2>
+        <p data-i18n-html="as.p1">Leo is the workshop's <strong>AI assistant</strong>. Tell it what your car needs, in English or Arabic, and it asks only for your name and a Qatar mobile number. <strong>Then</strong> it shows you the slots that are actually free.</p>
+        <p data-i18n-html="as.p2">When you pick a time, the booking is <strong>written into the workshop calendar</strong> and you get a summary with the date, time and service. If you would rather speak to a person, Leo passes your details to the team.</p>
+        <button class="btn as-btn" type="button" data-leo><svg aria-hidden="true"><use href="#ic-chat"/></svg><span data-i18n="cta.try">Try the assistant</span></button>
       </div>
       <div class="check-list reveal">
-        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-calendar"/></svg></span><div><b>Huecos reales, no inventados</b><span>Los pide a la agenda: si está ocupado, no aparece.</span></div></div>
-        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-check"/></svg></span><div><b>La cita queda hecha</b><span>Sin «pendiente de confirmación»: sale escrita en el momento.</span></div></div>
-        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-clock"/></svg></span><div><b>Cambiar o cancelar en el chat</b><span>Con tu teléfono y tu nombre, sin llamar al taller.</span></div></div>
-        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-bolt"/></svg></span><div><b>El taller se entera al instante</b><span>Cada cita y cada cambio le llegan como aviso inmediato.</span></div></div>
+        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-calendar"/></svg></span><div><b data-i18n="as.c1t">Real slots, not guesses</b><span data-i18n="as.c1">They come from the calendar: if a time is taken, it is not offered.</span></div></div>
+        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-check"/></svg></span><div><b data-i18n="as.c2t">Booked on the spot</b><span data-i18n="as.c2">No “pending confirmation”: the slot is yours as soon as you choose it.</span></div></div>
+        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-globe"/></svg></span><div><b data-i18n="as.c3t">English and Arabic</b><span data-i18n="as.c3">Write in either language and Leo answers in the same one.</span></div></div>
+        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-bolt"/></svg></span><div><b data-i18n="as.c4t">The workshop is told straight away</b><span data-i18n="as.c4">Every new booking reaches the team as an instant alert.</span></div></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===================== POR QUÉ ===================== -->
-<section class="sec" id="nosotros">
-  <span class="bignum" style="left:-2vw;top:20px" aria-hidden="true">05</span>
+<section class="sec" id="why">
+  <span class="bignum s" aria-hidden="true">05</span>
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow">Por qué el taller</span>
-      <h2>Un taller familiar<br>con tecnología de hoy</h2>
+      <span class="eyebrow" data-i18n="why.eyebrow">Why this workshop</span>
+      <h2 data-i18n="why.h2">We explain first, then we quote</h2>
     </div>
     <div class="why-grid">
-      <div class="why-c reveal"><span class="ic" aria-hidden="true"><svg><use href="#ic-shield"/></svg></span><h3>Presupuesto cerrado</h3><p>Precio claro antes de tocar nada. Sin cargos ocultos ni piezas innecesarias.</p></div>
-      <div class="why-c reveal"><span class="ic" aria-hidden="true"><svg><use href="#ic-clipboard"/></svg></span><h3>Garantía por escrito</h3><p>Cada reparación con garantía documentada y piezas de primera marca.</p></div>
-      <div class="why-c reveal"><span class="ic" aria-hidden="true"><svg><use href="#ic-screen"/></svg></span><h3>Diagnosis avanzada</h3><p>Equipo OBD y herramientas de última generación para localizar la avería a la primera.</p></div>
-      <div class="why-c reveal"><span class="ic" aria-hidden="true"><svg><use href="#ic-bolt"/></svg></span><h3>Grúa 24h y cita rápida</h3><p>Grúa concertada disponible y reserva online eligiendo día y hora, sin llamadas eternas.</p></div>
-    </div>
-    <div class="nos-grid">
-      <div class="nos-copy reveal">
-        <span class="eyebrow">Nuestro compromiso</span>
-        <p style="margin-top:18px">No hay un mecánico para todo. Cada coche pasa por quien mejor domina su área, con el mismo criterio de siempre: <strong>solo se sustituye lo necesario</strong>.</p>
-        <p>Cercanos, honestos y con conocimiento de causa. Ese es el trato de barrio de 1995, ahora con la tecnología de hoy.</p>
-      </div>
-      <div class="check-list reveal">
-        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-check"/></svg></span><div><b>Presupuesto antes de tocar</b><span>Lo apruebas tú: no hacemos nada sin tu visto bueno.</span></div></div>
-        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-shield"/></svg></span><div><b>Garantía en cada reparación</b><span>Piezas de primera marca y garantía por escrito.</span></div></div>
-        <div class="check-row"><span class="ic" aria-hidden="true"><svg><use href="#ic-truck"/></svg></span><div><b>Grúa concertada 24 horas</b><span>Si el coche no arranca, lo traemos nosotros.</span></div></div>
-      </div>
+      <div class="why-c reveal"><span class="ic" aria-hidden="true"><svg><use href="#ic-shield"/></svg></span><h3 data-i18n="why.1t">Written quote</h3><p data-i18n="why.1">A clear price in QAR before any work. No hidden charges, no unnecessary parts.</p></div>
+      <div class="why-c reveal"><span class="ic" aria-hidden="true"><svg><use href="#ic-search"/></svg></span><h3 data-i18n="why.2t">Clear diagnosis</h3><p data-i18n="why.2">We show you what we found and why it matters, without jargon.</p></div>
+      <div class="why-c reveal"><span class="ic" aria-hidden="true"><svg><use href="#ic-screen"/></svg></span><h3 data-i18n="why.3t">Computer diagnostics</h3><p data-i18n="why.3">Diagnostic equipment that reads the car's control units to locate faults.</p></div>
+      <div class="why-c reveal"><span class="ic" aria-hidden="true"><svg><use href="#ic-calendar"/></svg></span><h3 data-i18n="why.4t">Easy booking</h3><p data-i18n="why.4">Pick a day and time online, any time of day, without waiting on the phone.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ===================== ÁREAS ===================== -->
 <section class="sec sec--alt" id="areas">
-  <span class="bignum" style="right:-2vw;top:20px" aria-hidden="true">06</span>
+  <span class="bignum e" aria-hidden="true">06</span>
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow">Áreas del taller</span>
-      <h2>Cada coche,<br>con su especialidad</h2>
-      <p>Tres áreas de trabajo, cada una con su equipo y su equipación específica.</p>
+      <span class="eyebrow" data-i18n="ar.eyebrow">Workshop areas</span>
+      <h2 data-i18n="ar.h2">Every car, with the right specialist</h2>
+      <p data-i18n="ar.lead">Three work areas, each with its own team and equipment.</p>
     </div>
     <div class="areas-grid">
       <div class="area-c reveal">
         <span class="ic" aria-hidden="true"><svg><use href="#ic-wrench"/></svg></span>
-        <h3>Mecánica general</h3>
-        <p>Motor, distribución, embrague, frenos y suspensión. Averías complejas con presupuesto cerrado.</p>
+        <h3 data-i18n="ar.1t">Mechanical</h3>
+        <p data-i18n="ar.1">Engine, timing, clutch, brakes and suspension, always with a quote first.</p>
         <ul>
-          <li><svg aria-hidden="true"><use href="#ic-check"/></svg>Distribuciones y embragues</li>
-          <li><svg aria-hidden="true"><use href="#ic-check"/></svg>Frenos, suspensión y dirección</li>
-          <li><svg aria-hidden="true"><use href="#ic-check"/></svg>Revisión general y pre-ITV</li>
+          <li><svg aria-hidden="true"><use href="#ic-check"/></svg><span data-i18n="ar.1a">Timing belts and clutches</span></li>
+          <li><svg aria-hidden="true"><use href="#ic-check"/></svg><span data-i18n="ar.1b">Brakes, suspension and steering</span></li>
+          <li><svg aria-hidden="true"><use href="#ic-check"/></svg><span data-i18n="ar.1c">General service and pre-purchase checks</span></li>
         </ul>
       </div>
       <div class="area-c reveal">
         <span class="ic" aria-hidden="true"><svg><use href="#ic-screen"/></svg></span>
-        <h3>Electrónica y diagnosis</h3>
-        <p>Centralitas, fallos eléctricos y sistemas de asistencia. Diagnosis OBD de última generación.</p>
+        <h3 data-i18n="ar.2t">Electronics and diagnostics</h3>
+        <p data-i18n="ar.2">Control units, electrical faults and driver-assist systems.</p>
         <ul>
-          <li><svg aria-hidden="true"><use href="#ic-check"/></svg>Lectura y borrado de errores OBD</li>
-          <li><svg aria-hidden="true"><use href="#ic-check"/></svg>Codificación de centralitas</li>
-          <li><svg aria-hidden="true"><use href="#ic-check"/></svg>Testigos del cuadro y sistemas ADAS</li>
+          <li><svg aria-hidden="true"><use href="#ic-check"/></svg><span data-i18n="ar.2a">Reading and clearing fault codes</span></li>
+          <li><svg aria-hidden="true"><use href="#ic-check"/></svg><span data-i18n="ar.2b">Control unit coding</span></li>
+          <li><svg aria-hidden="true"><use href="#ic-check"/></svg><span data-i18n="ar.2c">Warning lights and driver-assist systems</span></li>
         </ul>
       </div>
       <div class="area-c reveal">
         <span class="ic" aria-hidden="true"><svg><use href="#ic-tire"/></svg></span>
-        <h3>Neumáticos y climatización</h3>
-        <p>Tren de rodaje y confort: ruedas, geometría y todo el circuito del aire acondicionado.</p>
+        <h3 data-i18n="ar.3t">Tyres and air conditioning</h3>
+        <p data-i18n="ar.3">Wheels, geometry and the whole air conditioning circuit.</p>
         <ul>
-          <li><svg aria-hidden="true"><use href="#ic-check"/></svg>Montaje, equilibrado y alineación</li>
-          <li><svg aria-hidden="true"><use href="#ic-check"/></svg>Recarga de gas y filtro de habitáculo</li>
-          <li><svg aria-hidden="true"><use href="#ic-check"/></svg>Búsqueda de fugas del circuito</li>
+          <li><svg aria-hidden="true"><use href="#ic-check"/></svg><span data-i18n="ar.3a">Fitting, balancing and alignment</span></li>
+          <li><svg aria-hidden="true"><use href="#ic-check"/></svg><span data-i18n="ar.3b">Refrigerant recharge and cabin filter</span></li>
+          <li><svg aria-hidden="true"><use href="#ic-check"/></svg><span data-i18n="ar.3c">Leak detection in the A/C circuit</span></li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===================== PRECIOS ===================== -->
-<section class="sec" id="precios">
-  <span class="bignum" style="left:-2vw;top:20px" aria-hidden="true">07</span>
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow">Precios orientativos</span>
-      <h2>Tarifas claras,<br>sin letra pequeña</h2>
-      <p>IVA incluido. Son cifras de referencia de una demo, no una oferta: el precio final se confirma siempre en el presupuesto cerrado, antes de empezar.</p>
-    </div>
-    <div class="precios-grid">
-      <div class="precio-card reveal">
-        <div class="ph"><span class="ic" aria-hidden="true"><svg><use href="#ic-oil"/></svg></span><h3>Mantenimiento</h3></div>
-        <p class="precio-row"><span class="k">Cambio de aceite</span><span class="v">desde 49 €</span></p>
-        <p class="precio-row"><span class="k">Revisión general</span><span class="v">desde 89 €</span></p>
-        <p class="precio-row"><span class="k">Pre-ITV</span><span class="v">desde 39 €</span></p>
-        <p class="precio-row"><span class="k">Aire acondicionado</span><span class="v">desde 55 €</span></p>
-        <p class="precio-row"><span class="k">Cambio de batería (+ batería)</span><span class="v">desde 90 €</span></p>
-      </div>
-      <div class="precio-card reveal">
-        <div class="ph"><span class="ic" aria-hidden="true"><svg><use href="#ic-disc"/></svg></span><h3>Frenos y seguridad</h3></div>
-        <p class="precio-row"><span class="k">Frenos: pastillas por eje</span><span class="v">desde 99 €</span></p>
-        <p class="precio-row"><span class="k">Discos + pastillas por eje</span><span class="v">desde 180 €</span></p>
-        <p class="precio-row"><span class="k">Amortiguador (unidad)</span><span class="v">desde 120 €</span></p>
-        <p class="precio-row"><span class="k">Distribución</span><span class="v">desde 350 €</span></p>
-        <p class="precio-row"><span class="k">Mecánica general</span><span class="v">desde 50 €/h</span></p>
-      </div>
-      <div class="precio-card reveal">
-        <div class="ph"><span class="ic" aria-hidden="true"><svg><use href="#ic-screen"/></svg></span><h3>Electrónica</h3></div>
-        <p class="precio-row"><span class="k">Diagnosis electrónica</span><span class="v">desde 45 €</span></p>
-        <p class="precio-row"><span class="k">Codificación de centralita</span><span class="v">desde 60 €</span></p>
-        <p class="precio-row"><span class="k">Sistema eléctrico general</span><span class="v">desde 50 €/h</span></p>
-      </div>
-      <div class="precio-card reveal">
-        <div class="ph"><span class="ic" aria-hidden="true"><svg><use href="#ic-tire"/></svg></span><h3>Neumáticos</h3></div>
-        <p class="precio-row"><span class="k">Neumático de turismo montado</span><span class="v">desde 59 €/ud</span></p>
-        <p class="precio-row"><span class="k">Alineación + equilibrado</span><span class="v">desde 50 €</span></p>
-        <p class="precio-row"><span class="k">Cambio de ruedas (4 ud)</span><span class="v">desde 20 €</span></p>
-      </div>
-    </div>
-    <p class="precios-note reveal">El diagnóstico se descuenta de la factura si la reparación se hace con nosotros.</p>
-  </div>
-</section>
-
 <!-- ===================== FAQ ===================== -->
-<section class="sec sec--alt" id="faq">
-  <span class="bignum" style="right:-2vw;top:20px" aria-hidden="true">08</span>
+<section class="sec" id="faq">
+  <span class="bignum s" aria-hidden="true">07</span>
   <div class="wrap">
     <div class="sec-head sec-head--center reveal">
-      <span class="eyebrow">Preguntas frecuentes</span>
-      <h2>Lo que más nos preguntan</h2>
+      <span class="eyebrow" data-i18n="faq.eyebrow">Frequently asked questions</span>
+      <h2 data-i18n="faq.h2">What people ask us most</h2>
     </div>
     <div class="faq">
       <div class="faq-item reveal">
-        <h3><button class="faq-q" type="button" aria-expanded="false">¿Cómo reservo una cita?<span class="pl" aria-hidden="true">+</span></button></h3>
-        <div class="faq-a"><div><p>Habla con Leo, el asistente de esta web. Eliges el servicio, dejas tu nombre y tu teléfono y después escoges día y hora entre los huecos que están libres de verdad. La cita queda escrita en la agenda del taller al instante.</p></div></div>
+        <h3><button class="faq-q" type="button" aria-expanded="false"><span data-i18n="faq.1q">How do I book a visit?</span><span class="pl" aria-hidden="true">+</span></button></h3>
+        <div class="faq-a"><div><p data-i18n="faq.1a">Chat with Leo, the AI assistant on this site. Choose the service, leave your name and a Qatar mobile number, then pick a day and time from the slots that are really free.</p></div></div>
       </div>
       <div class="faq-item reveal">
-        <h3><button class="faq-q" type="button" aria-expanded="false">¿Puedo cambiar o cancelar mi cita?<span class="pl" aria-hidden="true">+</span></button></h3>
-        <div class="faq-a"><div><p>Sí, desde el mismo chat. Elige «Cambiar o cancelar mi cita» y dile a Leo el teléfono con el que reservaste. Te enseña la cita y, confirmando el nombre, la mueve a otro hueco libre o la cancela en el momento.</p></div></div>
+        <h3><button class="faq-q" type="button" aria-expanded="false"><span data-i18n="faq.2q">Can I write to the assistant in Arabic?</span><span class="pl" aria-hidden="true">+</span></button></h3>
+        <div class="faq-a"><div><p data-i18n="faq.2a">Yes. Switch the site to Arabic or simply write in Arabic, and Leo answers in the same language.</p></div></div>
       </div>
       <div class="faq-item reveal">
-        <h3><button class="faq-q" type="button" aria-expanded="false">¿Dais presupuesto antes de reparar?<span class="pl" aria-hidden="true">+</span></button></h3>
-        <div class="faq-a"><div><p>Sí. Presupuesto cerrado antes de tocar el coche. No hacemos nada sin tu visto bueno y no hay sorpresas al recoger.</p></div></div>
+        <h3><button class="faq-q" type="button" aria-expanded="false"><span data-i18n="faq.3q">Do you give a quote before repairs?</span><span class="pl" aria-hidden="true">+</span></button></h3>
+        <div class="faq-a"><div><p data-i18n="faq.3a">Yes. You get a written quote in QAR after inspection and before any work starts. Nothing is done without your approval.</p></div></div>
       </div>
       <div class="faq-item reveal">
-        <h3><button class="faq-q" type="button" aria-expanded="false">¿Qué horario tenéis?<span class="pl" aria-hidden="true">+</span></button></h3>
-        <div class="faq-a"><div><p>De lunes a viernes de 8:00 a 14:00 y de 16:00 a 19:00, y los sábados de 9:00 a 14:00. Los domingos está cerrado.</p></div></div>
+        <h3><button class="faq-q" type="button" aria-expanded="false"><span data-i18n="faq.4q">What are the opening hours?</span><span class="pl" aria-hidden="true">+</span></button></h3>
+        <div class="faq-a"><div><p data-i18n="faq.4a">Sunday to Thursday, 08:00 to 18:00. Friday and Saturday closed. These are sample hours for this demo.</p></div></div>
       </div>
       <div class="faq-item reveal">
-        <h3><button class="faq-q" type="button" aria-expanded="false">¿Tenéis servicio de grúa?<span class="pl" aria-hidden="true">+</span></button></h3>
-        <div class="faq-a"><div><p>Sí, disponemos de grúa concertada 24 horas para coches parados o averías en carretera.</p></div></div>
+        <h3><button class="faq-q" type="button" aria-expanded="false"><span data-i18n="faq.5q">Do you show prices online?</span><span class="pl" aria-hidden="true">+</span></button></h3>
+        <div class="faq-a"><div><p data-i18n="faq.5a">No. Every car is different, so the price is given in a written quote in QAR after inspection.</p></div></div>
       </div>
       <div class="faq-item reveal">
-        <h3><button class="faq-q" type="button" aria-expanded="false">¿Ofrecéis garantía en las reparaciones?<span class="pl" aria-hidden="true">+</span></button></h3>
-        <div class="faq-a"><div><p>Sí, garantía por escrito en cada reparación y piezas de primera marca.</p></div></div>
+        <h3><button class="faq-q" type="button" aria-expanded="false"><span data-i18n="faq.6q">Am I talking to a person?</span><span class="pl" aria-hidden="true">+</span></button></h3>
+        <div class="faq-a"><div><p data-i18n="faq.6a">Leo is an AI assistant. If you prefer a person, ask Leo and it passes your details to the team.</p></div></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===================== CONTACTO ===================== -->
-<section class="sec contacto" id="contacto">
+<section class="sec contacto" id="contact">
   <div class="wrap">
     <div class="contact-grid">
       <div>
-        <div class="sec-head reveal" style="margin-bottom:10px">
-          <span class="eyebrow">Contacto</span>
-          <h2>Estamos<br>en Madrid</h2>
+        <div class="sec-head reveal">
+          <span class="eyebrow" data-i18n="ct.eyebrow">Contact</span>
+          <h2 data-i18n="ct.h2">Find us in Doha</h2>
         </div>
         <div class="contact-info reveal">
-          <div class="cinfo"><p class="k">Dirección</p><p class="val">Calle Mecánicos 45<br>Polígono Industrial · 28010 Madrid</p></div>
-          <div class="cinfo"><p class="k">Teléfono</p><p class="val"><a href="#contacto">Por confirmar</a></p></div>
-          <div class="cinfo"><p class="k">Horario</p><p class="val">L–V 8:00–14:00 y 16:00–19:00<br>Sábado 9:00–14:00 · Domingo cerrado</p></div>
-                  </div>
+          <div class="cinfo"><p class="k" data-i18n="ct.addrK">Address</p><p class="val" data-i18n-html="ct.addr">Industrial Area, Doha, Qatar<br><small>Sample address</small></p></div>
+          <div class="cinfo"><p class="k" data-i18n="ct.phoneK">Phone</p><p class="val"><span dir="ltr">+974 0000 0000</span><br><small data-i18n="ct.phoneNote">Sample number</small></p></div>
+          <div class="cinfo"><p class="k" data-i18n="ct.hoursK">Hours</p><p class="val" data-i18n-html="ct.hours">Sun–Thu 08:00–18:00<br>Fri &amp; Sat closed</p></div>
+        </div>
       </div>
       <div class="contact-cta reveal">
-        <h3>Reserva tu cita</h3>
-        <p>Cuéntale a Leo qué necesita tu coche y elige día y hora. La cita queda hecha en el momento, sin esperar a que te llamemos.</p>
-        <button class="btn block" type="button" data-leo><svg aria-hidden="true"><use href="#ic-chat"/></svg>Hablar con Leo</button>
-        <p class="grua"><svg aria-hidden="true"><use href="#ic-truck"/></svg>Grúa concertada disponible 24 h</p>
+        <h3 data-i18n="ct.ctaT">Book your visit</h3>
+        <p data-i18n="ct.cta">Tell Leo what your car needs and pick a day and time. The booking is made on the spot, with no waiting for a call back.</p>
+        <button class="btn block" type="button" data-leo><svg aria-hidden="true"><use href="#ic-chat"/></svg><span data-i18n="cta.talk">Talk to Leo</span></button>
+        <p class="demo-note"><svg aria-hidden="true"><use href="#ic-shield"/></svg><span data-i18n="ct.demo">Fictitious business · demo data</span></p>
       </div>
     </div>
-    <footer class="foot">
-      <div class="foot-inner">
-        <span>© <span id="year">2026</span> Taller Ejemplo · Taller mecánico en Madrid desde 1995 · Demo</span>
-        <span class="foot-wm">Prototipo en desarrollo</span>
-      </div>
-    </footer>
   </div>
 </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <span>© <span id="year">2026</span> Example Garage · <span data-i18n="foot.l">Fictitious workshop for demonstration · Doha</span></span>
+    <span class="foot-wm" data-i18n="foot.r">Prototype in development</span>
+  </div>
+</footer>
 
 <!-- ===================== LEO ===================== -->
-<button id="leo-open" class="leo-btn" type="button" aria-label="Abrir el chat con Leo, asistente del taller">
+<button id="leo-open" class="leo-btn" type="button" aria-label="Open the chat with Leo, the workshop AI assistant" data-i18n-attr="aria-label:leo.open">
   <span class="pulse" aria-hidden="true"></span>
-  <svg aria-hidden="true"><use href="#ic-wrench"/></svg>
+  <svg aria-hidden="true"><use href="#ic-chat"/></svg>
 </button>
-<section id="leo" class="leo-panel" aria-label="Asistente del taller Leo" inert>
+<section id="leo" class="leo-panel" aria-label="Leo, the workshop AI assistant" data-i18n-attr="aria-label:leo.aria" inert>
   <div class="leo-head">
     <span class="leo-head__av" aria-hidden="true"><svg><use href="#ic-wrench"/></svg></span>
     <div>
       <b>Leo</b>
-      <small><span class="dot" aria-hidden="true"></span>Asistente · Taller Ejemplo</small>
+      <small><span class="dot" aria-hidden="true"></span><span data-i18n="leo.role">AI assistant · Example Garage</span></small>
     </div>
-    <button class="leo-head__close" type="button" aria-label="Cerrar chat"><svg aria-hidden="true"><use href="#ic-close"/></svg></button>
+    <button class="leo-head__close" type="button" aria-label="Close chat" data-i18n-attr="aria-label:leo.close"><svg aria-hidden="true"><use href="#ic-close"/></svg></button>
   </div>
   <div class="leo-body" role="log" aria-live="polite"></div>
   <div class="leo-quick"></div>
   <form class="leo-foot" autocomplete="off">
-    <label class="sr-only" for="leo-input">Escribe tu respuesta</label>
-    <input id="leo-input" type="text" name="mensaje" placeholder="Escribe tu respuesta…" disabled>
-    <button type="submit" aria-label="Enviar" disabled><svg aria-hidden="true"><use href="#ic-send"/></svg></button>
+    <label class="sr-only" for="leo-input" data-i18n="leo.inputLabel">Type your reply</label>
+    <input id="leo-input" type="text" name="message" maxlength="400" dir="auto" disabled>
+    <button type="submit" aria-label="Send" data-i18n-attr="aria-label:leo.send" disabled><svg aria-hidden="true"><use href="#ic-send"/></svg></button>
   </form>
-  <p class="leo-note">Tus datos solo se usan para gestionar tu cita.</p>
+  <p class="leo-note" data-i18n="leo.note">Demo · your details are only used to manage this booking.</p>
 </section>
 
-<script defer src="assets/js/main.js?v=9"></script>
-<script defer src="assets/js/leo.js?v=10"></script>
-<script src="assets/js/holo.js" defer></script>
+<!-- Sin defer a propósito: corre al terminar de parsear el body y antes del
+     primer pintado, así el árabe no parpadea en inglés. -->
+<script src="assets/js/i18n.js?v=1"></script>
+<script defer src="assets/js/main.js?v=10"></script>
+<script defer src="assets/js/leo.js?v=11"></script>
+<script defer src="assets/js/holo.js?v=2"></script>
 </body>
 </html>

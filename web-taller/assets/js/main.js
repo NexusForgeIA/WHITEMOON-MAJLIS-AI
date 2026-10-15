@@ -1,5 +1,5 @@
 /* =========================================================================
-   Taller Ejemplo — interacciones de la web
+   Example Garage — interacciones de la web
    Sin librerías externas (antes esto eran dos ficheros de GSAP desde CDN).
    Respeta prefers-reduced-motion.
    ========================================================================= */
@@ -85,11 +85,15 @@
   /* ---------- Palabra rotatoria del hero ----------
      No es contenido: el h1 ya dice lo importante. Con reduced-motion se
      queda con la primera palabra y no se programa ningún intervalo. */
+  /* Las palabras salen de data-words, que i18n.js reescribe al cambiar de
+     idioma: así la rotación sigue en el idioma que se ve. */
   const rot = $("#rotWord");
   if (rot && !reduced) {
-    const palabras = ["mantenimiento", "diagnosis", "frenos", "neumáticos", "aire acondicionado"];
     let i = 0;
+    document.addEventListener("langchange", () => { i = 0; });
     setInterval(() => {
+      const palabras = (rot.dataset.words || "").split("|").filter(Boolean);
+      if (palabras.length < 2) return;
       rot.classList.add("out");
       setTimeout(() => {
         i = (i + 1) % palabras.length;
@@ -125,17 +129,6 @@
       }
     }, { rootMargin: "0px 0px -10% 0px" });
     reveals.forEach((el) => io.observe(el));
-  }
-
-  /* ---------- Vídeo del hero ----------
-     Sin `autoplay` en el HTML a propósito: con autoplay el navegador se baja
-     el vídeo aunque el CSS lo esconda en móvil, y eso es un MP4 de 720p que
-     el visitante nunca llega a ver. Con preload="none" no se pide nada hasta
-     que se llama a play(), y solo se llama donde el vídeo se ve de verdad. */
-  const video = $(".hero-video");
-  if (video && !reduced && window.matchMedia("(min-width:769px)").matches) {
-    const p = video.play();
-    if (p && p.catch) p.catch(() => {});
   }
 
   /* ---------- Año del pie ---------- */
