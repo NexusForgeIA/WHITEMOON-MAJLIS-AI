@@ -19,8 +19,9 @@
    nombre, teléfono, día y hora. Lo que devuelve se vuelve a validar aquí y
    la hora solo se acepta si está entre los huecos reales.
 
-   Ninguna clave en este fichero: las funciones son públicas (--no-verify-jwt)
-   y escriben en la base de datos con sus propios secretos.
+   Ningún secreto en este fichero: majlis-cita es pública (--no-verify-jwt)
+   y escribe con la service role. La única clave aquí es la publicable,
+   que solo puede insertar leads en majlis_leads (RLS).
 
    Idioma: inglés o árabe según window.I18N (i18n.js). Si el visitante cambia
    de idioma a mitad, los mensajes nuevos salen en el idioma nuevo.
@@ -31,7 +32,10 @@
   /* Supabase de WhiteMoon; funciones públicas majlis-* (--no-verify-jwt). */
   const FN_BASE = "https://mlaqtniujnvfxcvcourm.supabase.co";
   const CITA_FN = FN_BASE + "/functions/v1/majlis-cita";
-  const NOTIFY_FN = FN_BASE + "/functions/v1/majlis-notify";
+  const LEADS_URL = FN_BASE + "/rest/v1/majlis_leads";
+  /* Clave publicable (pública por diseño): solo permite lo que RLS deja a
+     anon, que aquí es insertar un lead. No es un secreto. */
+  const PUBLISHABLE_KEY = "sb_publishable_6no6BuOgiA_2nonTJntAuQ_DTqEgrcV";
   const BUSINESS = "Example Garage";
   const TZ = "Asia/Qatar";
   const DIAS_VISTA = 60;
@@ -269,10 +273,6 @@
 
   /* ---------- backend ---------- */
   const llama = async (payload) => {
-    if (!FN_BASE) {
-      console.warn("[leo] majlis-cita sin configurar");
-      return { _neterr: true };
-    }
     try {
       const r = await fetch(CITA_FN, {
         method: "POST",
@@ -702,39 +702,33 @@
   });
 
   /* ---------- envío del lead ----------
-     Un único aviso a `majlis-notify`, que guarda la fila en leads_web
-     (origen 'majlis-ai') y avisa al taller. Va por sendBeacon para que
-     sobreviva al cierre de la pestaña; el cuerpo viaja como text/plain para
-     no disparar un preflight CORS que sendBeacon no sabe hacer. */
+     Lead sin cita (prefiere que le llamen, la agenda no respondió o pidió
+     una persona): INSERT en majlis_leads con la clave PUBLICABLE. RLS solo
+     deja a anon insertar filas nuevas en esas columnas; leerlas solo puede
+     el dueño desde su panel. keepalive para sobrevivir al cierre de pestaña.
+     Si falla: console.warn y el chat sigue. */
   const enviarLead = async () => {
     if (enviado) return true;
     enviado = true;
-    const cuerpo = JSON.stringify({
+    const fila = {
       name: lead.name,
       phone: lead.phone,
-      service: lead.service || null,
-      date: lead.day ? isoDia(lead.day) : null,
-      time: lead.start ? horaDe(lead.start) : null,
+      service_id: lead.service || null,
+      pref_date: lead.day ? isoDia(lead.day) : null,
+      pref_time: lead.start ? horaDe(lead.start) : null,
       handoff: lead.handoff,
       lang: lang(),
-    });
-    if (!FN_BASE) { console.warn("[leo] majlis-notify sin configurar"); return false; }
+    };
     try {
-      if (navigator.sendBeacon &&
-          navigator.sendBeacon(NOTIFY_FN, new Blob([cuerpo], { type: "text/plain;charset=UTF-8" }))) {
-        return true;
-      }
-    } catch (e) { console.warn("[leo] sendBeacon:", e); }
-    try {
-      const r = await fetch(NOTIFY_FN, {
+      const r = await fetch(LEADS_URL, {
         method: "POST", keepalive: true,
-        headers: { "Content-Type": "text/plain;charset=UTF-8" },
-        body: cuerpo,
+        headers: { apikey: PUBLISHABLE_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify(fila),
       });
-      if (!r.ok) console.warn("[leo] majlis-notify:", r.status);
+      if (!r.ok) console.warn("[leo] majlis_leads:", r.status);
       return r.ok;
     } catch (e) {
-      console.warn("[leo] majlis-notify error:", e);
+      console.warn("[leo] majlis_leads error:", e);
       return false;
     }
   };

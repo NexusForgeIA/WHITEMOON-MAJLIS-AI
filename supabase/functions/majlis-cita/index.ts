@@ -12,7 +12,7 @@
 // confirmadas. El modelo de lenguaje solo interpreta texto libre: no da
 // huecos ni precios, y el cliente vuelve a validar todo contra `slots`.
 import Anthropic from "npm:@anthropic-ai/sdk@0.68.0";
-import { cleanName, cors, db, hoyDoha, json, normPhone, registraLead, TZ_OFFSET } from "../_shared/common.ts";
+import { cleanName, cors, db, hoyDoha, json, normPhone, TZ_OFFSET } from "../_shared/common.ts";
 
 const OPEN_MIN = 8 * 60;
 const CLOSE_MIN = 18 * 60;
@@ -50,7 +50,7 @@ async function huecos(svc: Service, date: string): Promise<string[]> {
   const dd = diasDesdeHoy(date);
   if (dd === null || dd < 0 || dd > MAX_DAYS || !laborable(date)) return [];
   const { data, error } = await db().from("majlis_bookings")
-    .select("start_at,end_at").eq("status", "confirmed")
+    .select("start_at,end_at").neq("status", "cancelled")
     .lt("start_at", isoAt(date, CLOSE_MIN)).gt("end_at", isoAt(date, OPEN_MIN));
   if (error) throw new Error(error.message);
   const ocupadas = (data ?? []).map((b) => [Date.parse(b.start_at), Date.parse(b.end_at)]);
@@ -194,10 +194,7 @@ Deno.serve(async (req) => {
         if (error.code === "23P01") return json({ ok: false, reason: "taken" });
         throw new Error(error.message);
       }
-      await registraLead({
-        name, phone, service: svc.name_en, date, time: start.slice(11, 16),
-        booked: true, handoff: false, lang,
-      });
+      // La cita aparece en el panel del dueño (majlis_bookings): no hay aviso externo.
       return json({ ok: true, booking_id: data.id });
     }
 
