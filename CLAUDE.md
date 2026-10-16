@@ -5,7 +5,7 @@ Objetivo inmediato: tener un MVP funcional para enseñar. Lo burocrático (QDB /
 
 ## Qué hay en el repo
 - `landing/` — landing bilingüe EN/AR (RTL) con demo funcional: chat de reservas por reglas + panel del dueño. HTML/CSS/JS sin frameworks. Textos en `app.js` (objeto `T`, claves en `data-i18n`).
-- `web-taller/` — web de taller de coches recoloreada (blanco, azul `#0b3d91`, dorado `#c9a227`), con tarjetas de coches y capa holográfica (`holo.js`, CSS `.hl`). En inglés con selector a árabe (RTL); negocio ficticio en Doha. El asistente `assets/js/leo.js` usa la Edge Function `majlis-cita`. Panel del dueño en `web-taller/panel/` (Supabase Auth; acceso con `app_metadata.majlis_role = 'owner'`).
+- `web-taller/` — web de taller de coches en negro, rojo y dorado (`#0a0a0b`, `#c4161c`, `#c9a227`; titulares Playfair Display, cuerpo Sora, árabe IBM Plex Sans Arabic), con tarjetas de coches y capa holográfica (`holo.js`, CSS `.hl`). En inglés con selector a árabe (RTL); negocio ficticio en Doha. El asistente `assets/js/leo.js` usa la Edge Function `majlis-cita`. Panel del dueño en `web-taller/panel/` (Supabase Auth; acceso con `app_metadata.majlis_role = 'owner'`).
 
 ## Reglas (no negociables)
 1. **Mismo stack y reglas que WhiteMoon** (decidido por Cris, 2026-10-15). Este proyecto cuelga de WhiteMoon: HTML/CSS/JS vanilla, GitHub Pages, Supabase `mlaqtniujnvfxcvcourm`, Edge Functions, Claude `claude-haiku-4-5-20251001` y skills de `WHITEMOON-SKILLS-CLAUDE`. Aplican las reglas de WhiteMoon:
@@ -13,7 +13,7 @@ Objetivo inmediato: tener un MVP funcional para enseñar. Lo burocrático (QDB /
    - Leads en tabla propia `majlis_leads` (no en `leads_web`). **Sin avisos externos** (ni Telegram ni email, decidido por Cris 2026-10-15): el dueño ve citas y leads en su panel. Secretos en Supabase Secrets, **nunca** claves secretas en el cliente (la publicable sí, protegida por RLS).
    - Edge Functions públicas: `supabase functions deploy <nombre> --no-verify-jwt --project-ref mlaqtniujnvfxcvcourm`.
    - RLS en todas las tablas nuevas: INSERT anónimo solo donde haga falta; SELECT/UPDATE/DELETE solo `authenticated`. Toda VIEW con `security_invoker = on`. Ningún panel protegido con un gate en JS: login real con Supabase Auth.
-   - Diseño y SEO/GEO según las skills (en `web-taller/` rige la paleta blanco, azul y dorado de este repo).
+   - Diseño y SEO/GEO según las skills (en `web-taller/` rige la paleta **negro + rojo + dorado**, decidida por Cris el 2026-10-16: tokens en `:root` de `assets/css/style.css`. Rojo solo en CTA, estados y detalles, nunca como texto sobre negro; números y acentos en dorado; contraste AA).
 2. **Sin datos inventados:** nada de testimonios, cifras de rendimiento, "30 años", precios reales ni logos ajenos. Los negocios de las demos son ficticios y se etiquetan así.
    - **Excepción:** las cifras de ingresos, precios de servicios y planes que aparecen en el panel en modo demo son ficticias, viven solo en los datos de demo y se muestran siempre con la etiqueta 'Sample figures'. No se usan en la web pública ni en el modo real.
 3. **Sin marcas de coches** en imágenes, textos o logos; sin matrículas visibles.

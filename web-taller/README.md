@@ -1,6 +1,6 @@
 # Example Garage · web de taller (demo Majlis AI)
 
-Taller de coches **ficticio** en Doha, en inglés (por defecto) y árabe (RTL). Fondo blanco, azul `#0b3d91` y dorado `#c9a227`.
+Taller de coches **ficticio** en Doha, en inglés (por defecto) y árabe (RTL). Negro `#0a0a0b`, rojo `#c4161c` (CTA y estados) y dorado `#c9a227` (números y acentos); titulares en Playfair Display.
 
 - `index.html` · web pública. El inglés vive en el HTML; cada texto lleva `data-i18n`.
 - `assets/js/i18n.js` · diccionario árabe y selector EN/AR (`?lang=ar` lo fuerza). Las claves con `// AR-REVIEW` esperan revisión de un hablante nativo.
