@@ -9,7 +9,7 @@
 <title>Example Garage · Car workshop in Doha (demo)</title>
 <meta name="description" content="Demo of a fictitious car workshop in Doha: oil change, general service, pre-purchase inspection, tyres, brakes, diagnostics and air conditioning. Book a visit in English or Arabic with Leo, the AI assistant.">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0a0a0b">
 
 <meta name="geo.region" content="QA-DA">
 <meta name="geo.placename" content="Doha">
@@ -24,17 +24,18 @@
 <meta property="og:description" content="Fictitious workshop used to demo an AI booking assistant in English and Arabic.">
 <meta name="twitter:card" content="summary">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b3d91'/%3E%3Cpath d='M19.6 8.4a1.3 1.3 0 0 0 0 1.9l2.1 2.1a1.3 1.3 0 0 0 1.9 0l5-5a8 8 0 0 1-10.6 10.6l-9.2 9.2a2.8 2.8 0 0 1-4-4l9.2-9.2A8 8 0 0 1 24.6 3.4l-5 5z' fill='none' stroke='%23e2c15a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' transform='scale(.78) translate(4 4)'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0a0b' stroke='%23c9a227'/%3E%3Cpath d='M19.6 8.4a1.3 1.3 0 0 0 0 1.9l2.1 2.1a1.3 1.3 0 0 0 1.9 0l5-5a8 8 0 0 1-10.6 10.6l-9.2 9.2a2.8 2.8 0 0 1-4-4l9.2-9.2A8 8 0 0 1 24.6 3.4l-5 5z' fill='none' stroke='%23e3c565' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' transform='scale(.78) translate(4 4)'/%3E%3C/svg%3E">
 
 <!-- Idioma antes de pintar: si el visitante eligió árabe, el documento nace
-     en RTL y no da un salto de izquierda a derecha al cargar. -->
+     en RTL y no da un salto de izquierda a derecha al cargar. Precarga la
+     fuente de titulares que toca: Plex Arabic en árabe, Playfair en inglés. -->
 <script>
-(function(){try{var q=new URLSearchParams(location.search).get("lang");var l=q==="ar"||q==="en"?q:localStorage.getItem("lang");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";["400","700"].forEach(function(w){var k=document.createElement("link");k.rel="preload";k.as="font";k.type="font/woff2";k.crossOrigin="anonymous";k.href="assets/fonts/plex-arabic-"+w+".woff2";document.head.appendChild(k);});}}catch(e){}})();
+(function(){try{var q=new URLSearchParams(location.search).get("lang");var l=q==="ar"||q==="en"?q:localStorage.getItem("lang");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";["400","700"].forEach(function(w){var k=document.createElement("link");k.rel="preload";k.as="font";k.type="font/woff2";k.crossOrigin="anonymous";k.href="assets/fonts/plex-arabic-"+w+".woff2";document.head.appendChild(k);});}else{["playfair-var-latin","playfair-var-italic-latin"].forEach(function(f){var k=document.createElement("link");k.rel="preload";k.as="font";k.type="font/woff2";k.crossOrigin="anonymous";k.href="assets/fonts/"+f+".woff2";document.head.appendChild(k);});}}catch(e){}})();
 </script>
 
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/sora-var-latin.woff2" crossorigin>
-<link rel="preload" as="image" href="assets/img/hero-1200.webp" imagesrcset="assets/img/hero-600.webp 600w, assets/img/hero-900.webp 900w, assets/img/hero-1200.webp 1200w" imagesizes="(max-width:900px) calc(100vw - 44px), 560px" fetchpriority="high">
-<link rel="stylesheet" href="assets/css/style.css?v=24">
+<link rel="preload" as="image" href="assets/img/hero-1200.webp" imagesrcset="assets/img/hero-600.webp 600w, assets/img/hero-900.webp 900w, assets/img/hero-1200.webp 1200w" imagesizes="(max-width:900px) 100vw, 56vw" fetchpriority="high">
+<link rel="stylesheet" href="assets/css/style.css?v=25">
 
 <script type="application/ld+json">
 {
@@ -91,12 +92,15 @@
   <symbol id="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
 </svg>
 
+<!-- ===================== BANDA DEMO ===================== -->
+<p class="demo-strip"><span data-i18n="ct.demo">Fictitious business · demo data</span></p>
+
 <!-- ===================== NAV ===================== -->
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
     <a href="#top" class="nav-logo">
       <span class="mark" aria-hidden="true"><svg><use href="#ic-wrench"/></svg></span>
-      <span class="txt"><b>Example Garage</b><small data-i18n="nav.tagline">Car workshop · Doha · Demo</small></span>
+      <span class="txt"><b>Example <i>Garage</i></b><small data-i18n="nav.tagline">Car workshop · Doha · Demo</small></span>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main navigation" data-i18n-attr="aria-label:nav.aria">
       <a href="#top" data-i18n="nav.home">Home</a>
@@ -149,7 +153,7 @@
          Sin lazy: es la imagen principal (LCP). -->
     <figure class="hero-photo">
       <img src="assets/img/hero-1200.webp" srcset="assets/img/hero-600.webp 600w, assets/img/hero-900.webp 900w, assets/img/hero-1200.webp 1200w"
-           sizes="(max-width:900px) calc(100vw - 44px), 560px" width="1200" height="675"
+           sizes="(max-width:900px) 100vw, 56vw" width="1200" height="675"
            alt="Mechanic working on a car raised on a lift in a bright workshop" data-i18n-attr="alt:hero.photoAlt"
            fetchpriority="high" decoding="async">
       <span class="hp-grid" aria-hidden="true"></span>
@@ -569,9 +573,42 @@
 </main>
 
 <footer class="foot">
-  <div class="wrap foot-inner">
-    <span>© <span id="year">2026</span> Example Garage · <span data-i18n="foot.l">Fictitious workshop for demonstration · Doha</span></span>
-    <span class="foot-wm"><a href="panel/?demo=1" data-i18n="foot.panel">Owner panel (demo)</a> · <span data-i18n="foot.r">Prototype in development</span></span>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#top" class="nav-logo">
+          <span class="mark" aria-hidden="true"><svg><use href="#ic-wrench"/></svg></span>
+          <span class="txt"><b>Example <i>Garage</i></b><small data-i18n="nav.tagline">Car workshop · Doha · Demo</small></span>
+        </a>
+        <p data-i18n="foot.l">Fictitious workshop for demonstration · Doha</p>
+      </div>
+      <nav class="foot-col" aria-label="Main navigation" data-i18n-attr="aria-label:nav.aria">
+        <p class="foot-h" data-i18n="nav.aria">Main navigation</p>
+        <ul class="foot-links">
+          <li><a href="#workshop" data-i18n="nav.workshop">Workshop</a></li>
+          <li><a href="#services" data-i18n="nav.services">Services</a></li>
+          <li><a href="#process" data-i18n="nav.process">How we work</a></li>
+          <li><a href="#assistant" data-i18n="nav.assistant">AI assistant</a></li>
+          <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
+        </ul>
+      </nav>
+      <div class="foot-col">
+        <p class="foot-h" data-i18n="ct.addrK">Address</p>
+        <p data-i18n-html="ct.addr">Industrial Area, Doha, Qatar<br><small>Sample address</small></p>
+        <p class="foot-h" data-i18n="ct.hoursK">Hours</p>
+        <p data-i18n-html="ct.hours">Sun–Thu 08:00–18:00<br>Fri &amp; Sat closed</p>
+      </div>
+      <div class="foot-col">
+        <p class="foot-h" data-i18n="ct.phoneK">Phone</p>
+        <p><span dir="ltr">+974 0000 0000</span><br><small data-i18n="ct.phoneNote">Sample number</small></p>
+        <p class="foot-h" data-i18n="nav.contact">Contact</p>
+        <p class="foot-wm"><a href="panel/?demo=1" data-i18n="foot.panel">Owner panel (demo)</a></p>
+      </div>
+    </div>
+    <div class="foot-bar">
+      <span>© <span id="year">2026</span> Example Garage</span>
+      <span data-i18n="foot.r">Prototype in development</span>
+    </div>
   </div>
 </footer>
 

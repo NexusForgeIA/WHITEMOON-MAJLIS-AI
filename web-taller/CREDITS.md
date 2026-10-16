@@ -36,3 +36,13 @@ Todas de Pexels (Pexels License). Revisadas en una hoja de contactos y con recor
 | band-2-1200 / -600 | Banda 2 | Artem Podrez | https://www.pexels.com/photo/a-mechanic-fixing-a-car-engine-8985456/ | Recorte (800,500)-(2000,1000): suelo, elevador y armarios. |
 
 Conversión: WebP calidad 72 (70 en las versiones pequeñas), método 6, LANCZOS.
+
+# Fuentes
+
+Auto-hospedadas en `assets/fonts/` (subsets woff2), sin peticiones a terceros. Las tres con **SIL Open Font License 1.1** — https://openfontlicense.org
+
+| Fichero | Fuente | Uso |
+|---|---|---|
+| `playfair-var-latin.woff2`, `playfair-var-italic-latin.woff2` | Playfair Display (Claus Eggers Sørensen), variable 400–700, redonda y cursiva | Titulares y cifras |
+| `sora-var-latin*.woff2` | Sora (Jonathan Barnbrook, Julián Moncada) | Texto corrido e interfaz |
+| `plex-arabic-*.woff2` | IBM Plex Sans Arabic (IBM) | Todo el texto en árabe |
