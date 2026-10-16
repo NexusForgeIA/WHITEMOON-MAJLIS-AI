@@ -71,6 +71,13 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
+/* Árabe: el contenido nace en inglés y i18n.js (al final del body) lo traduce.
+   Mientras tanto se retiene sin maquetar (display:none, no visibility): si no,
+   Chrome maqueta y pinta el inglés y luego vuelve a maquetar todo en árabe
+   (medido en vivo: ~870 ms de layout a CPU x4 y un salto de idioma visible).
+   El fondo negro de body sí se pinta. La clase la pone el script del <head> y
+   la quita el script en línea que va justo después de i18n.js. */
+html.i18n-wait body>*{display:none!important}
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 14px);-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--soft);font-family:var(--body);font-size:16px;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 ::selection{background:var(--gold);color:var(--on-gold)}
